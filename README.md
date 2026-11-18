@@ -116,16 +116,3 @@ historical or future version will build with the same flags.
 To publish future dependencies to their own repositories, set each recipe's
 `release_repository` and configure the optional `RELEASE_TOKEN` secret. No build
 recipe changes or repository split are required. See [docs/releases.md](docs/releases.md).
-
-## Verification gate
-
-All workflows are **manual-only**. Pushes and pull requests do not start builds or
-verification. Per the requested handoff, the initial source is pushed first and
-verification waits for explicit approval. Recipe availability and a successful
-push do not imply that all dependencies have completed a build.
-
-## Licensing
-
-New automation uses the MIT license in `LICENSE`. Dependency sources retain their
-upstream licenses. Release archives carry available top-level notices and source
-provenance; the inventory and copied notices are not a complete legal/SBOM review.
