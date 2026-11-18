@@ -7,6 +7,7 @@ import tempfile
 import io
 import struct
 import tarfile
+import zipfile
 import unittest
 from unittest.mock import patch
 
@@ -166,6 +167,14 @@ class TargetTests(unittest.TestCase):
         header = ('wrong.o/        '+str(0).ljust(12)+str(0).ljust(6)+str(0).ljust(6)+'100644  '+str(len(member)).ljust(10)+'`\n').encode()
         with self.assertRaises(ValueError):
             inspect_binary(b'!<arch>\n'+header+member, 'bionic', 'wrong.a')
+
+    def test_rejects_x86_inside_jar_without_library_suffix(self):
+        from targets import inspect_payload
+        output = io.BytesIO()
+        with zipfile.ZipFile(output, 'w') as bundle:
+            bundle.writestr('tools/code_generator', self.elf(machine=62))
+        with self.assertRaises(ValueError):
+            inspect_payload(output.getvalue(), 'bionic', 'tools.jar')
 
 
 

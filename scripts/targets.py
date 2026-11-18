@@ -124,7 +124,7 @@ def elf_details(data, libc, label):
             if table is None:
                 raise ValueError("Invalid ELF string table: " + label)
             names = [data[table + n:].split(b"\0", 1)[0].decode() for n in needed]
-            if libc == "bionic" and any(x in {"libc.so.6", "libm.so.6", "libpthread.so.0", "libdl.so.2"} or "musl" in x for x in names):
+            if libc == "bionic" and any(x in {"libc.so.6", "libm.so.6", "libpthread.so.0", "libdl.so.2", "librt.so.1", "libresolv.so.2", "libutil.so.1", "libstdc++.so.6", "libgcc_s.so.1"} or "musl" in x for x in names):
                 raise ValueError("Desktop libc dependency in Android output: " + label)
             if libc == "glibc" and any("musl" in x or x == "libc.so" for x in names):
                 raise ValueError("Wrong libc dependency in glibc output: " + label)
@@ -164,7 +164,7 @@ def inspect_payload(data, libc, label):
         import io, zipfile
         with zipfile.ZipFile(io.BytesIO(data)) as archive:
             for item in archive.infolist():
-                if not item.is_dir() and item.filename.endswith((".so", ".a")):
+                if not item.is_dir():
                     child = inspect_binary(archive.read(item), libc, label + ":" + item.filename)
                     for key, value in child.items():
                         counts[key] += value

@@ -433,6 +433,8 @@ class Builder:
                    "host": "linux-" + platform.machine(), "sources": self.records,
                    "target": self.target, "architecture": "arm64", "libc": self.libc,
                    "architecture_validation": architecture_report,
+                   "target_toolchain": ({**self._toolchain.details, "cc": self._toolchain.cc, "cxx": self._toolchain.cxx}
+                                        if self._toolchain else {"source": "upstream build graph or architecture-independent distribution"}),
                    "recipe": spec, "commands": self.commands,
                    "pipeline_commit": self.env.get("GITHUB_SHA", "local"),
                    "workflow_run_id": self.env.get("GITHUB_RUN_ID", "local"),
