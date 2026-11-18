@@ -58,7 +58,9 @@ jobs:
           sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL
           df -h "$RUNNER_TEMP"
       - name: Install build prerequisites
-        run: bash scripts/install-host-deps.sh
+        env:
+          DEPENDENCY: ${{ inputs.dependency }}
+        run: bash scripts/install-host-deps.sh "$DEPENDENCY"
       - name: Install ARM64 target toolchain
         if: needs.plan.outputs.compiler_required == 'true'
         env:
@@ -71,7 +73,18 @@ jobs:
           BUILD_ROOT: ${{ runner.temp }}/dependency-build-${{ github.run_id }}-${{ github.run_attempt }}
           JOBS: '4'
           TARGET_LIBC: ${{ inputs.libc }}
-        run: bash scripts/build.sh "$DEPENDENCY" "$REQUESTED_REF" --libc "$TARGET_LIBC"
+        run: |
+          set -o pipefail
+          log="$(mktemp)"
+          if bash scripts/build.sh "$DEPENDENCY" "$REQUESTED_REF" --libc "$TARGET_LIBC" 2>&1 | tee "$log"; then
+            exit 0
+          fi
+          failure="$(tail -n 25 "$log")"
+          failure="${failure//'%'/'%25'}"
+          failure="${failure//$'\r'/'%0D'}"
+          failure="${failure//$'\n'/'%0A'}"
+          printf '::error::%s\n' "$failure"
+          exit 1
       - name: Pass completed outputs to the publisher
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:

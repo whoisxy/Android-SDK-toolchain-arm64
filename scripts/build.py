@@ -274,7 +274,14 @@ class Builder:
 
         protoc = shutil.which("protoc")
         if protoc is None or self.run([protoc, "--version"], capture=True) != "libprotoc 3.21.12":
-            raise ValueError("The Android SDK port requires host protoc 3.21.12")
+            host = build / "host-protobuf"
+            host_env = dict(self.env, CC="cc", CXX="c++")
+            self.run(["cmake", "-S", adapter / "src/protobuf", "-B", host, "-G", "Ninja",
+                      "-DCMAKE_BUILD_TYPE=Release", "-DCMAKE_POLICY_VERSION_MINIMUM=3.5",
+                      "-Dprotobuf_BUILD_TESTS=OFF", "-Dprotobuf_BUILD_SHARED_LIBS=OFF",
+                      "-Dprotobuf_WITH_ZLIB=OFF"], env=host_env)
+            self.run(["cmake", "--build", host, "--parallel", self.jobs, "--target", "protoc"], env=host_env)
+            protoc = str(host / "protoc")
         output = build / "out"
         self.run(["cmake", "-S", adapter, "-B", output, "-G", "Ninja",
                   "-DCMAKE_BUILD_TYPE=Release", "-DCMAKE_POLICY_VERSION_MINIMUM=3.5",

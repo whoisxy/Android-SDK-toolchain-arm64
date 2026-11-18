@@ -34,8 +34,13 @@ if args.libc == "bionic":
 elif args.libc == "glibc":
     if not shutil.which(os.environ.get("ARM64_GNU_PREFIX", "aarch64-linux-gnu-") + "gcc"):
         privilege = [] if os.geteuid() == 0 else ["sudo", "-n"]
-        subprocess.run([*privilege, "apt-get", "update"], check=True)
-        subprocess.run([*privilege, "apt-get", "install", "-y", "gcc-aarch64-linux-gnu", "g++-aarch64-linux-gnu", "binutils-aarch64-linux-gnu"], check=True)
+        apt = [*privilege, "apt-get", "-o", "Acquire::Retries=1",
+               "-o", "Acquire::http::Timeout=20", "-o", "Acquire::https::Timeout=20"]
+        packages = ["gcc-aarch64-linux-gnu", "g++-aarch64-linux-gnu",
+                    "binutils-aarch64-linux-gnu", "libc6-dev-arm64-cross"]
+        if subprocess.run([*apt, "install", "-y", *packages]).returncode:
+            subprocess.run([*apt, "update"], check=True)
+            subprocess.run([*apt, "install", "-y", *packages], check=True)
 else:
     if not (os.environ.get("ARM64_MUSL_PREFIX") or os.environ.get("ZIG") or shutil.which("zig")):
         machine = "aarch64" if platform.machine() in {"aarch64", "arm64"} else "x86_64"
