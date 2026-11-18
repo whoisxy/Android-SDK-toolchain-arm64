@@ -4,12 +4,17 @@ import os
 from pathlib import Path
 import sys
 import tempfile
+import io
+import struct
+import tarfile
 import unittest
 from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 from common import build_environment, destination, registry, revision
 from release import completed_build
+from targets import elf_details, inspect_binary, target_name
+from build import Builder
 
 
 class RevisionTests(unittest.TestCase):
@@ -69,10 +74,17 @@ class RegistryTests(unittest.TestCase):
 class ReleaseAssetTests(unittest.TestCase):
     def fixture(self, root):
         archive = root / "zlib.tar.gz"
-        archive.write_bytes(b"fixture build output")
+        binary = bytearray(64)
+        binary[:6] = b'\x7fELF\x02\x01'
+        struct.pack_into('<HH', binary, 16, 3, 183)
+        with tarfile.open(archive, 'w:gz') as output:
+            info = tarfile.TarInfo('zlib/lib/libz.so')
+            info.size = len(binary)
+            output.addfile(info, io.BytesIO(binary))
         sha = hashlib.sha256(archive.read_bytes()).hexdigest()
         (root / "zlib.tar.gz.sha256").write_text(sha + "  zlib.tar.gz\n")
         data = {"dependency": "zlib", "source_commit": "a" * 40, "host": "linux-x86_64",
+                "architecture": "arm64", "libc": "bionic", "target": "android-arm64-bionic",
                 "assets": ["zlib.tar.gz", "zlib.tar.gz.sha256"], "archive_sha256": sha}
         (root / "build.json").write_text(json.dumps(data))
         return data
@@ -111,6 +123,50 @@ class ReleaseAssetTests(unittest.TestCase):
             (root / "zlib.tar.gz").symlink_to(root / "outside")
             with self.assertRaises(ValueError):
                 completed_build(root)
+
+
+class TargetTests(unittest.TestCase):
+    def test_builder_defaults_to_arm64_bionic(self):
+        with tempfile.TemporaryDirectory() as temp:
+            builder = Builder('zlib', '', root=temp)
+            self.assertEqual('android-arm64-bionic', builder.target)
+            self.assertEqual('bionic', builder.libc)
+
+    def elf(self, machine=183, interpreter=None):
+        binary = bytearray(64 if not interpreter else 120 + len(interpreter) + 1)
+        binary[:6] = b'\x7fELF\x02\x01'
+        struct.pack_into('<HH', binary, 16, 3, machine)
+        if interpreter:
+            struct.pack_into('<Q', binary, 32, 64)
+            struct.pack_into('<HH', binary, 54, 56, 1)
+            struct.pack_into('<IIQQQQQQ', binary, 64, 3, 0, 120, 0, 0, len(interpreter)+1, len(interpreter)+1, 1)
+            binary[120:] = interpreter.encode()+b'\0'
+        return bytes(binary)
+
+    def test_arm64_is_fixed_across_libcs(self):
+        self.assertEqual('android-arm64-bionic', target_name('bionic'))
+        self.assertEqual('linux-arm64-glibc', target_name('glibc'))
+        self.assertEqual('linux-arm64-musl', target_name('musl'))
+
+    def test_rejects_x86_output(self):
+        with self.assertRaises(ValueError):
+            elf_details(self.elf(machine=62), 'bionic', 'wrong.so')
+
+    def test_checks_bionic_interpreter(self):
+        self.assertTrue(elf_details(self.elf(interpreter='/system/bin/linker64'), 'bionic', 'android-tool'))
+        with self.assertRaises(ValueError):
+            elf_details(self.elf(interpreter='/lib/ld-linux-aarch64.so.1'), 'bionic', 'desktop-tool')
+
+    def test_checks_other_libc_interpreters(self):
+        self.assertTrue(elf_details(self.elf(interpreter='/lib/ld-linux-aarch64.so.1'), 'glibc', 'glibc-tool'))
+        self.assertTrue(elf_details(self.elf(interpreter='/lib/ld-musl-aarch64.so.1'), 'musl', 'musl-tool'))
+
+    def test_rejects_x86_in_static_library(self):
+        member = self.elf(machine=62)
+        header = ('wrong.o/        '+str(0).ljust(12)+str(0).ljust(6)+str(0).ljust(6)+'100644  '+str(len(member)).ljust(10)+'`\n').encode()
+        with self.assertRaises(ValueError):
+            inspect_binary(b'!<arch>\n'+header+member, 'bionic', 'wrong.a')
+
 
 
 if __name__ == "__main__":

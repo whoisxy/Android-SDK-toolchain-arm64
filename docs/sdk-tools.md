@@ -1,69 +1,63 @@
-# Android, SDK and bootstrap tool tasks
+# SDK and bootstrap tools
 
-The project name is neutral; upstream names appear only where they identify an
-actual dependency or its provenance. Each tool below has its own build/release task
-and the same optional full commit hash or tag argument.
+All compiled release output targets ARM64. `libc` defaults to Bionic; its value is
+carried through the compiler profile, archive name, release tag and metadata.
+The build machine is allowed to have a different CPU.
 
 ## Bootstrap tools
 
-- **`depot-tools`** packages a pinned source checkout of depot_tools with `gclient`,
-  CIPD and vpython3 launchers. Git, Bash, Python 3, CA certificates, network access
-  and archive utilities are prerequisites. Auto-update is disabled. Native Python/
-  CIPD runtime components are bootstrapped from upstream on first use; those binaries
-  are not source-built by this recipe. The installed libexec directory must be writable.
-- **`repo`** packages the pinned Google Repo Python tooling. It is used by the AOSP
-  tasks and requires Git/Python. The AOSP bootstrap pins the same Repo revision for
-  its internal `.repo/repo` checkout.
-- **`gn`** and **`ninja`** build native Linux x64 executables. GN's shallow source
-  build reports its source commit rather than inventing a full-history commit count.
+- `repo` and `gtest-parallel` package interpreted Python tooling with launchers for
+  the selected target environment. They require an installed Python 3.
+- `cipd` builds the native client from pinned LUCI source with Go/CGO and the selected
+  ARM64 compiler. `depot-tools` includes it as a dependency, together with gclient and
+  caller-managed Python/vpython launchers. Desktop Python/CIPD bootstrap executables
+  are not downloaded into the Android release package. Runtime Python packages used
+  by depot_tools must be supplied by the target Python environment.
+- `gn` and `ninja` build ARM64 native executables. Temporary build-machine utilities
+  are kept outside the release prefix.
 
-## Android SDK tools from AOSP
+## Android SDK components
 
-Tasks: **`aapt2`**, **`aidl`**, **`zipalign`**, **`apksigner`**, **`adb`** and **`fastboot`**.
+`aapt2`, `aidl`, `zipalign`, `adb` and `fastboot` use a pinned Android platform graph.
+Their Bionic builds select the ARM64 product and adapt the selected component's
+host-only native module declarations to device modules. The source diff and resolved
+platform manifest are retained. Additional upstream source portability problems can
+require component-specific patches; the AOSP builds need the large self-hosted
+runner and are not claimed verified by a small hosted-library run.
 
-These use a manifest pinned to the Android 15 initial-release platform graph,
-synchronize AOSP using Repo, select the requested component commit, and build the
-corresponding host module through Soong. They require the large `aosp-builder`
-self-hosted runner and are not scheduled automatically on ordinary hosted runners.
+AOSP binaries target the pinned Android platform release and may use platform APIs
+newer than the API level used by the NDK library tasks. Architecture/libc checks do
+not establish compatibility with older Android system releases.
 
-For these tasks the optional ref belongs to the component repository shown in its
-recipe. The rest of the platform remains at the pinned manifest. The component
-commit and resolved full platform manifest are included in the output. A ref from
-a different Android platform release may require updating the manifest as well.
+`apksigner` packages a JVM archive and a launcher; it requires a suitable target JDK.
+It does not package the build machine's JDK or native host libraries. AOSP native
+recipes support Bionic; unsupported libc choices fail before the build.
 
-Native outputs and built host shared libraries are packaged together. The apksigner
-task also packages its JVM JAR and needs a compatible JDK at runtime. These are
-individual tool distributions, not an installer for the whole official Android SDK.
-Other SDK components, including SDK platform data, command-line package management,
-NDK compilers and D8/R8, are tracked as inputs/future work unless they have an explicit
-task in `recipes/registry.json`. A manifest entry alone does not imply a build recipe.
+## Dart and Flutter
 
-## Dart and Flutter tooling
+- `dart-sdk` builds `create_sdk` for ARM64 and the selected operating system, using
+  `--os android` for Bionic and `--os linux` for glibc. Resolved gclient dependencies
+  are retained. Musl needs a separate upstream SDK port and is rejected explicitly.
+- `flutter-tools` includes the source-built ARM64 Dart SDK and builds the tool as a
+  portable kernel snapshot. The build-machine Dart executable is not shipped.
+  Bionic includes a tool-platform adapter for Android. Device-side app builds also
+  need matching engine/helper artifacts and SDK components; the package does not
+  claim those complete device workflows were exercised by an ELF check.
+- `flutter-engine-arm64` builds the Bionic ARM64 engine, Java embedding and target
+  snapshot generator. Desktop gen_snapshot binaries and mixed host zip archives
+  are excluded from the release. Bionic is the supported libc for this Android task.
 
-- **`dart-sdk`** uses the selected SDK Git revision, its gclient DEPS and upstream
-  `tools/build.py` to build a Linux x64 Dart SDK from source. It uses `sdk-builder`.
-- **`flutter-tools`** selects the upstream SDK Git revision, builds the CLI's Dart
-  tool snapshot through upstream bootstrap and precaches Android engine artifacts.
-  The release includes `bin/flutter`, `bin/dart`, the SDK checkout, Git metadata and
-  the required cached upstream runtimes. This builds the tool snapshot; the matching
-  Dart/engine cache binaries are upstream prebuilts, not newly source-built engines.
-- **`flutter-engine-arm64`** and **`flutter-engine-armv7`** build the respective
-  Android native engine, Java embedding and host AOT snapshot tool from the selected
-  monorepo revision. They use its actual CI recipes, replace remote execution with
-  local Ninja, and retain resolved source/package revisions. `RUNTIME_MODE` defaults
-  to `release`; local builds can select `profile` or `debug` with that environment
-  variable. Currently supported refs need the monorepo `engine/src` layout.
+These large SDK tasks need the provisioned `sdk-builder`. A default source ref and
+recipe do not imply a successful build of every upstream version.
 
-These are separate dependency tasks; the root project is not a single engine build
-or a pretense that all 299 inventory rows are independently compiled packages.
+## Compiler profiles and verification
 
-## Native Android ARM64 host extension
+The Bionic profile uses the Android NDK and ARM64 ABI; glibc uses the AArch64 GNU
+compiler, while musl accepts an AArch64 musl toolchain or a checksum-pinned Zig.
+`ANDROID_NDK_HOME`, `ANDROID_API`, `ARM64_GNU_PREFIX`, `ARM64_MUSL_PREFIX` and `ZIG`
+provide toolchain configuration. The Actions provisioning step sets these paths.
 
-The current host executables are Linux x64/glibc. Android ARM64 requires a distinct
-host profile with Bionic-compatible Git/Python/JDK, Dart/SDK host tools, GN/Ninja,
-resource/packaging tools and compiler runtime support. Merely changing the Android
-engine's output CPU does not port these host tools. Upstream bootstrap binaries and
-Gradle-selected aapt2 artifacts also need an ARM-compatible provisioning strategy.
-
-Per-dependency source, target, runner and release-destination fields provide the
-extension points. Native Android host execution is documented, not implemented.
+Both the build and publisher reject wrong-architecture ELF output. They inspect
+static-library members, ELF interpreters and incompatible libc dependencies rather
+than inferring architecture from a filename. Python/scripts/headers are portable
+inputs, not proof that an external Python/JVM runtime is bundled or device-tested.

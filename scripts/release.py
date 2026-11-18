@@ -12,6 +12,7 @@ import urllib.error
 import urllib.request
 
 from common import ROOT, destination, registry
+from targets import LIBCS, target_name, validate_archive
 
 
 def completed_build(directory):
@@ -24,8 +25,10 @@ def completed_build(directory):
         raise ValueError("Unknown dependency in build artifact")
     if not re.fullmatch(r"[0-9a-f]{40}", build["source_commit"]):
         raise ValueError("Missing resolved source commit")
-    if build["host"] != "linux-x86_64":
-        raise ValueError("Unexpected artifact platform")
+    if build.get("architecture") != "arm64" or build.get("libc") not in LIBCS:
+        raise ValueError("Release output must declare ARM64 and a supported libc")
+    if build.get("target") != target_name(build["libc"]):
+        raise ValueError("Artifact target does not match the selected libc")
     assets = build["assets"]
     if not isinstance(assets, list) or len(assets) != 2 or len(set(assets)) != 2:
         raise ValueError("Expected one archive and one checksum file")
@@ -47,6 +50,9 @@ def completed_build(directory):
         actual = hashlib.file_digest(stream, "sha256").hexdigest()
     if actual != build["archive_sha256"] or checksum.read_text().strip() != actual + "  " + archive.name:
         raise ValueError("Build archive checksum mismatch")
+    observed = validate_archive(archive, build["libc"])
+    if registry()[build["dependency"]]["kind"] not in {"headers", "script-distribution", "jvm-tool"} and not (observed["elf_files"] or observed["static_members"]):
+        raise ValueError("Native release contains no verified ARM64 binary")
     return build, paths
 
 
@@ -74,10 +80,12 @@ class GitHub:
             raise RuntimeError(f"GitHub {method} {path}: HTTP {error.code}: {message}") from None
 
 
-def publish(directory, repository="", expected_dependency=""):
+def publish(directory, repository="", expected_dependency="", expected_libc="bionic"):
     build, assets = completed_build(directory)
     if expected_dependency and build["dependency"] != expected_dependency:
         raise ValueError("Artifact dependency does not match the requested task")
+    if build["libc"] != expected_libc:
+        raise ValueError("Artifact libc does not match the requested task")
     repository = destination(build["dependency"], repository)
     github = GitHub()
     repo_info = github.api("/repos/" + repository)
@@ -88,7 +96,7 @@ def publish(directory, repository="", expected_dependency=""):
     attempt = os.environ.get("GITHUB_RUN_ATTEMPT", "1")
     if not re.fullmatch(r"[0-9]+", run_id + attempt):
         raise ValueError("Invalid workflow run identifier")
-    tag = f"{build['dependency']}/{build['host']}/{build['source_commit'][:12]}-{run_id}-{attempt}"
+    tag = f"{build['dependency']}/{build['target']}/{build['source_commit'][:12]}-{run_id}-{attempt}"
     body = "\n".join([
         f"Dependency: `{build['dependency']}`", f"Requested source: `{build['requested_ref']}`",
         f"Resolved commit: `{build['source_commit']}`", f"Source: {build['source_url']}",
@@ -99,7 +107,7 @@ def publish(directory, repository="", expected_dependency=""):
     ])
     release = github.api("/repos/" + repository + "/releases", "POST", {
         "tag_name": tag, "target_commitish": target,
-        "name": f"{build['dependency']} · {build['requested_ref']} · {build['host']}",
+        "name": f"{build['dependency']} · {build['requested_ref']} · {build['target']}",
         "body": body, "draft": True, "prerelease": False,
     })
     print("Created draft release " + release["html_url"], flush=True)
@@ -126,5 +134,6 @@ if __name__ == "__main__":
     parser.add_argument("directory", nargs="?", type=Path, default=ROOT / "dist")
     parser.add_argument("--repository", default="")
     parser.add_argument("--dependency", default="")
+    parser.add_argument("--libc", choices=LIBCS, default="bionic")
     args = parser.parse_args()
-    publish(args.directory, args.repository, args.dependency)
+    publish(args.directory, args.repository, args.dependency, args.libc)

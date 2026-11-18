@@ -6,6 +6,7 @@ from pathlib import Path
 import subprocess
 import sys
 from common import ROOT, build_environment, destination, registry
+from targets import LIBCS
 
 
 def main():
@@ -13,6 +14,7 @@ def main():
     parser.add_argument("dependency", help="Dependency name, or list")
     parser.add_argument("ref", nargs="?", default="", help="Optional full Git commit hash or tag")
     parser.add_argument("--build-only", action="store_true", help="Skip release publication")
+    parser.add_argument("--libc", choices=LIBCS, default="bionic")
     args = parser.parse_args()
     available = registry()
     if args.dependency == "list":
@@ -26,11 +28,11 @@ def main():
         selected = destination(args.dependency, os.environ.get("RELEASE_REPOSITORY", ""))
         if not (os.environ.get("GH_TOKEN") or os.environ.get("GITHUB_TOKEN")):
             raise SystemExit("Set GH_TOKEN for local publication, or use --build-only")
-    subprocess.run(["bash", str(ROOT / "scripts/build.sh"), args.dependency, args.ref],
+    subprocess.run(["bash", str(ROOT / "scripts/build.sh"), args.dependency, args.ref, "--libc", args.libc],
                    env=build_environment(), check=True)
     if not args.build_only:
         subprocess.run([sys.executable, str(ROOT / "scripts/release.py"), str(ROOT / "dist"),
-                        "--repository", selected, "--dependency", args.dependency], check=True)
+                        "--repository", selected, "--dependency", args.dependency, "--libc", args.libc], check=True)
 
 
 if __name__ == "__main__":

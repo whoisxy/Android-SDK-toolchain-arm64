@@ -16,6 +16,7 @@ on:
           - benchmark
           - boringssl
           - brotli
+          - cipd
           - cpu-features
           - dart-sdk
           - depot-tools
@@ -23,7 +24,6 @@ on:
           - fastboot
           - flatbuffers
           - flutter-engine-arm64
-          - flutter-engine-armv7
           - flutter-tools
           - freetype
           - glfw
@@ -57,6 +57,11 @@ on:
         description: Optional full Git commit hash or tag; empty uses the recipe pin
         type: string
         default: ''
+      libc:
+        description: ARM64 target libc
+        type: choice
+        options: [bionic, glibc, musl]
+        default: bionic
       runner:
         description: Optional JSON runner labels; empty uses the recipe default
         type: string
@@ -73,6 +78,7 @@ jobs:
     with:
       dependency: ${{ inputs.dependency }}
       ref: ${{ inputs.ref }}
+      libc: ${{ inputs.libc }}
       runner: ${{ inputs.runner }}
       release_repository: ${{ inputs.release_repository }}
     secrets: inherit

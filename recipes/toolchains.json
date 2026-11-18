@@ -1,0 +1,17 @@
+{
+  "android_ndk": "28.2.13676358",
+  "android_api": 28,
+  "zig_version": "0.13.0",
+  "zig": {
+    "x86_64-linux": {
+      "tarball": "https://ziglang.org/download/0.13.0/zig-linux-x86_64-0.13.0.tar.xz",
+      "shasum": "d45312e61ebcc48032b77bc4cf7fd6915c11fa16e4aad116b66c9468211230ea",
+      "size": "47082308"
+    },
+    "aarch64-linux": {
+      "tarball": "https://ziglang.org/download/0.13.0/zig-linux-aarch64-0.13.0.tar.xz",
+      "shasum": "041ac42323837eb5624068acd8b00cd5777dac4cf91179e8dad7a7e90dd0c556",
+      "size": "43090688"
+    }
+  }
+}

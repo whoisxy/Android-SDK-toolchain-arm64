@@ -1,118 +1,101 @@
 # Android SDK toolchain dependency tasks
 
-One repository of independent source build and release tasks. The initial build
-host is **Ubuntu 24.04 / Linux x64**. Running the host tools on **Android ARM64** is
-a later extension; Android engine outputs already have separate ARM64/ARMv7 tasks.
+One repository of independent build and release tasks. **Release output is ARM64.**
+The build machine's CPU is independent of the output CPU; the default Actions
+runner is Ubuntu 24.04 x64 and uses cross compilers.
 
-Each implemented dependency has:
+The `libc` parameter defaults to **`bionic`**. Select `glibc` or `musl` when needed:
 
-- A `tasks/NAME.sh [GIT_HASH_OR_TAG]` command.
-- A **Build and release NAME** GitHub Actions workflow.
-- An immutable default source commit in `recipes/registry.json`.
-- A release archive, SHA-256 sidecar and embedded build/source provenance.
+| libc | Output target | Toolchain |
+|---|---|---|
+| `bionic` (default) | Android ARM64 | Pinned Android NDK; API 28 for NDK-built tools |
+| `glibc` | Linux ARM64 | AArch64 GNU cross compiler |
+| `musl` | Linux ARM64 | AArch64 musl compiler or checksum-pinned Zig |
 
-See [the complete task list](docs/tasks.md), [Android and SDK tools](docs/sdk-tools.md),
-and [release credentials and destinations](docs/releases.md).
+Every implemented dependency has a `tasks/NAME.sh` command and an individual
+**Build and release NAME** Actions workflow. The optional positional argument is
+a full source Git hash or tag; leaving it empty uses the recipe's pinned commit.
 
-## Run a dependency task in Actions
+## Run a task
 
-Open **Actions**, select a dependency, then **Run workflow**. Leave `ref` empty to
-use its pinned commit, or enter a full Git commit hash or tag from the recipe's
-source repository. Branch names and shell expressions are not accepted as refs.
-
+In Actions, select the dependency, optionally enter `ref`, and choose `libc`.
 Using GitHub CLI on your own machine:
 
 ```bash
 gh workflow run build-zlib.yml --repo whoisxy/Android-SDK-toolchain-arm64 \
-  -f ref=v1.3.1
-
-# The generic dispatcher selects the same shared build/release pipeline.
-gh workflow run build.yml --repo whoisxy/Android-SDK-toolchain-arm64 \
-  -f dependency=repo
+  -f ref=v1.3.1 -f libc=bionic
 ```
 
-A successful task creates a GitHub Release **in this repository** and attaches its
-build archive and checksum file. Script/header distributions are labeled as such;
-they do not claim to be newly compiled native executables.
-
-The shared pipeline resolves the recipe and runner, builds without release write
-credentials, passes artifacts to a separate publisher job, creates a draft release,
-uploads and checks asset sizes, then publishes it. A failed upload leaves a draft
-for inspection instead of publishing an incomplete release.
-
-## Run locally
+Locally, provision a compiler for the selected libc, then run:
 
 ```bash
-bash scripts/install-host-deps.sh
-./task list
-
-# Build and release, using credentials from your own environment.
-export GITHUB_REPOSITORY=whoisxy/Android-SDK-toolchain-arm64
-export GH_TOKEN=...  # supply through your own secret manager; never commit it
-./task zlib v1.3.1
-
-# The per-dependency entry point does the same thing.
-tasks/zlib.sh v1.3.1
-
-# Build an archive without publishing a release.
-./task zlib v1.3.1 --build-only
+export ANDROID_NDK_HOME=/path/to/android-ndk
+./task zlib v1.3.1 --libc bionic --build-only
+./task zlib v1.3.1 --libc glibc --build-only
+./task zlib v1.3.1 --libc musl --build-only
 ```
 
-Git, Python 3 and GitHub CLI (`gh`) are needed locally. The install script installs
-Ubuntu build prerequisites; it does not configure GitHub credentials. Source build
-subprocesses receive an environment with the standard GitHub token variables and
-temporary Git authentication configuration removed. Upstream source executes as
-your local user; CI's separate publisher job is the recommended release path.
+Omit `--build-only` to create a release too; local publishing needs
+`GITHUB_REPOSITORY=whoisxy/Android-SDK-toolchain-arm64` and a `GH_TOKEN` supplied
+through your own environment/secret manager. Task scripts accept the same arguments:
+`tasks/zlib.sh v1.3.1 --libc bionic`.
 
-Output goes to `dist/`; intermediate work uses `BUILD_ROOT` or `work/`. Set `JOBS`
-to control compilation parallelism. No implicit cleanup removes unrelated files.
+`./task list` lists available tasks. [docs/tasks.md](docs/tasks.md) lists source pins,
+runners and supported libc combinations. Unsupported combinations fail explicitly;
+there is no fallback to the build machine's CPU or a different libc.
 
-## Runner requirements
+## Build and release behavior
 
-Most CMake, header and script tasks default to the GitHub-hosted `ubuntu-24.04`
-runner. Provision these self-hosted runners before dispatching large tasks:
+Recipes are defined in `recipes/registry.json`. The default ref is an immutable
+commit. An override changes the selected dependency; its declared dependency
+recipes or AOSP platform graph stay pinned, so a different upstream version may
+require recipe changes.
 
-| Tasks | Labels | Storage and memory guidance |
-|---|---|---|
-| `skia`, `dart-sdk`, `flutter-tools`, Android engine tasks | `self-hosted`, `linux`, `x64`, `sdk-builder` | 100–150+ GiB free disk and 32+ GiB RAM for engine/SDK builds; the CLI cache task needs less |
-| AOSP Android tool tasks | `self-hosted`, `linux`, `x64`, `aosp-builder` | At least 400 GiB free disk and 64+ GiB RAM; allow room for the platform checkout and build |
+The shared pipeline builds without release write credentials, then passes output
+to a separate publisher job. Before publishing, it checks archive integrity,
+ARM64 ELF headers, object files inside static libraries, embedded native JAR files,
+libc interpreters and incompatible dynamic libc dependencies. Headers, Python
+scripts and Java archives are architecture-independent; they still carry the
+selected ARM64/libc target metadata. These checks do not replace execution on a
+device with the selected runtime.
 
-The optional workflow `runner` input accepts a JSON array of labels. An input such
-as `["self-hosted","linux","x64","my-builder"]` overrides the recipe's runner.
-The resource guard rejects insufficient disk space; it does not establish full
-host compatibility. Build runners need outbound HTTPS for upstream sources,
-toolchain bootstraps and package repositories.
+A successful task creates a release **in this repository**, attaching an output
+archive and SHA-256 sidecar. Names and tags contain the output target and libc,
+not the runner CPU. Failed uploads retain a draft instead of publishing an
+incomplete release. See [docs/releases.md](docs/releases.md).
 
-Self-hosted jobs retain temporary source/build directories for inspection. Reclaim
-completed job directories under the runner's temporary area using your retention
-policy. These scripts do not automatically remove the full AOSP/SDK checkouts.
+## Tools and runners
 
-## What is implemented
+Tasks include native libraries, Android SDK tools, `repo`, `depot-tools`, CIPD,
+GN/Ninja, Dart SDK, the Flutter tool snapshot and the ARM64 Android engine.
+See [docs/sdk-tools.md](docs/sdk-tools.md) for tool-specific details and limits.
 
-The registry includes Android SDK tools, native libraries, GN/Ninja, `repo`,
-`depot-tools`, Dart SDK, the Flutter CLI/tool snapshot and Android engine tasks.
-See [docs/tasks.md](docs/tasks.md) for the exact recipe list and output kinds.
+Most small tasks use the standard hosted runner. Large tasks need provisioned
+self-hosted machines:
 
-The broader source/package inventory is retained in
-`inventory/source-dependencies.json`. **Inventory entries without a task are not
-implemented standalone builds.** Upstream toolchain prebuilts and declared package
-inputs are recorded separately from source-built outputs. This repository does not
-claim to rebuild every compiler, JDK, Android runtime or third-party binary.
+- `sdk-builder`: labels `self-hosted, linux, x64, sdk-builder`; 100–150+ GiB free
+  storage and 32+ GiB RAM for SDK/engine builds.
+- `aosp-builder`: labels `self-hosted, linux, x64, aosp-builder`; at least 400 GiB
+  free storage and 64+ GiB RAM for full platform source builds.
 
-Optional refs change only the chosen dependency's source. Its declared dependency
-recipes or AOSP platform manifest remain pinned. A substantially different upstream
-version can require a recipe update; accepting a ref does not guarantee every
-historical or future version will build with the same flags.
+Those labels select an existing build machine, not the output architecture. The
+workflow's optional `runner` JSON input can select another compatible runner.
+An ARM64 build machine needs compiler executables that run on that machine;
+the target remains ARM64 regardless. Upstream bootstrap tools may impose additional
+build-host requirements; an architecture-independent build dispatcher does not
+make every upstream build system portable to every operating system.
 
-## Add or change a dependency
+`JOBS` controls compilation parallelism. `BUILD_ROOT` selects intermediate storage;
+`dist/` contains completed archives. Administrators should reclaim completed build
+directories on self-hosted runners according to their retention policy.
 
-1. Add its source URL, default commit, backend, dependency graph and optional runner
-   to `recipes/registry.json`.
-2. Add a backend in `scripts/build.py` if it needs a new build system.
-3. Run `python3 scripts/generate-tasks.py` to generate its Bash task, workflow and
-   task-list documentation.
-4. Run the manual verification workflow, then a selected build/release task.
+## Extending the registry
 
-To publish future dependencies to their own repositories, set each recipe's
-`release_repository` and configure the optional `RELEASE_TOKEN` secret. No build
-recipe changes or repository split are required. See [docs/releases.md](docs/releases.md).
+Add a recipe, then run `python3 scripts/generate-tasks.py` to generate its task,
+workflow and task-list documentation. Set a recipe's `release_repository` to publish
+to a separate initialized repository later. Such a destination uses the optional
+`RELEASE_TOKEN` secret; same-repository releases use the automatic `GITHUB_TOKEN`.
+
+`inventory/source-dependencies.json` retains the broader source/package inventory.
+Rows without an implemented recipe are inventory entries, not standalone builds.
+Recipe presence is not proof that every task/libc combination has passed a build.

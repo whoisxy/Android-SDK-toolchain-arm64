@@ -6,9 +6,10 @@ Every task publishes its output to the repository running the workflow. Each run
 gets a separate release tag:
 
 ```text
-DEPENDENCY/linux-x86_64/SOURCE_COMMIT-RUN_ID-ATTEMPT
+DEPENDENCY/OUTPUT_TARGET/SOURCE_COMMIT-RUN_ID-ATTEMPT
 ```
 
+OUTPUT_TARGET includes ARM64 and the selected libc, for example android-arm64-bionic.
 The requested tag/hash and full resolved source commit appear in the release notes
 and the archive's build metadata. Source revision and pipeline repository revision
 are recorded separately. The release archive contains installed output, declared

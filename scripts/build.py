@@ -12,14 +12,19 @@ import tarfile
 import tempfile
 
 from common import ROOT, build_environment, registry, revision
+from targets import Arm64Toolchain, LIBCS, target_name, validate_tree
 
 
 class Builder:
-    def __init__(self, dependency, requested_ref, root=None):
+    def __init__(self, dependency, requested_ref, root=None, libc="bionic"):
         self.dependencies = registry()
         if dependency not in self.dependencies:
             raise ValueError(f"Unknown task: {dependency}")
         self.dependency = dependency
+        self.libc = libc
+        self.target = target_name(libc)
+        if libc not in self.dependencies[dependency].get("supported_libcs", LIBCS):
+            raise ValueError(f"{dependency} does not support libc={libc}; no fallback target is used")
         self.requested_ref = requested_ref
         self.env = build_environment()
         self.jobs = int(self.env.get("JOBS", "4"))
@@ -32,6 +37,13 @@ class Builder:
         self.prefix.mkdir()
         self.sources, self.records, self.built, self.visiting = {}, [], set(), set()
         self.commands = []
+        self._toolchain = None
+
+    @property
+    def toolchain(self):
+        if self._toolchain is None:
+            self._toolchain = Arm64Toolchain(self.libc, self.work / "toolchain", self.env)
+        return self._toolchain
 
     def run(self, arguments, cwd=None, env=None, capture=False):
         arguments = [str(x) for x in arguments]
@@ -88,16 +100,13 @@ class Builder:
         elif backend == "libtess2":
             self.libtess2(source, build)
         elif backend == "icu":
-            self.run([source / "source/runConfigureICU", "Linux", "--prefix=" + str(self.prefix),
-                      "--disable-tests", "--disable-samples"], cwd=build)
-            self.run(["make", "-j", self.jobs], cwd=build)
-            self.run(["make", "install"], cwd=build)
+            self.icu(source, build)
         elif backend == "gn":
             # A shallow checkout lacks GN's initial-commit tag. Supply an honest source label.
             (build / "last_commit_position.h").write_text(
                 '#define LAST_COMMIT_POSITION_NUM 0\n#define LAST_COMMIT_POSITION "source-' + self.record(name)["commit"][:12] + '"\n')
-            self.run(["python3", "build/gen.py", "--no-last-commit-position", "--out-path", build], cwd=source)
-            self.run(["ninja", "-C", build, "-j", self.jobs])
+            self.run(["python3", "build/gen.py", "--no-last-commit-position", "--out-path", build], cwd=source, env=self.toolchain.env)
+            self.run(["ninja", "-C", build, "-j", self.jobs], env=self.toolchain.env)
             self.copy(build / "gn", "bin/gn")
         elif backend in ("depot-tools", "repo", "gtest-parallel"):
             self.script_distribution(name, source, backend)
@@ -109,35 +118,55 @@ class Builder:
         elif backend == "aosp":
             self.aosp(spec, source, build)
         elif backend == "flutter-tools":
-            self.flutter_tools(source)
+            self.flutter_tools(source, build)
         elif backend == "android-engine":
             self.android_engine(name, spec, source, build)
+        elif backend == "go":
+            target_env = dict(self.toolchain.env, GOOS="android" if self.libc == "bionic" else "linux", GOARCH="arm64", CGO_ENABLED="1")
+            executable = self.prefix / "bin" / spec["output_name"]
+            executable.parent.mkdir(parents=True, exist_ok=True)
+            self.run(["go", "build", "-trimpath", "-buildmode=pie", "-ldflags=-s -w", "-o", executable, spec["go_package"]], cwd=source, env=target_env)
         else:
             raise ValueError("Unsupported backend: " + backend)
         self.collect_licenses(source, self.prefix / "share/licenses" / name)
         self.built.add(name)
         self.visiting.remove(name)
 
-    def flutter_tools(self, source):
+    def flutter_tools(self, source, build):
         # The upstream CLI queries its own Git checkout at runtime. Retain the public-source
         # shallow .git metadata; it contains no setup credentials or authenticated remote URL.
         sdk = self.prefix / "sdk/flutter"
         shutil.copytree(source, sdk, ignore=shutil.ignore_patterns('__pycache__'))
+        host_sdk = build / "host-sdk"
+        shutil.copytree(source, host_sdk, ignore=shutil.ignore_patterns('__pycache__'))
+        if self.libc == "bionic":
+            for checkout in (sdk, host_sdk):
+                platform_file = checkout / "packages/flutter_tools/lib/src/base/platform.dart"
+                original = platform_file.read_text()
+                needle = "String get operatingSystem => io.Platform.operatingSystem;"
+                if needle not in original:
+                    raise ValueError("Selected tool revision needs an updated Android platform adapter")
+                platform_file.write_text(original.replace(needle, "String get operatingSystem => io.Platform.isAndroid ? 'linux' : io.Platform.operatingSystem;"))
         env = dict(self.env, CI="true", FLUTTER_SUPPRESS_ANALYTICS="true",
                    DART_SUPPRESS_ANALYTICS="true", PUB_ENVIRONMENT="sdk-toolchain-build",
-                   PUB_CACHE=str(sdk / "bin/cache/pub-cache"))
-        self.run([sdk / "bin/flutter", "--version", "--machine"], cwd=sdk, env=env)
-        self.run([sdk / "bin/flutter", "precache", "--android"], cwd=sdk, env=env)
-        for tool in ("flutter", "dart"):
-            wrapper = self.prefix / "bin" / tool
-            wrapper.parent.mkdir(parents=True, exist_ok=True)
-            wrapper.write_text('#!/usr/bin/env bash\nset -euo pipefail\n'
-                'prefix="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"\n'
-                'export PUB_CACHE="${PUB_CACHE:-$prefix/sdk/flutter/bin/cache/pub-cache}"\n'
-                'exec "$prefix/sdk/flutter/bin/' + tool + '" "$@"\n')
-            wrapper.chmod(0o755)
+                   PUB_CACHE=str(build / "host-pub-cache"))
+        # Build-machine Dart is used only to compile a portable kernel snapshot, never shipped.
+        self.run([host_sdk / "bin/flutter", "--version", "--machine"], cwd=host_sdk, env=env)
+        cache = sdk / "bin/cache"
+        cache.mkdir(parents=True, exist_ok=True)
+        self.run([host_sdk / "bin/cache/dart-sdk/bin/dart", "--snapshot-kind=kernel",
+                  "--snapshot=" + str(cache / "flutter_tools.snapshot"),
+                  "--packages=" + str(host_sdk / "packages/flutter_tools/.dart_tool/package_config.json"),
+                  host_sdk / "packages/flutter_tools/bin/flutter_tools.dart"], cwd=host_sdk, env=env)
+        # Keep the actual ARM64 SDK in the root prefix; its runtime libraries remain paired.
+        wrapper = self.prefix / "bin/flutter"
+        wrapper.write_text(('#!/system/bin/sh\n' if self.libc == 'bionic' else '#!/bin/sh\n') + 'set -eu\n'
+            'prefix="$(cd -- "$(dirname -- "$0")/.." && pwd)"\n'
+            'export FLUTTER_ROOT="$prefix/sdk/flutter"\n'
+            'exec "$prefix/bin/dart" --disable-dart-dev "$FLUTTER_ROOT/bin/cache/flutter_tools.snapshot" "$@"\n')
+        wrapper.chmod(0o755)
         (self.prefix / "TOOL_SNAPSHOT.md").write_text(
-            "The CLI source comes from the selected Git revision and its Dart tool snapshot is built during SDK bootstrap. The SDK downloads matching upstream Dart/engine binaries and Android caches; those binaries are not source-built by this task. Use dart-sdk or the Android engine tasks for separate source builds.\n")
+            "The CLI is a portable kernel snapshot paired with the source-built ARM64 Dart SDK for the selected libc. Build-machine Dart and desktop engine caches are not bundled. The Bionic build adapts the tool platform abstraction to Android. Device-side app builds also require matching ARM64 engine/helper artifacts and Android SDK tools; this package does not claim those device workflows were exercised.\n")
 
     def android_engine(self, name, spec, source, build):
         depot = self.fetch("depot-tools")
@@ -166,15 +195,15 @@ class Builder:
         for target in ("flutter/shell/platform/android:embedding_jars", "flutter/shell/platform/android:abi_jars"):
             if target not in targets:
                 targets.append(target)
+        if mode in {"release", "profile"} and "gen_snapshot" not in targets:
+            targets.append("gen_snapshot")
         self.run(["python3", src / "flutter/tools/gn", *flags], cwd=src, env=env)
         output = src / "out" / name
         self.run([ninja, "-C", output, "-j", self.jobs, *targets], cwd=src, env=env)
         for artifact in ("libflutter.so", "flutter.jar"):
             self.copy(output / artifact, artifact)
         if mode in {"release", "profile"}:
-            self.copy(output / "clang_x64/gen_snapshot", "clang_x64/gen_snapshot")
-        if (output / "zip_archives").exists():
-            self.copy(output / "zip_archives", "zip_archives")
+            self.copy(output / "gen_snapshot", "bin/gen_snapshot")
         metadata = self.prefix / "share/build-metadata"
         metadata.mkdir(parents=True, exist_ok=True)
         self.run([depot / "gclient", "revinfo", "--actual", "--output-json",
@@ -196,17 +225,41 @@ class Builder:
         manifest_dir.mkdir(parents=True, exist_ok=True)
         self.run([repo, "manifest", "-r", "-o", manifest_dir / "aosp-manifest.xml"], cwd=checkout)
         out = build / "out"
-        env = dict(self.env, OUT_DIR=str(out), TARGET_PRODUCT="aosp_x86_64",
+        if spec["kind"] != "jvm-tool":
+            # Host-only blueprint module classes otherwise force x86 output even for an ARM64 product.
+            blueprints = []
+            for relative in spec.get("aosp_port_subdirs", ["."]):
+                blueprints.extend((component / relative).rglob("Android.bp"))
+            for blueprint in blueprints:
+                text = blueprint.read_text()
+                for host_class, device_class in (("cc_binary_host", "cc_binary"),
+                                                  ("cc_library_host_static", "cc_library_static"),
+                                                  ("cc_library_host_shared", "cc_library_shared")):
+                    text = text.replace(host_class + " {", device_class + " {")
+                blueprint.write_text(text)
+            diff = self.run(["git", "diff", "--", "*.bp"], cwd=component, capture=True)
+            (manifest_dir / "aosp-device-modules.patch").write_text(diff + "\n")
+        env = dict(self.env, OUT_DIR=str(out), TARGET_PRODUCT="aosp_arm64",
                    TARGET_RELEASE="trunk_staging", TARGET_BUILD_VARIANT="userdebug",
                    BUILD_NUMBER=self.env.get("GITHUB_RUN_ID", "local"))
         self.run([checkout / "build/soong/soong_ui.bash", "--make-mode", "-j" + str(self.jobs),
                   *spec["aosp_modules"]], cwd=checkout, env=env)
-        host = out / "host/linux-x86"
-        for relative in spec["aosp_outputs"]:
-            self.copy(host / relative, relative)
-        for libdir in ("lib64", "lib"):
-            if (host / libdir).exists():
-                self.copy(host / libdir, libdir)
+        if spec["kind"] == "jvm-tool":
+            self.copy(out / "host/linux-x86/framework/apksigner.jar", "framework/apksigner.jar")
+            wrapper = self.prefix / "bin/apksigner"
+            wrapper.write_text(('#!/system/bin/sh\n' if self.libc == 'bionic' else '#!/bin/sh\n') + 'set -eu\n'
+                'prefix="$(cd -- "$(dirname -- "$0")/.." && pwd)"\nexec java -jar "$prefix/framework/apksigner.jar" "$@"\n')
+            wrapper.chmod(0o755)
+        else:
+            product = out / "target/product/generic_arm64/system"
+            for relative in spec["aosp_outputs"]:
+                self.copy(product / relative, relative)
+            # Platform libraries stay ARM64/Bionic; system libc/loader remain device-provided.
+            for directory in ("lib64",):
+                if (product / directory).exists():
+                    for library in (product / directory).glob("*.so"):
+                        if library.name not in {"libc.so", "libdl.so", "libm.so"}:
+                            self.copy(library, "lib/" + library.name)
         self.collect_licenses(component, self.prefix / "share/licenses/aosp-component")
 
     def record(self, name):
@@ -228,7 +281,9 @@ class Builder:
                    "-DCMAKE_CXX_STANDARD=17", "-DCMAKE_POSITION_INDEPENDENT_CODE=ON",
                    "-DCMAKE_INSTALL_RPATH=$ORIGIN/../lib",
                    "-DCMAKE_INSTALL_PREFIX=" + str(self.prefix),
-                   "-DCMAKE_PREFIX_PATH=" + str(self.prefix), *spec.get("cmake_options", [])]
+                   "-DCMAKE_PREFIX_PATH=" + str(self.prefix),
+                   "-DCMAKE_FIND_ROOT_PATH=" + str(self.prefix),
+                   *self.toolchain.cmake, *spec.get("cmake_options", [])]
         self.run(["cmake", "-S", source_dir, "-B", build, "-G", "Ninja", *options])
         targets = spec.get("build_targets", [])
         self.run(["cmake", "--build", build, "--parallel", self.jobs,
@@ -252,9 +307,9 @@ class Builder:
         amalgamation = source / "sqlite3.c"
         if not amalgamation.exists():
             raise ValueError("This sqlite recipe requires an amalgamation checkout containing sqlite3.c")
-        self.run(["cc", "-O2", "-fPIC", "-DSQLITE_THREADSAFE=1", "-c", amalgamation, "-o", build / "sqlite3.o"])
-        self.run(["ar", "rcs", build / "libsqlite3.a", build / "sqlite3.o"])
-        self.run(["cc", "-shared", "-Wl,-soname,libsqlite3.so", build / "sqlite3.o", "-ldl", "-lpthread", "-lm", "-o", build / "libsqlite3.so"])
+        self.run([self.toolchain.cc, "-O2", "-fPIC", "-DSQLITE_THREADSAFE=1", "-c", amalgamation, "-o", build / "sqlite3.o"])
+        self.run([self.toolchain.ar, "rcs", build / "libsqlite3.a", build / "sqlite3.o"])
+        self.run([self.toolchain.cc, "-shared", "-Wl,-soname,libsqlite3.so", build / "sqlite3.o", "-ldl", "-lpthread", "-lm", "-o", build / "libsqlite3.so"])
         for name in ("libsqlite3.a", "libsqlite3.so"):
             self.copy(build / name, "lib/" + name)
         for name in ("sqlite3.h", "sqlite3ext.h"):
@@ -265,17 +320,18 @@ class Builder:
         objects = []
         for c_file in sorted((source / "Source").glob("*.c")):
             obj = build / (c_file.stem + ".o")
-            self.run(["cc", "-O2", "-fPIC", "-I", source / "Include", "-c", c_file, "-o", obj])
+            self.run([self.toolchain.cc, "-O2", "-fPIC", "-I", source / "Include", "-c", c_file, "-o", obj])
             objects.append(obj)
         if not objects:
             raise ValueError("No libtess2 C sources found")
-        self.run(["ar", "rcs", build / "libtess2.a", *objects])
+        self.run([self.toolchain.ar, "rcs", build / "libtess2.a", *objects])
         self.copy(build / "libtess2.a", "lib/libtess2.a")
         self.copy(source / "Include", "include/libtess2")
 
     def script_distribution(self, name, source, backend):
         destination = "libexec/" + name
-        self.copy(source, destination)
+        shutil.copytree(source, self.prefix / destination, dirs_exist_ok=True,
+                        ignore=shutil.ignore_patterns('.git', '__pycache__', 'tests', 'testing', '.cipd_bin'))
         bins = self.prefix / "bin"
         bins.mkdir(exist_ok=True)
         launchers = {"repo": ["repo"], "depot-tools": ["gclient", "cipd", "vpython3"],
@@ -284,9 +340,12 @@ class Builder:
             if not (source / tool).exists():
                 raise ValueError("Missing launcher: " + tool)
             launcher = bins / tool
-            command = 'exec "$prefix/libexec/' + name + '/' + tool + '" "$@"\n'
-            launcher.write_text('#!/usr/bin/env bash\nset -euo pipefail\n'
-                'prefix="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"\n'
+            command = ('exec python3 "$prefix/libexec/' + name + '/' + tool + '" "$@"\n')
+            if backend == "depot-tools":
+                entry = "gclient.py" if tool == "gclient" else tool
+                command = ('exec python3 "$prefix/libexec/' + name + '/' + entry + '" "$@"\n') if tool == "gclient" else 'exec python3 "$@"\n' if tool == "vpython3" else 'exec "${CIPD_ANDROID_BINARY:-$prefix/bin/cipd-native}" "$@"\n'
+            launcher.write_text(('#!/system/bin/sh\n' if self.libc == 'bionic' else '#!/bin/sh\n') + 'set -eu\n'
+                'prefix="$(cd -- "$(dirname -- "$0")/.." && pwd)"\n'
                 'export DEPOT_TOOLS_UPDATE=0\n'
                 + ('export PATH="$prefix/libexec/depot-tools:$PATH"\n' if backend == 'depot-tools' else '')
                 + command)
@@ -294,14 +353,33 @@ class Builder:
         if backend == "depot-tools":
             # Bootstrapped Python/CIPD binaries are intentionally not claimed as source-built.
             (self.prefix / "DEPOT_TOOLS_RUNTIME.md").write_text(
-                "This is the pinned depot_tools script distribution. First invocation downloads upstream native Python/CIPD runtime components and needs network access and a writable libexec/depot-tools directory. It does not rebuild those binaries.\n")
+                "This is the pinned architecture-independent depot_tools script distribution. The Android launchers use an installed Python 3 and require a native ARM64 CIPD client via CIPD_ANDROID_BINARY for CIPD operations. They do not download desktop-Linux Python/CIPD executables. vpython3 uses the caller-managed Python environment. These runtime dependencies are not bundled by the script-distribution task.\n")
+
+    def icu(self, source, build):
+        host = build / "host"
+        host.mkdir()
+        self.run([source / "source/runConfigureICU", "Linux", "--disable-tests", "--disable-samples"], cwd=host)
+        self.run(["make", "-j", self.jobs], cwd=host)
+        target = build / "arm64"
+        target.mkdir()
+        self.run([source / "source/configure", "--host=aarch64-linux-android" if self.libc == "bionic" else "--host=aarch64-linux-gnu" if self.libc == "glibc" else "--host=aarch64-linux-musl",
+                  "--with-cross-build=" + str(host), "--prefix=" + str(self.prefix),
+                  "--disable-tests", "--disable-samples"], cwd=target, env=self.toolchain.env)
+        self.run(["make", "-j", self.jobs], cwd=target, env=self.toolchain.env)
+        self.run(["make", "install"], cwd=target, env=self.toolchain.env)
 
     def large_build(self, name, spec, source, build):
         depot = self.fetch("depot-tools")
         env = dict(self.env, PATH=str(depot) + os.pathsep + self.env["PATH"])
         if name == "skia":
             self.run(["python3", "tools/git-sync-deps"], cwd=source, env=env)
-            self.run([source / "bin/gn", "gen", build, "--args=" + spec["gn_args"]], cwd=source, env=env)
+            import json as _json
+            args = spec["gn_args"] + ' target_cpu="arm64"'
+            if self.libc == "bionic":
+                args += ' target_os="android" ndk=' + _json.dumps(self.toolchain.details["ndk"]) + ' ndk_api=' + str(self.toolchain.android_api)
+            else:
+                args += ' target_os="linux" cc=' + _json.dumps(self.toolchain.cc) + ' cxx=' + _json.dumps(self.toolchain.cxx) + ' ar=' + _json.dumps(self.toolchain.ar)
+            self.run([source / "bin/gn", "gen", build, "--args=" + args], cwd=source, env=env)
             self.run(["ninja", "-C", build, "-j", self.jobs, "skia"], env=env)
             self.copy(build / "libskia.a", "lib/libskia.a")
             self.copy(source / "include", "include/skia/include")
@@ -310,11 +388,16 @@ class Builder:
             checkout.mkdir()
             sdk = checkout / "sdk"
             self.run(["git", "clone", "--no-hardlinks", source, sdk])
-            config = [{"name": "sdk", "url": spec["url"], "managed": False, "deps_file": "DEPS", "custom_deps": {}}]
+            config = [{"name": "sdk", "url": spec["url"], "managed": False, "deps_file": "DEPS", "custom_deps": {},
+                       "custom_vars": {"download_android_deps": self.libc == "bionic"}}]
             (checkout / ".gclient").write_text("solutions = " + repr(config) + "\n")
-            self.run([depot / "gclient", "sync", "--no-history", "--revision", "sdk@" + self.record(name)["commit"], cwd=checkout, env=env)
-            self.run(["python3", "tools/build.py", "--mode", "release", "--arch", "x64", "create_sdk"], cwd=sdk, env=env)
-            self.copy(sdk / "out/ReleaseX64/dart-sdk", ".")
+            self.run([depot / "gclient", "sync", "--no-history", "--revision", "sdk@" + self.record(name)["commit"]], cwd=checkout, env=env)
+            self.run(["python3", "tools/build.py", "--no-rbe", "--mode", "release", "--arch", "arm64",
+                      "--os", "android" if self.libc == "bionic" else "linux", "create_sdk"], cwd=sdk, env=env)
+            candidates = list(sdk.glob("out/Release*ARM64/dart-sdk"))
+            if len(candidates) != 1:
+                raise ValueError("Could not locate the built ARM64 Dart SDK")
+            self.copy(candidates[0], ".")
             metadata = self.prefix / "share/build-metadata"
             metadata.mkdir(parents=True, exist_ok=True)
             self.run([depot / "gclient", "revinfo", "--actual", "--output-json",
@@ -329,12 +412,15 @@ class Builder:
                 shutil.copy2(path, destination / path.name)
 
     def package(self):
-        if platform.system() != "Linux" or platform.machine() != "x86_64":
-            raise ValueError("Current recipes run on Linux x64. Android ARM host support is not implemented.")
+        if platform.system() != "Linux":
+            raise ValueError("The configured builders run on Linux; release output is always ARM64")
         spec = self.dependencies[self.dependency]
         if shutil.disk_usage(self.work).free < spec.get("min_disk_gib", 3) * 1024**3:
             raise ValueError("Insufficient disk space for this recipe")
         self.install(self.dependency)
+        architecture_report = validate_tree(self.prefix, self.libc)
+        if spec["kind"] not in {"headers", "script-distribution", "jvm-tool"} and not (architecture_report["elf_files"] or architecture_report["static_members"]):
+            raise ValueError("Native recipe produced no verifiable ARM64 binary output")
         for pc in self.prefix.rglob("*.pc"):
             if pc.is_file() and not pc.is_symlink():
                 pc.write_text(pc.read_text().replace("prefix=" + str(self.prefix), "prefix=${pcfiledir}/../.."))
@@ -344,8 +430,9 @@ class Builder:
         receipt = {"schema_version": 1, "dependency": self.dependency, "kind": spec["kind"],
                    "requested_ref": self.requested_ref or spec["default_ref"],
                    "source_commit": selected["commit"], "source_url": spec["url"],
-                   "host": "linux-x86_64", "sources": self.records,
-                   "target": spec.get("target", "linux-x86_64"),
+                   "host": "linux-" + platform.machine(), "sources": self.records,
+                   "target": self.target, "architecture": "arm64", "libc": self.libc,
+                   "architecture_validation": architecture_report,
                    "recipe": spec, "commands": self.commands,
                    "pipeline_commit": self.env.get("GITHUB_SHA", "local"),
                    "workflow_run_id": self.env.get("GITHUB_RUN_ID", "local"),
@@ -363,12 +450,12 @@ class Builder:
             folders[:] = [x for x in folders if x not in {".git", "out", "node_modules"}]
         receipt["observed_source_checkouts"] = nested
         (metadata_dir / "build.json").write_text(json.dumps(receipt, indent=2) + "\n")
-        archive_name = f"{self.dependency}-linux-x86_64-{selected['commit'][:12]}.tar.gz"
+        archive_name = f"{self.dependency}-{self.target}-{selected['commit'][:12]}.tar.gz"
         output = ROOT / "dist"
         output.mkdir(exist_ok=True)
         archive = output / archive_name
         with tarfile.open(archive, "w:gz") as tar:
-            tar.add(self.prefix, arcname=f"{self.dependency}-linux-x86_64")
+            tar.add(self.prefix, arcname=f"{self.dependency}-{self.target}")
         digest = hashlib.file_digest(archive.open("rb"), "sha256").hexdigest()
         (output / (archive_name + ".sha256")).write_text(digest + "  " + archive_name + "\n")
         (output / "build.json").write_text(json.dumps({**receipt, "assets": [archive_name, archive_name + ".sha256"],
@@ -381,8 +468,9 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("dependency")
     parser.add_argument("ref", nargs="?", default="")
+    parser.add_argument("--libc", choices=LIBCS, default="bionic")
     args = parser.parse_args()
-    Builder(args.dependency, args.ref).package()
+    Builder(args.dependency, args.ref, libc=args.libc).package()
 
 
 if __name__ == "__main__":

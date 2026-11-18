@@ -24,6 +24,11 @@ on:
         description: Optional full Git commit hash or tag; empty uses the recipe pin
         type: string
         default: ''
+      libc:
+        description: ARM64 target libc
+        type: choice
+        options: [bionic, glibc, musl]
+        default: bionic
       runner:
         description: Optional JSON runner labels; empty uses the recipe default
         type: string
@@ -40,6 +45,7 @@ jobs:
     with:
       dependency: NAME
       ref: ${{ inputs.ref }}
+      libc: ${{ inputs.libc }}
       runner: ${{ inputs.runner }}
       release_repository: ${{ inputs.release_repository }}
     secrets: inherit
@@ -60,6 +66,11 @@ CHOICES
         description: Optional full Git commit hash or tag; empty uses the recipe pin
         type: string
         default: ''
+      libc:
+        description: ARM64 target libc
+        type: choice
+        options: [bionic, glibc, musl]
+        default: bionic
       runner:
         description: Optional JSON runner labels; empty uses the recipe default
         type: string
@@ -76,14 +87,15 @@ jobs:
     with:
       dependency: ${{ inputs.dependency }}
       ref: ${{ inputs.ref }}
+      libc: ${{ inputs.libc }}
       runner: ${{ inputs.runner }}
       release_repository: ${{ inputs.release_repository }}
     secrets: inherit
 '''.replace("CHOICES", choices)
-    rows = ["# Dependency tasks", "", "Every row has a `tasks/NAME.sh [HASH_OR_TAG]` entry point and an individual Actions workflow.", "",
-            "| Task | Output kind | Backend | Default source commit | Runner |", "|---|---|---|---|---|"]
+    rows = ["# Dependency tasks", "", "Every row has a `tasks/NAME.sh [HASH_OR_TAG] --libc bionic|glibc|musl` entry point and an individual Actions workflow. Output is always ARM64; libc defaults to bionic.", "",
+            "| Task | Output kind | Backend | Default source commit | Supported libc | Runner |", "|---|---|---|---|---|---|"]
     for name, spec in sorted(dependencies.items()):
-        rows.append(f"| `{name}` | {spec['kind']} | {spec['backend']} | `{spec['default_ref']}` | {', '.join(spec.get('runner', ['ubuntu-24.04']))} |")
+        rows.append(f"| `{name}` | {spec['kind']} | {spec['backend']} | `{spec['default_ref']}` | {', '.join(spec.get('supported_libcs', ['bionic','glibc','musl']))} | {', '.join(spec.get('runner', ['ubuntu-24.04']))} |")
     rows += ["", "These are implemented recipes, not a claim that every recipe has completed a CI build. Consult Actions and Releases for observed results.",
              "Refs must belong to the recipe's source repository. Different upstream versions may need recipe changes. Source distributions such as depot-tools and repo package interpreted tooling; they do not claim to compile upstream runtime binaries.", ""]
     files["docs/tasks.md"] = "\n".join(rows)

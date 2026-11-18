@@ -11,7 +11,9 @@ jobs:
         with:
           persist-credentials: false
       - name: Test revision handling, recipe graph and release asset boundaries
-        run: python3 -m unittest discover -s tests -v
+        run: |
+          python3 -m py_compile scripts/*.py
+          python3 -m unittest discover -s tests -v
       - name: Check generated task/workflow consistency
         run: python3 scripts/generate-tasks.py --check
       - name: Check Bash syntax

@@ -1,7 +1,6 @@
 {
   "schema_version": 1,
-  "default_host": "linux-x86_64",
-  "future_host": "android-arm64 (not implemented)",
+  "default_host": "build-runner CPU is independent of the ARM64 output target",
   "dependencies": {
     "aapt2": {
       "url": "https://android.googlesource.com/platform/frameworks/base",
@@ -27,7 +26,14 @@
         "aosp-builder"
       ],
       "min_disk_gib": 400,
-      "release_repository": null
+      "release_repository": null,
+      "target_architecture": "arm64",
+      "supported_libcs": [
+        "bionic"
+      ],
+      "aosp_port_subdirs": [
+        "tools/aapt2"
+      ]
     },
     "abseil": {
       "url": "https://chromium.googlesource.com/chromium/src/third_party/abseil-cpp",
@@ -40,6 +46,12 @@
         "-DABSL_BUILD_TESTING=OFF",
         "-DABSL_ENABLE_INSTALL=ON",
         "-DABSL_PROPAGATE_CXX_STD=ON"
+      ],
+      "target_architecture": "arm64",
+      "supported_libcs": [
+        "bionic",
+        "glibc",
+        "musl"
       ]
     },
     "adb": {
@@ -66,7 +78,14 @@
         "aosp-builder"
       ],
       "min_disk_gib": 400,
-      "release_repository": null
+      "release_repository": null,
+      "target_architecture": "arm64",
+      "supported_libcs": [
+        "bionic"
+      ],
+      "aosp_port_subdirs": [
+        "."
+      ]
     },
     "aidl": {
       "url": "https://android.googlesource.com/platform/system/tools/aidl",
@@ -92,7 +111,14 @@
         "aosp-builder"
       ],
       "min_disk_gib": 400,
-      "release_repository": null
+      "release_repository": null,
+      "target_architecture": "arm64",
+      "supported_libcs": [
+        "bionic"
+      ],
+      "aosp_port_subdirs": [
+        "."
+      ]
     },
     "apksigner": {
       "url": "https://android.googlesource.com/platform/tools/apksig",
@@ -119,7 +145,16 @@
         "aosp-builder"
       ],
       "min_disk_gib": 400,
-      "release_repository": null
+      "release_repository": null,
+      "target_architecture": "arm64",
+      "supported_libcs": [
+        "bionic",
+        "glibc",
+        "musl"
+      ],
+      "aosp_port_subdirs": [
+        "."
+      ]
     },
     "benchmark": {
       "url": "https://chromium.googlesource.com/external/github.com/google/benchmark",
@@ -131,6 +166,12 @@
       "cmake_options": [
         "-DBENCHMARK_ENABLE_TESTING=OFF",
         "-DBENCHMARK_ENABLE_GTEST_TESTS=OFF"
+      ],
+      "target_architecture": "arm64",
+      "supported_libcs": [
+        "bionic",
+        "glibc",
+        "musl"
       ]
     },
     "boringssl": {
@@ -148,6 +189,12 @@
       ],
       "cmake_options": [
         "-DBUILD_SHARED_LIBS=OFF"
+      ],
+      "target_architecture": "arm64",
+      "supported_libcs": [
+        "bionic",
+        "glibc",
+        "musl"
       ]
     },
     "brotli": {
@@ -159,7 +206,29 @@
       "release_repository": null,
       "cmake_options": [
         "-DBROTLI_DISABLE_TESTS=ON"
+      ],
+      "target_architecture": "arm64",
+      "supported_libcs": [
+        "bionic",
+        "glibc",
+        "musl"
       ]
+    },
+    "cipd": {
+      "url": "https://chromium.googlesource.com/infra/luci/luci-go",
+      "default_ref": "0cfda84e9220a0a161aa4f6b37e3eea5325d81d2",
+      "backend": "go",
+      "kind": "native-tool",
+      "dependencies": [],
+      "release_repository": null,
+      "target_architecture": "arm64",
+      "supported_libcs": [
+        "bionic",
+        "glibc",
+        "musl"
+      ],
+      "go_package": "./cipd/client/cmd/cipd",
+      "output_name": "cipd-native"
     },
     "cpu-features": {
       "url": "https://chromium.googlesource.com/external/github.com/google/cpu_features.git",
@@ -171,6 +240,12 @@
       "cmake_options": [
         "-DBUILD_TESTING=OFF",
         "-DBUILD_PIC=ON"
+      ],
+      "target_architecture": "arm64",
+      "supported_libcs": [
+        "bionic",
+        "glibc",
+        "musl"
       ]
     },
     "dart-sdk": {
@@ -186,15 +261,28 @@
         "linux",
         "x64",
         "sdk-builder"
+      ],
+      "target_architecture": "arm64",
+      "supported_libcs": [
+        "bionic",
+        "glibc"
       ]
     },
     "depot-tools": {
       "url": "https://chromium.googlesource.com/chromium/tools/depot_tools.git",
       "default_ref": "580b4ff3f5cd0dcaa2eacda28cefe0f45320e8f7",
       "backend": "depot-tools",
-      "kind": "script-distribution",
-      "dependencies": [],
-      "release_repository": null
+      "kind": "script-and-native-distribution",
+      "dependencies": [
+        "cipd"
+      ],
+      "release_repository": null,
+      "target_architecture": "arm64",
+      "supported_libcs": [
+        "bionic",
+        "glibc",
+        "musl"
+      ]
     },
     "expat": {
       "url": "https://chromium.googlesource.com/external/github.com/libexpat/libexpat.git",
@@ -207,6 +295,12 @@
       "cmake_options": [
         "-DEXPAT_BUILD_TESTS=OFF",
         "-DEXPAT_BUILD_EXAMPLES=OFF"
+      ],
+      "target_architecture": "arm64",
+      "supported_libcs": [
+        "bionic",
+        "glibc",
+        "musl"
       ]
     },
     "fastboot": {
@@ -233,7 +327,14 @@
         "aosp-builder"
       ],
       "min_disk_gib": 400,
-      "release_repository": null
+      "release_repository": null,
+      "target_architecture": "arm64",
+      "supported_libcs": [
+        "bionic"
+      ],
+      "aosp_port_subdirs": [
+        "fastboot"
+      ]
     },
     "flatbuffers": {
       "url": "https://chromium.googlesource.com/external/github.com/google/flatbuffers",
@@ -246,6 +347,12 @@
         "-DFLATBUFFERS_BUILD_TESTS=OFF",
         "-DFLATBUFFERS_BUILD_FLATC=ON",
         "-DFLATBUFFERS_INSTALL=ON"
+      ],
+      "target_architecture": "arm64",
+      "supported_libcs": [
+        "bionic",
+        "glibc",
+        "musl"
       ]
     },
     "flutter-engine-arm64": {
@@ -262,30 +369,18 @@
       "backend": "android-engine",
       "kind": "android-engine",
       "android_cpu": "arm64",
-      "target": "android-arm64",
-      "min_disk_gib": 100
-    },
-    "flutter-engine-armv7": {
-      "url": "https://github.com/flutter/flutter.git",
-      "default_ref": "c197ca5199e9ee5661e865596c9c07294dfab51c",
-      "dependencies": [],
-      "release_repository": null,
-      "runner": [
-        "self-hosted",
-        "linux",
-        "x64",
-        "sdk-builder"
-      ],
-      "backend": "android-engine",
-      "kind": "android-engine",
-      "android_cpu": "arm",
-      "target": "android-armv7",
-      "min_disk_gib": 100
+      "min_disk_gib": 100,
+      "target_architecture": "arm64",
+      "supported_libcs": [
+        "bionic"
+      ]
     },
     "flutter-tools": {
       "url": "https://github.com/flutter/flutter.git",
       "default_ref": "c197ca5199e9ee5661e865596c9c07294dfab51c",
-      "dependencies": [],
+      "dependencies": [
+        "dart-sdk"
+      ],
       "release_repository": null,
       "runner": [
         "self-hosted",
@@ -294,8 +389,13 @@
         "sdk-builder"
       ],
       "backend": "flutter-tools",
-      "kind": "tool-snapshot-with-prebuilt-sdk",
-      "min_disk_gib": 30
+      "kind": "tool-kernel-with-arm64-sdk",
+      "min_disk_gib": 30,
+      "target_architecture": "arm64",
+      "supported_libcs": [
+        "bionic",
+        "glibc"
+      ]
     },
     "freetype": {
       "url": "https://flutter.googlesource.com/third_party/freetype2",
@@ -311,6 +411,12 @@
         "-DFT_DISABLE_PNG=ON",
         "-DFT_DISABLE_HARFBUZZ=ON",
         "-DFT_DISABLE_BROTLI=ON"
+      ],
+      "target_architecture": "arm64",
+      "supported_libcs": [
+        "bionic",
+        "glibc",
+        "musl"
       ]
     },
     "glfw": {
@@ -326,6 +432,11 @@
         "-DGLFW_BUILD_DOCS=OFF",
         "-DGLFW_INSTALL=ON",
         "-DGLFW_BUILD_WAYLAND=OFF"
+      ],
+      "target_architecture": "arm64",
+      "supported_libcs": [
+        "glibc",
+        "musl"
       ]
     },
     "glslang": {
@@ -342,6 +453,12 @@
         "-DENABLE_OPT=ON",
         "-DALLOW_EXTERNAL_SPIRV_TOOLS=ON",
         "-DENABLE_GLSLANG_BINARIES=ON"
+      ],
+      "target_architecture": "arm64",
+      "supported_libcs": [
+        "bionic",
+        "glibc",
+        "musl"
       ]
     },
     "gn": {
@@ -350,7 +467,13 @@
       "backend": "gn",
       "kind": "native-tool",
       "dependencies": [],
-      "release_repository": null
+      "release_repository": null,
+      "target_architecture": "arm64",
+      "supported_libcs": [
+        "bionic",
+        "glibc",
+        "musl"
+      ]
     },
     "googletest": {
       "url": "https://chromium.googlesource.com/external/github.com/google/googletest",
@@ -362,6 +485,12 @@
       "cmake_options": [
         "-DBUILD_GMOCK=ON",
         "-DINSTALL_GTEST=ON"
+      ],
+      "target_architecture": "arm64",
+      "supported_libcs": [
+        "bionic",
+        "glibc",
+        "musl"
       ]
     },
     "gtest-parallel": {
@@ -370,7 +499,13 @@
       "backend": "gtest-parallel",
       "kind": "script-distribution",
       "dependencies": [],
-      "release_repository": null
+      "release_repository": null,
+      "target_architecture": "arm64",
+      "supported_libcs": [
+        "bionic",
+        "glibc",
+        "musl"
+      ]
     },
     "harfbuzz": {
       "url": "https://flutter.googlesource.com/third_party/harfbuzz",
@@ -383,6 +518,12 @@
         "-DHB_BUILD_UTILS=OFF",
         "-DHB_HAVE_FREETYPE=OFF",
         "-DHB_HAVE_ICU=OFF"
+      ],
+      "target_architecture": "arm64",
+      "supported_libcs": [
+        "bionic",
+        "glibc",
+        "musl"
       ]
     },
     "icu": {
@@ -392,7 +533,13 @@
       "kind": "native-library",
       "dependencies": [],
       "release_repository": null,
-      "min_disk_gib": 8
+      "min_disk_gib": 8,
+      "target_architecture": "arm64",
+      "supported_libcs": [
+        "bionic",
+        "glibc",
+        "musl"
+      ]
     },
     "inja": {
       "url": "https://flutter.googlesource.com/third_party/inja",
@@ -408,6 +555,12 @@
         "-DINJA_BUILD_TESTS=OFF",
         "-DINJA_BUILD_BENCHMARK=OFF",
         "-DINJA_INSTALL=ON"
+      ],
+      "target_architecture": "arm64",
+      "supported_libcs": [
+        "bionic",
+        "glibc",
+        "musl"
       ]
     },
     "libjpeg-turbo": {
@@ -421,6 +574,12 @@
         "-DWITH_SIMD=OFF",
         "-DENABLE_SHARED=ON",
         "-DENABLE_STATIC=ON"
+      ],
+      "target_architecture": "arm64",
+      "supported_libcs": [
+        "bionic",
+        "glibc",
+        "musl"
       ]
     },
     "libpng": {
@@ -435,6 +594,12 @@
       "cmake_options": [
         "-DPNG_TESTS=OFF",
         "-DPNG_TOOLS=OFF"
+      ],
+      "target_architecture": "arm64",
+      "supported_libcs": [
+        "bionic",
+        "glibc",
+        "musl"
       ]
     },
     "libtess2": {
@@ -443,7 +608,13 @@
       "backend": "libtess2",
       "kind": "native-library",
       "dependencies": [],
-      "release_repository": null
+      "release_repository": null,
+      "target_architecture": "arm64",
+      "supported_libcs": [
+        "bionic",
+        "glibc",
+        "musl"
+      ]
     },
     "libwebp": {
       "url": "https://chromium.googlesource.com/webm/libwebp.git",
@@ -456,6 +627,12 @@
         "-DWEBP_BUILD_ANIM_UTILS=OFF",
         "-DWEBP_BUILD_GIF2WEBP=OFF",
         "-DWEBP_BUILD_VWEBP=OFF"
+      ],
+      "target_architecture": "arm64",
+      "supported_libcs": [
+        "bionic",
+        "glibc",
+        "musl"
       ]
     },
     "ninja": {
@@ -468,6 +645,12 @@
       "cmake_options": [
         "-DBUILD_TESTING=OFF",
         "-DNINJA_BUILD_TESTING=OFF"
+      ],
+      "target_architecture": "arm64",
+      "supported_libcs": [
+        "bionic",
+        "glibc",
+        "musl"
       ]
     },
     "nlohmann-json": {
@@ -480,6 +663,12 @@
       "cmake_options": [
         "-DJSON_BuildTests=OFF",
         "-DJSON_Install=ON"
+      ],
+      "target_architecture": "arm64",
+      "supported_libcs": [
+        "bionic",
+        "glibc",
+        "musl"
       ]
     },
     "rapidjson": {
@@ -493,6 +682,12 @@
         "-DRAPIDJSON_BUILD_DOC=OFF",
         "-DRAPIDJSON_BUILD_EXAMPLES=OFF",
         "-DRAPIDJSON_BUILD_TESTS=OFF"
+      ],
+      "target_architecture": "arm64",
+      "supported_libcs": [
+        "bionic",
+        "glibc",
+        "musl"
       ]
     },
     "re2": {
@@ -506,6 +701,12 @@
       "release_repository": null,
       "cmake_options": [
         "-DRE2_BUILD_TESTING=OFF"
+      ],
+      "target_architecture": "arm64",
+      "supported_libcs": [
+        "bionic",
+        "glibc",
+        "musl"
       ]
     },
     "repo": {
@@ -514,7 +715,13 @@
       "backend": "repo",
       "kind": "script-distribution",
       "dependencies": [],
-      "release_repository": null
+      "release_repository": null,
+      "target_architecture": "arm64",
+      "supported_libcs": [
+        "bionic",
+        "glibc",
+        "musl"
+      ]
     },
     "shaderc": {
       "url": "https://chromium.googlesource.com/external/github.com/google/shaderc",
@@ -528,6 +735,12 @@
         "-DSHADERC_SKIP_TESTS=ON",
         "-DSHADERC_SKIP_EXAMPLES=ON",
         "-DSHADERC_ENABLE_WERROR_COMPILE=OFF"
+      ],
+      "target_architecture": "arm64",
+      "supported_libcs": [
+        "bionic",
+        "glibc",
+        "musl"
       ]
     },
     "skia": {
@@ -544,7 +757,12 @@
         "x64",
         "sdk-builder"
       ],
-      "gn_args": "is_official_build=true skia_enable_tools=false skia_use_system_expat=false skia_use_system_icu=false skia_use_system_libjpeg_turbo=false skia_use_system_libpng=false skia_use_system_libwebp=false skia_use_system_zlib=false skia_use_system_freetype2=false skia_use_system_harfbuzz=false"
+      "gn_args": "is_official_build=true skia_enable_tools=false skia_use_system_expat=false skia_use_system_icu=false skia_use_system_libjpeg_turbo=false skia_use_system_libpng=false skia_use_system_libwebp=false skia_use_system_zlib=false skia_use_system_freetype2=false skia_use_system_harfbuzz=false",
+      "target_architecture": "arm64",
+      "supported_libcs": [
+        "bionic",
+        "glibc"
+      ]
     },
     "spirv-cross": {
       "url": "https://chromium.googlesource.com/external/github.com/KhronosGroup/SPIRV-Cross",
@@ -555,6 +773,12 @@
       "release_repository": null,
       "cmake_options": [
         "-DSPIRV_CROSS_ENABLE_TESTS=OFF"
+      ],
+      "target_architecture": "arm64",
+      "supported_libcs": [
+        "bionic",
+        "glibc",
+        "musl"
       ]
     },
     "spirv-headers": {
@@ -566,6 +790,12 @@
       "release_repository": null,
       "cmake_options": [
         "-DSPIRV_HEADERS_ENABLE_INSTALL=ON"
+      ],
+      "target_architecture": "arm64",
+      "supported_libcs": [
+        "bionic",
+        "glibc",
+        "musl"
       ]
     },
     "spirv-tools": {
@@ -586,6 +816,12 @@
       "cmake_options": [
         "-DSPIRV_SKIP_TESTS=ON",
         "-DSPIRV_TOOLS_INSTALL=ON"
+      ],
+      "target_architecture": "arm64",
+      "supported_libcs": [
+        "bionic",
+        "glibc",
+        "musl"
       ]
     },
     "sqlite": {
@@ -594,7 +830,13 @@
       "backend": "sqlite",
       "kind": "native-library",
       "dependencies": [],
-      "release_repository": null
+      "release_repository": null,
+      "target_architecture": "arm64",
+      "supported_libcs": [
+        "bionic",
+        "glibc",
+        "musl"
+      ]
     },
     "vulkan-headers": {
       "url": "https://chromium.googlesource.com/external/github.com/KhronosGroup/Vulkan-Headers",
@@ -603,7 +845,13 @@
       "kind": "headers",
       "dependencies": [],
       "release_repository": null,
-      "cmake_options": []
+      "cmake_options": [],
+      "target_architecture": "arm64",
+      "supported_libcs": [
+        "bionic",
+        "glibc",
+        "musl"
+      ]
     },
     "vulkan-memory-allocator": {
       "url": "https://chromium.googlesource.com/external/github.com/GPUOpen-LibrariesAndSDKs/VulkanMemoryAllocator",
@@ -618,6 +866,12 @@
         "-DVMA_BUILD_SAMPLES=OFF",
         "-DVMA_BUILD_DOCUMENTATION=OFF",
         "-DVMA_BUILD_TESTS=OFF"
+      ],
+      "target_architecture": "arm64",
+      "supported_libcs": [
+        "bionic",
+        "glibc",
+        "musl"
       ]
     },
     "zipalign": {
@@ -644,7 +898,14 @@
         "aosp-builder"
       ],
       "min_disk_gib": 400,
-      "release_repository": null
+      "release_repository": null,
+      "target_architecture": "arm64",
+      "supported_libcs": [
+        "bionic"
+      ],
+      "aosp_port_subdirs": [
+        "tools/zipalign"
+      ]
     },
     "zlib": {
       "url": "https://github.com/madler/zlib.git",
@@ -655,7 +916,21 @@
       "release_repository": null,
       "cmake_options": [
         "-DZLIB_BUILD_EXAMPLES=OFF"
+      ],
+      "target_architecture": "arm64",
+      "supported_libcs": [
+        "bionic",
+        "glibc",
+        "musl"
       ]
     }
-  }
+  },
+  "default_target": "android-arm64-bionic",
+  "target_architecture": "arm64",
+  "default_libc": "bionic",
+  "supported_libcs": [
+    "bionic",
+    "glibc",
+    "musl"
+  ]
 }

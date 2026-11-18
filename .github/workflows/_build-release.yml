@@ -8,6 +8,9 @@ on:
       ref:
         type: string
         default: ''
+      libc:
+        type: string
+        default: bionic
       runner:
         type: string
         default: ''
@@ -25,6 +28,7 @@ jobs:
     outputs:
       runner: ${{ steps.plan.outputs.runner }}
       repository: ${{ steps.plan.outputs.repository }}
+      compiler_required: ${{ steps.plan.outputs.compiler_required }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
@@ -36,7 +40,8 @@ jobs:
           REQUESTED_REF: ${{ inputs.ref }}
           RUNNER_LABELS: ${{ inputs.runner }}
           RELEASE_REPOSITORY: ${{ inputs.release_repository }}
-        run: python3 scripts/plan.py "$DEPENDENCY" --ref "$REQUESTED_REF" --runner "$RUNNER_LABELS" --repository "$RELEASE_REPOSITORY"
+          TARGET_LIBC: ${{ inputs.libc }}
+        run: python3 scripts/plan.py "$DEPENDENCY" --ref "$REQUESTED_REF" --runner "$RUNNER_LABELS" --repository "$RELEASE_REPOSITORY" --libc "$TARGET_LIBC"
   build:
     needs: plan
     runs-on: ${{ fromJSON(needs.plan.outputs.runner) }}
@@ -49,13 +54,19 @@ jobs:
           persist-credentials: false
       - name: Install build prerequisites
         run: bash scripts/install-host-deps.sh
+      - name: Install ARM64 target toolchain
+        if: needs.plan.outputs.compiler_required == 'true'
+        env:
+          TARGET_LIBC: ${{ inputs.libc }}
+        run: python3 scripts/install-target-toolchain.py "$TARGET_LIBC"
       - name: Build selected dependency and package output
         env:
           DEPENDENCY: ${{ inputs.dependency }}
           REQUESTED_REF: ${{ inputs.ref }}
           BUILD_ROOT: ${{ runner.temp }}/dependency-build-${{ github.run_id }}-${{ github.run_attempt }}
           JOBS: '4'
-        run: bash scripts/build.sh "$DEPENDENCY" "$REQUESTED_REF"
+          TARGET_LIBC: ${{ inputs.libc }}
+        run: bash scripts/build.sh "$DEPENDENCY" "$REQUESTED_REF" --libc "$TARGET_LIBC"
       - name: Pass completed outputs to the publisher
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
@@ -82,4 +93,5 @@ jobs:
           GH_TOKEN: ${{ needs.plan.outputs.repository == github.repository && github.token || secrets.RELEASE_TOKEN }}
           RELEASE_REPOSITORY: ${{ needs.plan.outputs.repository }}
           DEPENDENCY: ${{ inputs.dependency }}
-        run: python3 scripts/release.py release-assets --repository "$RELEASE_REPOSITORY" --dependency "$DEPENDENCY"
+          TARGET_LIBC: ${{ inputs.libc }}
+        run: python3 scripts/release.py release-assets --repository "$RELEASE_REPOSITORY" --dependency "$DEPENDENCY" --libc "$TARGET_LIBC"
