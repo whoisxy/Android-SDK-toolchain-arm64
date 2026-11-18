@@ -1,0 +1,54 @@
+# Dependency tasks
+
+Every row has a `tasks/NAME.sh [HASH_OR_TAG]` entry point and an individual Actions workflow.
+
+| Task | Output kind | Backend | Default source commit | Runner |
+|---|---|---|---|---|
+| `aapt2` | native-tool | aosp | `4e43ad12e1b211f15152e9c5b16b0fe88e6b93f3` | self-hosted, linux, x64, aosp-builder |
+| `abseil` | native-library | cmake | `564023aa53767b5f60b3a556f0a025b7b7e8241e` | ubuntu-24.04 |
+| `adb` | native-tool | aosp | `f8a7480bc3500502d5f12c8fd6d1aecc394a604f` | self-hosted, linux, x64, aosp-builder |
+| `aidl` | native-tool | aosp | `d1304733b74b69f26dbe2d3c40c797aaac22f163` | self-hosted, linux, x64, aosp-builder |
+| `apksigner` | jvm-tool | aosp | `5bd2e81b765cd0da6f0b6378d78b19abff04fe26` | self-hosted, linux, x64, aosp-builder |
+| `benchmark` | native-library | cmake | `431abd149fd76a072f821913c0340137cc755f36` | ubuntu-24.04 |
+| `boringssl` | native-library | cmake | `c7eb007fd10627f1abb41a3e368b85e24cd20af9` | ubuntu-24.04 |
+| `brotli` | native-library | cmake | `350100a5bb9d9671aca85213b2ec7a70a361b0cd` | ubuntu-24.04 |
+| `cpu-features` | native-library | cmake | `936b9ab5515dead115606559502e3864958f7f6e` | ubuntu-24.04 |
+| `dart-sdk` | sdk | dart-sdk | `416e33b0ffaef062a60ec966bb8c82ed2b83f128` | self-hosted, linux, x64, sdk-builder |
+| `depot-tools` | script-distribution | depot-tools | `580b4ff3f5cd0dcaa2eacda28cefe0f45320e8f7` | ubuntu-24.04 |
+| `expat` | native-library | cmake | `8e49998f003d693213b538ef765814c7d21abada` | ubuntu-24.04 |
+| `fastboot` | native-tool | aosp | `fc7bc8c4bfb4c6095e34ea784509dae56f25b486` | self-hosted, linux, x64, aosp-builder |
+| `flatbuffers` | native-library-and-tools | cmake | `067bfdbde9b10c1beb5d6b02d67ae9db8b96f736` | ubuntu-24.04 |
+| `flutter-engine-arm64` | android-engine | android-engine | `c197ca5199e9ee5661e865596c9c07294dfab51c` | self-hosted, linux, x64, sdk-builder |
+| `flutter-engine-armv7` | android-engine | android-engine | `c197ca5199e9ee5661e865596c9c07294dfab51c` | self-hosted, linux, x64, sdk-builder |
+| `flutter-tools` | tool-snapshot-with-prebuilt-sdk | flutter-tools | `c197ca5199e9ee5661e865596c9c07294dfab51c` | self-hosted, linux, x64, sdk-builder |
+| `freetype` | native-library | cmake | `be4bcb57914154fc1b9e2900bf8e4b516057e2b8` | ubuntu-24.04 |
+| `glfw` | native-library | cmake | `9352d8fe93cd443be18157abe81f16500549aec0` | ubuntu-24.04 |
+| `glslang` | native-library-and-tools | cmake | `a57276bf558f5cf94d3a9854ebdf5a2236849a5a` | ubuntu-24.04 |
+| `gn` | native-tool | gn | `81b24e01531ecf0eff12ec9359a555ec3944ec4e` | ubuntu-24.04 |
+| `googletest` | native-library | cmake | `e9907112b47255d50b4d343e7e2160bce8dc85d1` | ubuntu-24.04 |
+| `gtest-parallel` | script-distribution | gtest-parallel | `38191e2733d7cbaeaef6a3f1a942ddeb38a2ad14` | ubuntu-24.04 |
+| `harfbuzz` | native-library | cmake | `49844c32a7a3f6be371355a1213c952a3f4a44e7` | ubuntu-24.04 |
+| `icu` | native-library | icu | `d578f2e8b7bd5938e21cfb6bf15c079e0aa5b738` | ubuntu-24.04 |
+| `inja` | headers | cmake | `88bd6112575a80d004e551c98cf956f88ff4d445` | ubuntu-24.04 |
+| `libjpeg-turbo` | native-library | cmake | `0fb821f3b2e570b2783a94ccd9a2fb1f4916ae9f` | ubuntu-24.04 |
+| `libpng` | native-library | cmake | `ced6b6c0c1e24716423a417b399d3c7d4623890d` | ubuntu-24.04 |
+| `libtess2` | native-library | libtess2 | `725e5e08ec8751477565f1d603fd7eb9058c277c` | ubuntu-24.04 |
+| `libwebp` | native-library | cmake | `ca332209cb5567c9b249c86788cb2dbf8847e760` | ubuntu-24.04 |
+| `ninja` | native-tool | cmake | `a524bf3f6bacd1b4ad85d719eed2737d8562f27a` | ubuntu-24.04 |
+| `nlohmann-json` | headers | cmake | `17d9eacd248f58b73f4d1be518ef649fe2295642` | ubuntu-24.04 |
+| `rapidjson` | headers | cmake | `47253cab97e9cfe99dbd6b90836fc11589d7d802` | ubuntu-24.04 |
+| `re2` | native-library | cmake | `c84a140c93352cdabbfb547c531be34515b12228` | ubuntu-24.04 |
+| `repo` | script-distribution | repo | `97dc5c1bd9527c2abe2183b16a4b7ef037dc34a7` | ubuntu-24.04 |
+| `shaderc` | native-library-and-tools | shaderc | `d15277d6bc180f6a0b8b601f0cab2bbcaac9b4d5` | ubuntu-24.04 |
+| `skia` | native-library | skia | `8df24be66531469e576a806749a0202ae26b8d08` | self-hosted, linux, x64, sdk-builder |
+| `spirv-cross` | native-library-and-tools | cmake | `b8fcf307f1f347089e3c46eb4451d27f32ebc8d3` | ubuntu-24.04 |
+| `spirv-headers` | headers | cmake | `01e0577914a75a2569c846778c2f93aa8e6feddd` | ubuntu-24.04 |
+| `spirv-tools` | native-library-and-tools | cmake | `19042c8921f35f7bec56b9e5c96c5f5691588ca8` | ubuntu-24.04 |
+| `sqlite` | native-library | sqlite | `0f61bd2023ba94423b4e4c8cfb1a23de1fe6a21c` | ubuntu-24.04 |
+| `vulkan-headers` | headers | cmake | `a4f8ada9f4f97c45b8c89c57997be9cebaae65d2` | ubuntu-24.04 |
+| `vulkan-memory-allocator` | headers | cmake | `c788c52156f3ef7bc7ab769cb03c110a53ac8fcb` | ubuntu-24.04 |
+| `zipalign` | native-tool | aosp | `3d9c9aacdb6ca0b745b3048dad88d0db4680d50e` | self-hosted, linux, x64, aosp-builder |
+| `zlib` | native-library | cmake | `51b7f2abdade71cd9bb0e7a373ef2610ec6f9daf` | ubuntu-24.04 |
+
+These are implemented recipes, not a claim that every recipe has completed a CI build. Consult Actions and Releases for observed results.
+Refs must belong to the recipe's source repository. Different upstream versions may need recipe changes. Source distributions such as depot-tools and repo package interpreted tooling; they do not claim to compile upstream runtime binaries.

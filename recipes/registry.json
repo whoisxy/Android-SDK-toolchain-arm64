@@ -1,0 +1,661 @@
+{
+  "schema_version": 1,
+  "default_host": "linux-x86_64",
+  "future_host": "android-arm64 (not implemented)",
+  "dependencies": {
+    "aapt2": {
+      "url": "https://android.googlesource.com/platform/frameworks/base",
+      "default_ref": "4e43ad12e1b211f15152e9c5b16b0fe88e6b93f3",
+      "backend": "aosp",
+      "kind": "native-tool",
+      "dependencies": [
+        "repo"
+      ],
+      "manifest_url": "https://android.googlesource.com/platform/manifest",
+      "manifest_ref": "2f91a1ccd8a14ab34358ef141bfb1fc68d200bb4",
+      "aosp_project_path": "frameworks/base",
+      "aosp_modules": [
+        "aapt2"
+      ],
+      "aosp_outputs": [
+        "bin/aapt2"
+      ],
+      "runner": [
+        "self-hosted",
+        "linux",
+        "x64",
+        "aosp-builder"
+      ],
+      "min_disk_gib": 400,
+      "release_repository": null
+    },
+    "abseil": {
+      "url": "https://chromium.googlesource.com/chromium/src/third_party/abseil-cpp",
+      "default_ref": "564023aa53767b5f60b3a556f0a025b7b7e8241e",
+      "backend": "cmake",
+      "kind": "native-library",
+      "dependencies": [],
+      "release_repository": null,
+      "cmake_options": [
+        "-DABSL_BUILD_TESTING=OFF",
+        "-DABSL_ENABLE_INSTALL=ON",
+        "-DABSL_PROPAGATE_CXX_STD=ON"
+      ]
+    },
+    "adb": {
+      "url": "https://android.googlesource.com/platform/packages/modules/adb",
+      "default_ref": "f8a7480bc3500502d5f12c8fd6d1aecc394a604f",
+      "backend": "aosp",
+      "kind": "native-tool",
+      "dependencies": [
+        "repo"
+      ],
+      "manifest_url": "https://android.googlesource.com/platform/manifest",
+      "manifest_ref": "2f91a1ccd8a14ab34358ef141bfb1fc68d200bb4",
+      "aosp_project_path": "packages/modules/adb",
+      "aosp_modules": [
+        "adb"
+      ],
+      "aosp_outputs": [
+        "bin/adb"
+      ],
+      "runner": [
+        "self-hosted",
+        "linux",
+        "x64",
+        "aosp-builder"
+      ],
+      "min_disk_gib": 400,
+      "release_repository": null
+    },
+    "aidl": {
+      "url": "https://android.googlesource.com/platform/system/tools/aidl",
+      "default_ref": "d1304733b74b69f26dbe2d3c40c797aaac22f163",
+      "backend": "aosp",
+      "kind": "native-tool",
+      "dependencies": [
+        "repo"
+      ],
+      "manifest_url": "https://android.googlesource.com/platform/manifest",
+      "manifest_ref": "2f91a1ccd8a14ab34358ef141bfb1fc68d200bb4",
+      "aosp_project_path": "system/tools/aidl",
+      "aosp_modules": [
+        "aidl"
+      ],
+      "aosp_outputs": [
+        "bin/aidl"
+      ],
+      "runner": [
+        "self-hosted",
+        "linux",
+        "x64",
+        "aosp-builder"
+      ],
+      "min_disk_gib": 400,
+      "release_repository": null
+    },
+    "apksigner": {
+      "url": "https://android.googlesource.com/platform/tools/apksig",
+      "default_ref": "5bd2e81b765cd0da6f0b6378d78b19abff04fe26",
+      "backend": "aosp",
+      "kind": "jvm-tool",
+      "dependencies": [
+        "repo"
+      ],
+      "manifest_url": "https://android.googlesource.com/platform/manifest",
+      "manifest_ref": "2f91a1ccd8a14ab34358ef141bfb1fc68d200bb4",
+      "aosp_project_path": "tools/apksig",
+      "aosp_modules": [
+        "apksigner"
+      ],
+      "aosp_outputs": [
+        "bin/apksigner",
+        "framework/apksigner.jar"
+      ],
+      "runner": [
+        "self-hosted",
+        "linux",
+        "x64",
+        "aosp-builder"
+      ],
+      "min_disk_gib": 400,
+      "release_repository": null
+    },
+    "benchmark": {
+      "url": "https://chromium.googlesource.com/external/github.com/google/benchmark",
+      "default_ref": "431abd149fd76a072f821913c0340137cc755f36",
+      "backend": "cmake",
+      "kind": "native-library",
+      "dependencies": [],
+      "release_repository": null,
+      "cmake_options": [
+        "-DBENCHMARK_ENABLE_TESTING=OFF",
+        "-DBENCHMARK_ENABLE_GTEST_TESTS=OFF"
+      ]
+    },
+    "boringssl": {
+      "url": "https://boringssl.googlesource.com/boringssl.git",
+      "default_ref": "c7eb007fd10627f1abb41a3e368b85e24cd20af9",
+      "backend": "cmake",
+      "kind": "native-library",
+      "dependencies": [],
+      "release_repository": null,
+      "install": "boringssl",
+      "build_targets": [
+        "crypto",
+        "ssl",
+        "bssl"
+      ],
+      "cmake_options": [
+        "-DBUILD_SHARED_LIBS=OFF"
+      ]
+    },
+    "brotli": {
+      "url": "https://skia.googlesource.com/external/github.com/google/brotli.git",
+      "default_ref": "350100a5bb9d9671aca85213b2ec7a70a361b0cd",
+      "backend": "cmake",
+      "kind": "native-library",
+      "dependencies": [],
+      "release_repository": null,
+      "cmake_options": [
+        "-DBROTLI_DISABLE_TESTS=ON"
+      ]
+    },
+    "cpu-features": {
+      "url": "https://chromium.googlesource.com/external/github.com/google/cpu_features.git",
+      "default_ref": "936b9ab5515dead115606559502e3864958f7f6e",
+      "backend": "cmake",
+      "kind": "native-library",
+      "dependencies": [],
+      "release_repository": null,
+      "cmake_options": [
+        "-DBUILD_TESTING=OFF",
+        "-DBUILD_PIC=ON"
+      ]
+    },
+    "dart-sdk": {
+      "url": "https://dart.googlesource.com/sdk.git",
+      "default_ref": "416e33b0ffaef062a60ec966bb8c82ed2b83f128",
+      "backend": "dart-sdk",
+      "kind": "sdk",
+      "dependencies": [],
+      "release_repository": null,
+      "min_disk_gib": 100,
+      "runner": [
+        "self-hosted",
+        "linux",
+        "x64",
+        "sdk-builder"
+      ]
+    },
+    "depot-tools": {
+      "url": "https://chromium.googlesource.com/chromium/tools/depot_tools.git",
+      "default_ref": "580b4ff3f5cd0dcaa2eacda28cefe0f45320e8f7",
+      "backend": "depot-tools",
+      "kind": "script-distribution",
+      "dependencies": [],
+      "release_repository": null
+    },
+    "expat": {
+      "url": "https://chromium.googlesource.com/external/github.com/libexpat/libexpat.git",
+      "default_ref": "8e49998f003d693213b538ef765814c7d21abada",
+      "backend": "cmake",
+      "kind": "native-library",
+      "dependencies": [],
+      "release_repository": null,
+      "source_subdir": "expat",
+      "cmake_options": [
+        "-DEXPAT_BUILD_TESTS=OFF",
+        "-DEXPAT_BUILD_EXAMPLES=OFF"
+      ]
+    },
+    "fastboot": {
+      "url": "https://android.googlesource.com/platform/system/core",
+      "default_ref": "fc7bc8c4bfb4c6095e34ea784509dae56f25b486",
+      "backend": "aosp",
+      "kind": "native-tool",
+      "dependencies": [
+        "repo"
+      ],
+      "manifest_url": "https://android.googlesource.com/platform/manifest",
+      "manifest_ref": "2f91a1ccd8a14ab34358ef141bfb1fc68d200bb4",
+      "aosp_project_path": "system/core",
+      "aosp_modules": [
+        "fastboot"
+      ],
+      "aosp_outputs": [
+        "bin/fastboot"
+      ],
+      "runner": [
+        "self-hosted",
+        "linux",
+        "x64",
+        "aosp-builder"
+      ],
+      "min_disk_gib": 400,
+      "release_repository": null
+    },
+    "flatbuffers": {
+      "url": "https://chromium.googlesource.com/external/github.com/google/flatbuffers",
+      "default_ref": "067bfdbde9b10c1beb5d6b02d67ae9db8b96f736",
+      "backend": "cmake",
+      "kind": "native-library-and-tools",
+      "dependencies": [],
+      "release_repository": null,
+      "cmake_options": [
+        "-DFLATBUFFERS_BUILD_TESTS=OFF",
+        "-DFLATBUFFERS_BUILD_FLATC=ON",
+        "-DFLATBUFFERS_INSTALL=ON"
+      ]
+    },
+    "flutter-engine-arm64": {
+      "url": "https://github.com/flutter/flutter.git",
+      "default_ref": "c197ca5199e9ee5661e865596c9c07294dfab51c",
+      "dependencies": [],
+      "release_repository": null,
+      "runner": [
+        "self-hosted",
+        "linux",
+        "x64",
+        "sdk-builder"
+      ],
+      "backend": "android-engine",
+      "kind": "android-engine",
+      "android_cpu": "arm64",
+      "target": "android-arm64",
+      "min_disk_gib": 100
+    },
+    "flutter-engine-armv7": {
+      "url": "https://github.com/flutter/flutter.git",
+      "default_ref": "c197ca5199e9ee5661e865596c9c07294dfab51c",
+      "dependencies": [],
+      "release_repository": null,
+      "runner": [
+        "self-hosted",
+        "linux",
+        "x64",
+        "sdk-builder"
+      ],
+      "backend": "android-engine",
+      "kind": "android-engine",
+      "android_cpu": "arm",
+      "target": "android-armv7",
+      "min_disk_gib": 100
+    },
+    "flutter-tools": {
+      "url": "https://github.com/flutter/flutter.git",
+      "default_ref": "c197ca5199e9ee5661e865596c9c07294dfab51c",
+      "dependencies": [],
+      "release_repository": null,
+      "runner": [
+        "self-hosted",
+        "linux",
+        "x64",
+        "sdk-builder"
+      ],
+      "backend": "flutter-tools",
+      "kind": "tool-snapshot-with-prebuilt-sdk",
+      "min_disk_gib": 30
+    },
+    "freetype": {
+      "url": "https://flutter.googlesource.com/third_party/freetype2",
+      "default_ref": "be4bcb57914154fc1b9e2900bf8e4b516057e2b8",
+      "backend": "cmake",
+      "kind": "native-library",
+      "dependencies": [
+        "zlib"
+      ],
+      "release_repository": null,
+      "cmake_options": [
+        "-DFT_DISABLE_BZIP2=ON",
+        "-DFT_DISABLE_PNG=ON",
+        "-DFT_DISABLE_HARFBUZZ=ON",
+        "-DFT_DISABLE_BROTLI=ON"
+      ]
+    },
+    "glfw": {
+      "url": "https://flutter.googlesource.com/third_party/glfw",
+      "default_ref": "9352d8fe93cd443be18157abe81f16500549aec0",
+      "backend": "cmake",
+      "kind": "native-library",
+      "dependencies": [],
+      "release_repository": null,
+      "cmake_options": [
+        "-DGLFW_BUILD_EXAMPLES=OFF",
+        "-DGLFW_BUILD_TESTS=OFF",
+        "-DGLFW_BUILD_DOCS=OFF",
+        "-DGLFW_INSTALL=ON",
+        "-DGLFW_BUILD_WAYLAND=OFF"
+      ]
+    },
+    "glslang": {
+      "url": "https://chromium.googlesource.com/external/github.com/KhronosGroup/glslang",
+      "default_ref": "a57276bf558f5cf94d3a9854ebdf5a2236849a5a",
+      "backend": "cmake",
+      "kind": "native-library-and-tools",
+      "dependencies": [
+        "spirv-tools"
+      ],
+      "release_repository": null,
+      "cmake_options": [
+        "-DBUILD_TESTING=OFF",
+        "-DENABLE_OPT=ON",
+        "-DALLOW_EXTERNAL_SPIRV_TOOLS=ON",
+        "-DENABLE_GLSLANG_BINARIES=ON"
+      ]
+    },
+    "gn": {
+      "url": "https://gn.googlesource.com/gn",
+      "default_ref": "81b24e01531ecf0eff12ec9359a555ec3944ec4e",
+      "backend": "gn",
+      "kind": "native-tool",
+      "dependencies": [],
+      "release_repository": null
+    },
+    "googletest": {
+      "url": "https://chromium.googlesource.com/external/github.com/google/googletest",
+      "default_ref": "e9907112b47255d50b4d343e7e2160bce8dc85d1",
+      "backend": "cmake",
+      "kind": "native-library",
+      "dependencies": [],
+      "release_repository": null,
+      "cmake_options": [
+        "-DBUILD_GMOCK=ON",
+        "-DINSTALL_GTEST=ON"
+      ]
+    },
+    "gtest-parallel": {
+      "url": "https://chromium.googlesource.com/external/github.com/google/gtest-parallel",
+      "default_ref": "38191e2733d7cbaeaef6a3f1a942ddeb38a2ad14",
+      "backend": "gtest-parallel",
+      "kind": "script-distribution",
+      "dependencies": [],
+      "release_repository": null
+    },
+    "harfbuzz": {
+      "url": "https://flutter.googlesource.com/third_party/harfbuzz",
+      "default_ref": "49844c32a7a3f6be371355a1213c952a3f4a44e7",
+      "backend": "cmake",
+      "kind": "native-library",
+      "dependencies": [],
+      "release_repository": null,
+      "cmake_options": [
+        "-DHB_BUILD_UTILS=OFF",
+        "-DHB_HAVE_FREETYPE=OFF",
+        "-DHB_HAVE_ICU=OFF"
+      ]
+    },
+    "icu": {
+      "url": "https://chromium.googlesource.com/chromium/deps/icu.git",
+      "default_ref": "d578f2e8b7bd5938e21cfb6bf15c079e0aa5b738",
+      "backend": "icu",
+      "kind": "native-library",
+      "dependencies": [],
+      "release_repository": null,
+      "min_disk_gib": 8
+    },
+    "inja": {
+      "url": "https://flutter.googlesource.com/third_party/inja",
+      "default_ref": "88bd6112575a80d004e551c98cf956f88ff4d445",
+      "backend": "cmake",
+      "kind": "headers",
+      "dependencies": [
+        "nlohmann-json"
+      ],
+      "release_repository": null,
+      "cmake_options": [
+        "-DINJA_USE_EMBEDDED_JSON=OFF",
+        "-DINJA_BUILD_TESTS=OFF",
+        "-DINJA_BUILD_BENCHMARK=OFF",
+        "-DINJA_INSTALL=ON"
+      ]
+    },
+    "libjpeg-turbo": {
+      "url": "https://flutter.googlesource.com/third_party/libjpeg-turbo",
+      "default_ref": "0fb821f3b2e570b2783a94ccd9a2fb1f4916ae9f",
+      "backend": "cmake",
+      "kind": "native-library",
+      "dependencies": [],
+      "release_repository": null,
+      "cmake_options": [
+        "-DWITH_SIMD=OFF",
+        "-DENABLE_SHARED=ON",
+        "-DENABLE_STATIC=ON"
+      ]
+    },
+    "libpng": {
+      "url": "https://flutter.googlesource.com/third_party/libpng",
+      "default_ref": "ced6b6c0c1e24716423a417b399d3c7d4623890d",
+      "backend": "cmake",
+      "kind": "native-library",
+      "dependencies": [
+        "zlib"
+      ],
+      "release_repository": null,
+      "cmake_options": [
+        "-DPNG_TESTS=OFF",
+        "-DPNG_TOOLS=OFF"
+      ]
+    },
+    "libtess2": {
+      "url": "https://flutter.googlesource.com/third_party/libtess2",
+      "default_ref": "725e5e08ec8751477565f1d603fd7eb9058c277c",
+      "backend": "libtess2",
+      "kind": "native-library",
+      "dependencies": [],
+      "release_repository": null
+    },
+    "libwebp": {
+      "url": "https://chromium.googlesource.com/webm/libwebp.git",
+      "default_ref": "ca332209cb5567c9b249c86788cb2dbf8847e760",
+      "backend": "cmake",
+      "kind": "native-library",
+      "dependencies": [],
+      "release_repository": null,
+      "cmake_options": [
+        "-DWEBP_BUILD_ANIM_UTILS=OFF",
+        "-DWEBP_BUILD_GIF2WEBP=OFF",
+        "-DWEBP_BUILD_VWEBP=OFF"
+      ]
+    },
+    "ninja": {
+      "url": "https://github.com/ninja-build/ninja.git",
+      "default_ref": "a524bf3f6bacd1b4ad85d719eed2737d8562f27a",
+      "backend": "cmake",
+      "kind": "native-tool",
+      "dependencies": [],
+      "release_repository": null,
+      "cmake_options": [
+        "-DBUILD_TESTING=OFF",
+        "-DNINJA_BUILD_TESTING=OFF"
+      ]
+    },
+    "nlohmann-json": {
+      "url": "https://flutter.googlesource.com/third_party/json.git",
+      "default_ref": "17d9eacd248f58b73f4d1be518ef649fe2295642",
+      "backend": "cmake",
+      "kind": "headers",
+      "dependencies": [],
+      "release_repository": null,
+      "cmake_options": [
+        "-DJSON_BuildTests=OFF",
+        "-DJSON_Install=ON"
+      ]
+    },
+    "rapidjson": {
+      "url": "https://flutter.googlesource.com/third_party/rapidjson",
+      "default_ref": "47253cab97e9cfe99dbd6b90836fc11589d7d802",
+      "backend": "cmake",
+      "kind": "headers",
+      "dependencies": [],
+      "release_repository": null,
+      "cmake_options": [
+        "-DRAPIDJSON_BUILD_DOC=OFF",
+        "-DRAPIDJSON_BUILD_EXAMPLES=OFF",
+        "-DRAPIDJSON_BUILD_TESTS=OFF"
+      ]
+    },
+    "re2": {
+      "url": "https://chromium.googlesource.com/external/github.com/google/re2",
+      "default_ref": "c84a140c93352cdabbfb547c531be34515b12228",
+      "backend": "cmake",
+      "kind": "native-library",
+      "dependencies": [
+        "abseil"
+      ],
+      "release_repository": null,
+      "cmake_options": [
+        "-DRE2_BUILD_TESTING=OFF"
+      ]
+    },
+    "repo": {
+      "url": "https://gerrit.googlesource.com/git-repo",
+      "default_ref": "97dc5c1bd9527c2abe2183b16a4b7ef037dc34a7",
+      "backend": "repo",
+      "kind": "script-distribution",
+      "dependencies": [],
+      "release_repository": null
+    },
+    "shaderc": {
+      "url": "https://chromium.googlesource.com/external/github.com/google/shaderc",
+      "default_ref": "d15277d6bc180f6a0b8b601f0cab2bbcaac9b4d5",
+      "backend": "shaderc",
+      "kind": "native-library-and-tools",
+      "dependencies": [],
+      "release_repository": null,
+      "min_disk_gib": 12,
+      "cmake_options": [
+        "-DSHADERC_SKIP_TESTS=ON",
+        "-DSHADERC_SKIP_EXAMPLES=ON",
+        "-DSHADERC_ENABLE_WERROR_COMPILE=OFF"
+      ]
+    },
+    "skia": {
+      "url": "https://skia.googlesource.com/skia.git",
+      "default_ref": "8df24be66531469e576a806749a0202ae26b8d08",
+      "backend": "skia",
+      "kind": "native-library",
+      "dependencies": [],
+      "release_repository": null,
+      "min_disk_gib": 80,
+      "runner": [
+        "self-hosted",
+        "linux",
+        "x64",
+        "sdk-builder"
+      ],
+      "gn_args": "is_official_build=true skia_enable_tools=false skia_use_system_expat=false skia_use_system_icu=false skia_use_system_libjpeg_turbo=false skia_use_system_libpng=false skia_use_system_libwebp=false skia_use_system_zlib=false skia_use_system_freetype2=false skia_use_system_harfbuzz=false"
+    },
+    "spirv-cross": {
+      "url": "https://chromium.googlesource.com/external/github.com/KhronosGroup/SPIRV-Cross",
+      "default_ref": "b8fcf307f1f347089e3c46eb4451d27f32ebc8d3",
+      "backend": "cmake",
+      "kind": "native-library-and-tools",
+      "dependencies": [],
+      "release_repository": null,
+      "cmake_options": [
+        "-DSPIRV_CROSS_ENABLE_TESTS=OFF"
+      ]
+    },
+    "spirv-headers": {
+      "url": "https://chromium.googlesource.com/external/github.com/KhronosGroup/SPIRV-Headers",
+      "default_ref": "01e0577914a75a2569c846778c2f93aa8e6feddd",
+      "backend": "cmake",
+      "kind": "headers",
+      "dependencies": [],
+      "release_repository": null,
+      "cmake_options": [
+        "-DSPIRV_HEADERS_ENABLE_INSTALL=ON"
+      ]
+    },
+    "spirv-tools": {
+      "url": "https://chromium.googlesource.com/external/github.com/KhronosGroup/SPIRV-Tools",
+      "default_ref": "19042c8921f35f7bec56b9e5c96c5f5691588ca8",
+      "backend": "cmake",
+      "kind": "native-library-and-tools",
+      "dependencies": [
+        "spirv-headers"
+      ],
+      "release_repository": null,
+      "source_dependencies": [
+        {
+          "dependency": "spirv-headers",
+          "path": "external/spirv-headers"
+        }
+      ],
+      "cmake_options": [
+        "-DSPIRV_SKIP_TESTS=ON",
+        "-DSPIRV_TOOLS_INSTALL=ON"
+      ]
+    },
+    "sqlite": {
+      "url": "https://flutter.googlesource.com/third_party/sqlite",
+      "default_ref": "0f61bd2023ba94423b4e4c8cfb1a23de1fe6a21c",
+      "backend": "sqlite",
+      "kind": "native-library",
+      "dependencies": [],
+      "release_repository": null
+    },
+    "vulkan-headers": {
+      "url": "https://chromium.googlesource.com/external/github.com/KhronosGroup/Vulkan-Headers",
+      "default_ref": "a4f8ada9f4f97c45b8c89c57997be9cebaae65d2",
+      "backend": "cmake",
+      "kind": "headers",
+      "dependencies": [],
+      "release_repository": null,
+      "cmake_options": []
+    },
+    "vulkan-memory-allocator": {
+      "url": "https://chromium.googlesource.com/external/github.com/GPUOpen-LibrariesAndSDKs/VulkanMemoryAllocator",
+      "default_ref": "c788c52156f3ef7bc7ab769cb03c110a53ac8fcb",
+      "backend": "cmake",
+      "kind": "headers",
+      "dependencies": [
+        "vulkan-headers"
+      ],
+      "release_repository": null,
+      "cmake_options": [
+        "-DVMA_BUILD_SAMPLES=OFF",
+        "-DVMA_BUILD_DOCUMENTATION=OFF",
+        "-DVMA_BUILD_TESTS=OFF"
+      ]
+    },
+    "zipalign": {
+      "url": "https://android.googlesource.com/platform/build",
+      "default_ref": "3d9c9aacdb6ca0b745b3048dad88d0db4680d50e",
+      "backend": "aosp",
+      "kind": "native-tool",
+      "dependencies": [
+        "repo"
+      ],
+      "manifest_url": "https://android.googlesource.com/platform/manifest",
+      "manifest_ref": "2f91a1ccd8a14ab34358ef141bfb1fc68d200bb4",
+      "aosp_project_path": "build/make",
+      "aosp_modules": [
+        "zipalign"
+      ],
+      "aosp_outputs": [
+        "bin/zipalign"
+      ],
+      "runner": [
+        "self-hosted",
+        "linux",
+        "x64",
+        "aosp-builder"
+      ],
+      "min_disk_gib": 400,
+      "release_repository": null
+    },
+    "zlib": {
+      "url": "https://github.com/madler/zlib.git",
+      "default_ref": "51b7f2abdade71cd9bb0e7a373ef2610ec6f9daf",
+      "backend": "cmake",
+      "kind": "native-library",
+      "dependencies": [],
+      "release_repository": null,
+      "cmake_options": [
+        "-DZLIB_BUILD_EXAMPLES=OFF"
+      ]
+    }
+  }
+}

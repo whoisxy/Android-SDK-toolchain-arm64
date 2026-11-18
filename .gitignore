@@ -1,0 +1,11 @@
+work/
+dist/
+release-assets/
+__pycache__/
+*.pyc
+.venv/
+.env
+.env.*
+!.env.example
+*.pem
+*.key

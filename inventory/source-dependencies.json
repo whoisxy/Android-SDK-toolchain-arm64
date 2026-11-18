@@ -1,0 +1,4320 @@
+{
+  "schema_version": 1,
+  "provenance": {
+    "source_repository": "https://github.com/flutter/flutter.git",
+    "source_commit": "c197ca5199e9ee5661e865596c9c07294dfab51c",
+    "root_manifest": "DEPS"
+  },
+  "counts": {
+    "cipd": 36,
+    "git": 82,
+    "maven_bundled": 12,
+    "pub_git": 2,
+    "pub_hosted": 165,
+    "pub_path": 1,
+    "pub_sdk": 1
+  },
+  "dependencies": [
+    {
+      "android_linux_x64": false,
+      "condition": "use_rbe",
+      "kind": "cipd",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/build/rbe",
+      "revision": "0vARzGeIZgIhW7zVfWuqIPQ_HXMLDccjAstykWZKjaEC",
+      "source": "flutter_internal/rbe/reclient_cfgs",
+      "task": null,
+      "status": "upstream-prebuilt-input"
+    },
+    {
+      "android_linux_x64": false,
+      "condition": "host_os == \"linux\" and host_cpu == \"arm64\"",
+      "kind": "cipd",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/buildtools/linux-arm64/clang",
+      "revision": "git_revision:80743bd43fd5b38fedc503308e7a652e23d3ec93",
+      "source": "fuchsia/third_party/clang/linux-arm64",
+      "task": null,
+      "status": "upstream-prebuilt-input"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "host_os == \"linux\" or host_os == \"mac\"",
+      "kind": "cipd",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/buildtools/linux-x64/clang",
+      "revision": "git_revision:80743bd43fd5b38fedc503308e7a652e23d3ec93",
+      "source": "fuchsia/third_party/clang/linux-amd64",
+      "task": null,
+      "status": "upstream-prebuilt-input"
+    },
+    {
+      "android_linux_x64": false,
+      "condition": "use_rbe and host_os == \"linux\" and host_cpu == \"x64\"",
+      "kind": "cipd",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/buildtools/linux-x64/gcloud",
+      "revision": "version:2@444.0.0.chromium.3",
+      "source": "infra/3pp/tools/gcloud/${{platform}}",
+      "task": null,
+      "status": "upstream-prebuilt-input"
+    },
+    {
+      "android_linux_x64": false,
+      "condition": "use_rbe and host_os == \"linux\" and host_cpu == \"x64\"",
+      "kind": "cipd",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/buildtools/linux-x64/reclient",
+      "revision": "re_client_version:0.185.0.db415f21-gomaip",
+      "source": "infra/rbe/client/${{platform}}",
+      "task": null,
+      "status": "upstream-prebuilt-input"
+    },
+    {
+      "android_linux_x64": false,
+      "condition": "host_os == \"mac\" and host_cpu == \"arm64\"",
+      "kind": "cipd",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/buildtools/mac-arm64/clang",
+      "revision": "git_revision:80743bd43fd5b38fedc503308e7a652e23d3ec93",
+      "source": "fuchsia/third_party/clang/mac-arm64",
+      "task": null,
+      "status": "upstream-prebuilt-input"
+    },
+    {
+      "android_linux_x64": false,
+      "condition": "use_rbe and host_os == \"mac\" and host_cpu == \"arm64\"",
+      "kind": "cipd",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/buildtools/mac-arm64/gcloud",
+      "revision": "version:2@444.0.0.chromium.3",
+      "source": "infra/3pp/tools/gcloud/${{platform}}",
+      "task": null,
+      "status": "upstream-prebuilt-input"
+    },
+    {
+      "android_linux_x64": false,
+      "condition": "use_rbe and host_os == \"mac\" and host_cpu == \"arm64\"",
+      "kind": "cipd",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/buildtools/mac-arm64/reclient",
+      "revision": "re_client_version:0.185.0.db415f21-gomaip",
+      "source": "infra/rbe/client/${{platform}}",
+      "task": null,
+      "status": "upstream-prebuilt-input"
+    },
+    {
+      "android_linux_x64": false,
+      "condition": "host_os == \"mac\"",
+      "kind": "cipd",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/buildtools/mac-x64/clang",
+      "revision": "git_revision:80743bd43fd5b38fedc503308e7a652e23d3ec93",
+      "source": "fuchsia/third_party/clang/mac-amd64",
+      "task": null,
+      "status": "upstream-prebuilt-input"
+    },
+    {
+      "android_linux_x64": false,
+      "condition": "use_rbe and host_os == \"mac\" and host_cpu == \"x64\"",
+      "kind": "cipd",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/buildtools/mac-x64/reclient",
+      "revision": "re_client_version:0.185.0.db415f21-gomaip",
+      "source": "infra/rbe/client/${{platform}}",
+      "task": null,
+      "status": "upstream-prebuilt-input"
+    },
+    {
+      "android_linux_x64": false,
+      "condition": "download_windows_deps",
+      "kind": "cipd",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/buildtools/windows-x64/clang",
+      "revision": "git_revision:80743bd43fd5b38fedc503308e7a652e23d3ec93",
+      "source": "fuchsia/third_party/clang/windows-amd64",
+      "task": null,
+      "status": "upstream-prebuilt-input"
+    },
+    {
+      "android_linux_x64": false,
+      "condition": "use_rbe and download_windows_deps",
+      "kind": "cipd",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/buildtools/windows-x64/reclient",
+      "revision": "re_client_version:0.185.0.db415f21-gomaip",
+      "source": "infra/rbe/client/${{platform}}",
+      "task": null,
+      "status": "upstream-prebuilt-input"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "host_os == \"linux\" and download_dart_sdk",
+      "kind": "cipd",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/prebuilts/linux-arm64/dart-sdk",
+      "revision": "git_revision:416e33b0ffaef062a60ec966bb8c82ed2b83f128",
+      "source": "flutter/dart-sdk/linux-arm64",
+      "task": null,
+      "status": "upstream-prebuilt-input"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "host_os == \"linux\" and download_dart_sdk",
+      "kind": "cipd",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/prebuilts/linux-x64/dart-sdk",
+      "revision": "git_revision:416e33b0ffaef062a60ec966bb8c82ed2b83f128",
+      "source": "flutter/dart-sdk/linux-amd64",
+      "task": null,
+      "status": "upstream-prebuilt-input"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "host_os == \"linux\" and download_esbuild",
+      "kind": "cipd",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/prebuilts/linux-x64/esbuild",
+      "revision": "0.19.5",
+      "source": "flutter/tools/esbuild/linux-amd64",
+      "task": null,
+      "status": "upstream-prebuilt-input"
+    },
+    {
+      "android_linux_x64": false,
+      "condition": "host_os == \"mac\" and download_dart_sdk",
+      "kind": "cipd",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/prebuilts/macos-arm64/dart-sdk",
+      "revision": "git_revision:416e33b0ffaef062a60ec966bb8c82ed2b83f128",
+      "source": "flutter/dart-sdk/mac-arm64",
+      "task": null,
+      "status": "upstream-prebuilt-input"
+    },
+    {
+      "android_linux_x64": false,
+      "condition": "host_os == \"mac\" and download_esbuild",
+      "kind": "cipd",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/prebuilts/macos-arm64/esbuild",
+      "revision": "0.19.5",
+      "source": "flutter/tools/esbuild/mac-arm64",
+      "task": null,
+      "status": "upstream-prebuilt-input"
+    },
+    {
+      "android_linux_x64": false,
+      "condition": "host_os == \"mac\" and download_dart_sdk",
+      "kind": "cipd",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/prebuilts/macos-x64/dart-sdk",
+      "revision": "git_revision:416e33b0ffaef062a60ec966bb8c82ed2b83f128",
+      "source": "flutter/dart-sdk/mac-amd64",
+      "task": null,
+      "status": "upstream-prebuilt-input"
+    },
+    {
+      "android_linux_x64": false,
+      "condition": "host_os == \"mac\" and download_esbuild",
+      "kind": "cipd",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/prebuilts/macos-x64/esbuild",
+      "revision": "0.19.5",
+      "source": "flutter/tools/esbuild/mac-amd64",
+      "task": null,
+      "status": "upstream-prebuilt-input"
+    },
+    {
+      "android_linux_x64": false,
+      "condition": "host_os == \"win\" and download_dart_sdk",
+      "kind": "cipd",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/prebuilts/windows-arm64/dart-sdk",
+      "revision": "git_revision:416e33b0ffaef062a60ec966bb8c82ed2b83f128",
+      "source": "flutter/dart-sdk/windows-arm64",
+      "task": null,
+      "status": "upstream-prebuilt-input"
+    },
+    {
+      "android_linux_x64": false,
+      "condition": "host_os == \"win\" and download_dart_sdk",
+      "kind": "cipd",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/prebuilts/windows-x64/dart-sdk",
+      "revision": "git_revision:416e33b0ffaef062a60ec966bb8c82ed2b83f128",
+      "source": "flutter/dart-sdk/windows-amd64",
+      "task": null,
+      "status": "upstream-prebuilt-input"
+    },
+    {
+      "android_linux_x64": false,
+      "condition": "host_os == \"win\" and download_esbuild",
+      "kind": "cipd",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/prebuilts/windows-x64/esbuild",
+      "revision": "0.19.5",
+      "source": "flutter/tools/esbuild/windows-amd64",
+      "task": null,
+      "status": "upstream-prebuilt-input"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "download_android_deps",
+      "kind": "cipd",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/third_party/android_embedding_dependencies",
+      "revision": "last_updated:2025-10-15T09:53:03-0700",
+      "source": "flutter/android/embedding_bundle",
+      "task": null,
+      "status": "upstream-prebuilt-input"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "download_android_deps",
+      "kind": "cipd",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/third_party/android_tools",
+      "revision": "version:37v2",
+      "source": "flutter/android/sdk/all/${{platform}}",
+      "task": null,
+      "status": "upstream-prebuilt-input"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "true",
+      "kind": "cipd",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/third_party/android_tools/google-java-format",
+      "revision": "version:1.7-1",
+      "source": "flutter/android/google-java-format",
+      "task": null,
+      "status": "upstream-prebuilt-input"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "download_android_deps",
+      "kind": "cipd",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/third_party/android_tools/trace_to_text",
+      "revision": "git_tag:v25.0",
+      "source": "perfetto/trace_to_text/${{platform}}",
+      "task": null,
+      "status": "upstream-prebuilt-input"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "true",
+      "kind": "cipd",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/third_party/dart/third_party/devtools",
+      "revision": "git_revision:12d595649f189f1896722623f72599077f476848",
+      "source": "dart/third_party/flutter/devtools",
+      "task": null,
+      "status": "upstream-prebuilt-input"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "true",
+      "kind": "cipd",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/third_party/dart/tools/sdks/dart-sdk",
+      "revision": "version:3.13.0-103.1.beta",
+      "source": "dart/dart-sdk/${{platform}}",
+      "task": null,
+      "status": "upstream-prebuilt-input"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "true",
+      "kind": "cipd",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/third_party/gn",
+      "revision": "git_revision:81b24e01531ecf0eff12ec9359a555ec3944ec4e",
+      "source": "gn/gn/${{platform}}",
+      "task": null,
+      "status": "upstream-prebuilt-input"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "true",
+      "kind": "cipd",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/third_party/google_fonts_for_unit_tests",
+      "revision": "44bd38be0bc8c189a397ca6dd6f737746a9e0c6117b96a8f84f1edf6acd1206b",
+      "source": "flutter/flutter_font_fallbacks",
+      "task": null,
+      "status": "upstream-prebuilt-input"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "download_android_deps",
+      "kind": "cipd",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/third_party/gradle",
+      "revision": "version:8.11.1",
+      "source": "flutter/gradle",
+      "task": null,
+      "status": "upstream-prebuilt-input"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "not (host_os == \"linux\" and host_cpu == \"arm64\")",
+      "kind": "cipd",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/third_party/java/openjdk",
+      "revision": "version:21",
+      "source": "flutter/java/openjdk/${{platform}}",
+      "task": null,
+      "status": "upstream-prebuilt-input"
+    },
+    {
+      "android_linux_x64": false,
+      "condition": "download_fuchsia_deps",
+      "kind": "cipd",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/tools/fuchsia/gn-sdk",
+      "revision": "a87CbQSWEjkPUK1ZY_zsy8aZ9W-3Z2v73ohzhrWbDQ4C",
+      "source": "chromium/fuchsia/gn-sdk",
+      "task": null,
+      "status": "upstream-prebuilt-input"
+    },
+    {
+      "android_linux_x64": false,
+      "condition": "download_fuchsia_deps",
+      "kind": "cipd",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/tools/fuchsia/test_scripts",
+      "revision": "s5_gZFJ8De9AJalTwS3VILkwjTVBmULlkblMqcXLheYC",
+      "source": "chromium/fuchsia/test-scripts",
+      "task": null,
+      "status": "upstream-prebuilt-input"
+    },
+    {
+      "android_linux_x64": false,
+      "condition": "download_fuchsia_deps and not download_fuchsia_sdk",
+      "kind": "cipd",
+      "origin": "DEPS",
+      "path": "engine/src/third_party/fuchsia-sdk/sdk",
+      "revision": "QcRFUtvCw2EobfJ8s6m4hND8ABvb6gRzd8JQLrdpVsQC",
+      "source": "fuchsia/sdk/core/linux-amd64",
+      "task": null,
+      "status": "upstream-prebuilt-input"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "true",
+      "kind": "cipd",
+      "origin": "DEPS",
+      "path": "third_party/ninja",
+      "revision": "version:2@1.11.1.chromium.4",
+      "source": "infra/3pp/tools/ninja/${{platform}}",
+      "task": null,
+      "status": "upstream-prebuilt-input"
+    },
+    {
+      "android_linux_x64": false,
+      "condition": "download_emsdk",
+      "kind": "git",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/prebuilts/emsdk",
+      "revision": "2514ec738de72cebbba7f4fdba0cf2fabcb779a5",
+      "source": "https://skia.googlesource.com/external/github.com/emscripten-core/emsdk.git",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "true",
+      "kind": "git",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/third_party/ai",
+      "revision": "9c96bfe5f091c9451eff5b59c9bffeb2e806b875",
+      "source": "https://dart.googlesource.com/ai.git",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "true",
+      "kind": "git",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/third_party/angle",
+      "revision": "84027aca9b71c9ba335bd000dad1107b8810a511",
+      "source": "https://flutter.googlesource.com/third_party/angle",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "true",
+      "kind": "git",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/third_party/benchmark",
+      "revision": "431abd149fd76a072f821913c0340137cc755f36",
+      "source": "https://chromium.googlesource.com/external/github.com/google/benchmark",
+      "task": "benchmark",
+      "status": "recipe-implemented"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "true",
+      "kind": "git",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/third_party/boringssl/src",
+      "revision": "c7eb007fd10627f1abb41a3e368b85e24cd20af9",
+      "source": "https://boringssl.googlesource.com/boringssl.git",
+      "task": "boringssl",
+      "status": "recipe-implemented"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "true",
+      "kind": "git",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/third_party/brotli",
+      "revision": "350100a5bb9d9671aca85213b2ec7a70a361b0cd",
+      "source": "https://skia.googlesource.com/external/github.com/google/brotli.git",
+      "task": "brotli",
+      "status": "recipe-implemented"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "true",
+      "kind": "git",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/third_party/cpu_features/src",
+      "revision": "936b9ab5515dead115606559502e3864958f7f6e",
+      "source": "https://chromium.googlesource.com/external/github.com/google/cpu_features.git",
+      "task": "cpu-features",
+      "status": "recipe-implemented"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "true",
+      "kind": "git",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/third_party/dart",
+      "revision": "416e33b0ffaef062a60ec966bb8c82ed2b83f128",
+      "source": "https://dart.googlesource.com/sdk.git",
+      "task": "dart-sdk",
+      "status": "recipe-implemented"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "true",
+      "kind": "git",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/third_party/dart/third_party/binaryen/src",
+      "revision": "9926156a583cec3d22d521232b31c70fa9a87dc1",
+      "source": "https://chromium.googlesource.com/external/github.com/WebAssembly/binaryen.git",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "true",
+      "kind": "git",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/third_party/dart/third_party/perfetto/src",
+      "revision": "13ce0c9e13b0940d2476cd0cff2301708a9a2e2b",
+      "source": "https://chromium.googlesource.com/external/github.com/google/perfetto",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "true",
+      "kind": "git",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/third_party/dart/third_party/pkg/core",
+      "revision": "be0b1531c445a185d3e93887b8d0355fc766c314",
+      "source": "https://dart.googlesource.com/core.git",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "true",
+      "kind": "git",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/third_party/dart/third_party/pkg/dart_style",
+      "revision": "39edc2d946a5d7bd1caf6f1695f366b00f7b873c",
+      "source": "https://dart.googlesource.com/dart_style.git",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "true",
+      "kind": "git",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/third_party/dart/third_party/pkg/dartdoc",
+      "revision": "1d56f263955f329b6701d8f84f069eb0aef353a4",
+      "source": "https://dart.googlesource.com/dartdoc.git",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "true",
+      "kind": "git",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/third_party/dart/third_party/pkg/ecosystem",
+      "revision": "848b3bf3b757d2e9ae4d60030eeed5756c87783f",
+      "source": "https://dart.googlesource.com/ecosystem.git",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "true",
+      "kind": "git",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/third_party/dart/third_party/pkg/http",
+      "revision": "5d94ef52582867e077bf41c3fa20fb8b1d1d834e",
+      "source": "https://dart.googlesource.com/http.git",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "true",
+      "kind": "git",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/third_party/dart/third_party/pkg/i18n",
+      "revision": "d0683bdea253d19a4350f5bc2be9017aba61837f",
+      "source": "https://dart.googlesource.com/i18n.git",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "true",
+      "kind": "git",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/third_party/dart/third_party/pkg/leak_tracker",
+      "revision": "f5620600a5ce1c44f65ddaa02001e200b096e14c",
+      "source": "https://dart.googlesource.com/leak_tracker.git",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "true",
+      "kind": "git",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/third_party/dart/third_party/pkg/native",
+      "revision": "d51c53334486af69435b0b45c4bdfe303a830170",
+      "source": "https://dart.googlesource.com/native.git",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "true",
+      "kind": "git",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/third_party/dart/third_party/pkg/protobuf",
+      "revision": "84079e8b8531309e06ba7276b1c28bdca9210ad6",
+      "source": "https://dart.googlesource.com/protobuf.git",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "true",
+      "kind": "git",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/third_party/dart/third_party/pkg/pub",
+      "revision": "ec276d10a7fa0f6c6ec005340fb9ad29f3b012d0",
+      "source": "https://dart.googlesource.com/pub.git",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "true",
+      "kind": "git",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/third_party/dart/third_party/pkg/shelf",
+      "revision": "71248e727317930f244c4b4535e9733bcfc66677",
+      "source": "https://dart.googlesource.com/shelf.git",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "true",
+      "kind": "git",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/third_party/dart/third_party/pkg/sync_http",
+      "revision": "6666fff944221891182e1f80bf56569338164d72",
+      "source": "https://dart.googlesource.com/sync_http.git",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "true",
+      "kind": "git",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/third_party/dart/third_party/pkg/tar",
+      "revision": "13479f7c2a18f499e840ad470cfcca8c579f6909",
+      "source": "https://dart.googlesource.com/external/github.com/simolus3/tar.git",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "true",
+      "kind": "git",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/third_party/dart/third_party/pkg/test",
+      "revision": "bd92e633e7f05edc3301865bdc00d1ae181cb1f1",
+      "source": "https://dart.googlesource.com/test.git",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "true",
+      "kind": "git",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/third_party/dart/third_party/pkg/tools",
+      "revision": "7fec8be9af0cd0367d03dbec29b66b3f46565720",
+      "source": "https://dart.googlesource.com/tools.git",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "true",
+      "kind": "git",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/third_party/dart/third_party/pkg/vector_math",
+      "revision": "cf3b5db7340d317dd3489e5a35434b408020a852",
+      "source": "https://dart.googlesource.com/external/github.com/google/vector_math.dart.git",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "true",
+      "kind": "git",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/third_party/dart/third_party/pkg/web",
+      "revision": "eb8c3fc61a1e35f48f865836c7c7342897d91bcc",
+      "source": "https://dart.googlesource.com/web.git",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "true",
+      "kind": "git",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/third_party/dart/third_party/pkg/webdriver",
+      "revision": "3a711ebb36871eac997c5d5d2429f7414873dc63",
+      "source": "https://dart.googlesource.com/external/github.com/google/webdriver.dart.git",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "true",
+      "kind": "git",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/third_party/dart/third_party/pkg/webkit_inspection_protocol",
+      "revision": "762115a971d1968bc940454ad1e88d506d8c5640",
+      "source": "https://dart.googlesource.com/external/github.com/google/webkit_inspection_protocol.dart.git",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "true",
+      "kind": "git",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/third_party/depot_tools",
+      "revision": "580b4ff3f5cd0dcaa2eacda28cefe0f45320e8f7",
+      "source": "https://chromium.googlesource.com/chromium/tools/depot_tools.git",
+      "task": "depot-tools",
+      "status": "recipe-implemented"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "true",
+      "kind": "git",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/third_party/expat",
+      "revision": "8e49998f003d693213b538ef765814c7d21abada",
+      "source": "https://chromium.googlesource.com/external/github.com/libexpat/libexpat.git",
+      "task": "expat",
+      "status": "recipe-implemented"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "true",
+      "kind": "git",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/third_party/flatbuffers",
+      "revision": "067bfdbde9b10c1beb5d6b02d67ae9db8b96f736",
+      "source": "https://chromium.googlesource.com/external/github.com/google/flatbuffers",
+      "task": "flatbuffers",
+      "status": "recipe-implemented"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "true",
+      "kind": "git",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/third_party/freetype2",
+      "revision": "be4bcb57914154fc1b9e2900bf8e4b516057e2b8",
+      "source": "https://flutter.googlesource.com/third_party/freetype2",
+      "task": "freetype",
+      "status": "recipe-implemented"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "true",
+      "kind": "git",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/third_party/glfw",
+      "revision": "9352d8fe93cd443be18157abe81f16500549aec0",
+      "source": "https://flutter.googlesource.com/third_party/glfw",
+      "task": "glfw",
+      "status": "recipe-implemented"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "true",
+      "kind": "git",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/third_party/googletest",
+      "revision": "e9907112b47255d50b4d343e7e2160bce8dc85d1",
+      "source": "https://chromium.googlesource.com/external/github.com/google/googletest",
+      "task": "googletest",
+      "status": "recipe-implemented"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "true",
+      "kind": "git",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/third_party/gtest-parallel",
+      "revision": "38191e2733d7cbaeaef6a3f1a942ddeb38a2ad14",
+      "source": "https://chromium.googlesource.com/external/github.com/google/gtest-parallel",
+      "task": "gtest-parallel",
+      "status": "recipe-implemented"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "true",
+      "kind": "git",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/third_party/harfbuzz",
+      "revision": "49844c32a7a3f6be371355a1213c952a3f4a44e7",
+      "source": "https://flutter.googlesource.com/third_party/harfbuzz",
+      "task": "harfbuzz",
+      "status": "recipe-implemented"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "true",
+      "kind": "git",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/third_party/icu",
+      "revision": "d578f2e8b7bd5938e21cfb6bf15c079e0aa5b738",
+      "source": "https://chromium.googlesource.com/chromium/deps/icu.git",
+      "task": "icu",
+      "status": "recipe-implemented"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "true",
+      "kind": "git",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/third_party/imgui",
+      "revision": "2a1b69f05748ad909f03acf4533447cac1331611",
+      "source": "https://flutter.googlesource.com/third_party/imgui.git",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "true",
+      "kind": "git",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/third_party/inja",
+      "revision": "88bd6112575a80d004e551c98cf956f88ff4d445",
+      "source": "https://flutter.googlesource.com/third_party/inja",
+      "task": "inja",
+      "status": "recipe-implemented"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "true",
+      "kind": "git",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/third_party/json",
+      "revision": "17d9eacd248f58b73f4d1be518ef649fe2295642",
+      "source": "https://flutter.googlesource.com/third_party/json.git",
+      "task": "nlohmann-json",
+      "status": "recipe-implemented"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "true",
+      "kind": "git",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/third_party/libcxx",
+      "revision": "bd557f6f764d1e40b62528a13b124ce740624f8f",
+      "source": "https://llvm.googlesource.com/llvm-project/libcxx",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "true",
+      "kind": "git",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/third_party/libcxxabi",
+      "revision": "a4dda1589d37a7e4b4f7a81ebad01b1083f2e726",
+      "source": "https://llvm.googlesource.com/llvm-project/libcxxabi",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "true",
+      "kind": "git",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/third_party/libjpeg-turbo/src",
+      "revision": "0fb821f3b2e570b2783a94ccd9a2fb1f4916ae9f",
+      "source": "https://flutter.googlesource.com/third_party/libjpeg-turbo",
+      "task": "libjpeg-turbo",
+      "status": "recipe-implemented"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "true",
+      "kind": "git",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/third_party/libpng",
+      "revision": "ced6b6c0c1e24716423a417b399d3c7d4623890d",
+      "source": "https://flutter.googlesource.com/third_party/libpng",
+      "task": "libpng",
+      "status": "recipe-implemented"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "true",
+      "kind": "git",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/third_party/libtess2",
+      "revision": "725e5e08ec8751477565f1d603fd7eb9058c277c",
+      "source": "https://flutter.googlesource.com/third_party/libtess2",
+      "task": "libtess2",
+      "status": "recipe-implemented"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "true",
+      "kind": "git",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/third_party/libwebp",
+      "revision": "ca332209cb5567c9b249c86788cb2dbf8847e760",
+      "source": "https://chromium.googlesource.com/webm/libwebp.git",
+      "task": "libwebp",
+      "status": "recipe-implemented"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "true",
+      "kind": "git",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/third_party/llvm_libc",
+      "revision": "5af39a19a1ad51ce93972cdab206dcd3ff9b6afa",
+      "source": "https://llvm.googlesource.com/llvm-project/libc",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "true",
+      "kind": "git",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/third_party/ocmock",
+      "revision": "c4ec0e3a7a9f56cfdbd0aa01f4f97bb4b75c5ef8",
+      "source": "https://flutter.googlesource.com/third_party/ocmock",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "true",
+      "kind": "git",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/third_party/pkg/archive",
+      "revision": "f1d164f8f5d8aea0be620a9b1e8d300b75a29388",
+      "source": "https://chromium.googlesource.com/external/github.com/brendan-duncan/archive.git",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "true",
+      "kind": "git",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/third_party/pkg/equatable",
+      "revision": "2117551ff3054f8edb1a58f63ffe1832a8d25623",
+      "source": "https://flutter.googlesource.com/third_party/equatable.git",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "true",
+      "kind": "git",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/third_party/pkg/flutter_packages",
+      "revision": "25454e63851fe7933f04d025606e68c1eac4fe0f",
+      "source": "https://flutter.googlesource.com/mirrors/packages",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "true",
+      "kind": "git",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/third_party/pkg/gcloud",
+      "revision": "a5276b85c4714378e84b1fb478b8feeeb686ac26",
+      "source": "https://flutter.googlesource.com/third_party/gcloud.git",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "true",
+      "kind": "git",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/third_party/pkg/googleapis",
+      "revision": "526011f56d98eab183cc6075ee1392e8303e43e2",
+      "source": "https://flutter.googlesource.com/third_party/googleapis.dart.git",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "true",
+      "kind": "git",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/third_party/pkg/io",
+      "revision": "997a6243aad20af4238147d9ec00bf638b9169af",
+      "source": "https://flutter.googlesource.com/third_party/io.git",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "true",
+      "kind": "git",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/third_party/pkg/node_preamble",
+      "revision": "47245865175929ec452d8058e563c267b64c3d64",
+      "source": "https://flutter.googlesource.com/third_party/node_preamble.dart.git",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "true",
+      "kind": "git",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/third_party/pkg/process",
+      "revision": "0c9aeac86dcc4e3a6cf760b76fed507107e244d5",
+      "source": "https://dart.googlesource.com/process.dart",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "true",
+      "kind": "git",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/third_party/pkg/process_runner",
+      "revision": "f24c69efdcaf109168f23d381fa281453d2bc9b1",
+      "source": "https://flutter.googlesource.com/third_party/process_runner.git",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "true",
+      "kind": "git",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/third_party/pkg/vector_math",
+      "revision": "0a5fd95449083d404df9768bc1b321b88a7d2eef",
+      "source": "https://dart.googlesource.com/external/github.com/google/vector_math.dart.git",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "true",
+      "kind": "git",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/third_party/pyyaml",
+      "revision": "03c67afd452cdff45b41bfe65e19a2fb5b80a0e8",
+      "source": "https://flutter.googlesource.com/third_party/pyyaml.git",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "true",
+      "kind": "git",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/third_party/rapidjson",
+      "revision": "47253cab97e9cfe99dbd6b90836fc11589d7d802",
+      "source": "https://flutter.googlesource.com/third_party/rapidjson",
+      "task": "rapidjson",
+      "status": "recipe-implemented"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "true",
+      "kind": "git",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/third_party/re2",
+      "revision": "c84a140c93352cdabbfb547c531be34515b12228",
+      "source": "https://chromium.googlesource.com/external/github.com/google/re2",
+      "task": "re2",
+      "status": "recipe-implemented"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "true",
+      "kind": "git",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/third_party/shaderc",
+      "revision": "d15277d6bc180f6a0b8b601f0cab2bbcaac9b4d5",
+      "source": "https://chromium.googlesource.com/external/github.com/google/shaderc",
+      "task": "shaderc",
+      "status": "recipe-implemented"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "true",
+      "kind": "git",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/third_party/skia",
+      "revision": "8df24be66531469e576a806749a0202ae26b8d08",
+      "source": "https://skia.googlesource.com/skia.git",
+      "task": "skia",
+      "status": "recipe-implemented"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "true",
+      "kind": "git",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/third_party/sqlite",
+      "revision": "0f61bd2023ba94423b4e4c8cfb1a23de1fe6a21c",
+      "source": "https://flutter.googlesource.com/third_party/sqlite",
+      "task": "sqlite",
+      "status": "recipe-implemented"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "true",
+      "kind": "git",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/third_party/swiftshader",
+      "revision": "794b0cfce1d828d187637e6d932bae484fbe0976",
+      "source": "https://swiftshader.googlesource.com/SwiftShader.git",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "true",
+      "kind": "git",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/third_party/vulkan-deps",
+      "revision": "a9e2ca3b57aba86a22a2df1b84bf12f8cc98806e",
+      "source": "https://chromium.googlesource.com/vulkan-deps",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "true",
+      "kind": "git",
+      "origin": "engine/src/flutter/third_party/vulkan-deps/DEPS",
+      "path": "engine/src/flutter/third_party/vulkan-deps/glslang/src",
+      "revision": "a57276bf558f5cf94d3a9854ebdf5a2236849a5a",
+      "source": "https://chromium.googlesource.com/external/github.com/KhronosGroup/glslang",
+      "task": "glslang",
+      "status": "recipe-implemented"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "true",
+      "kind": "git",
+      "origin": "engine/src/flutter/third_party/vulkan-deps/DEPS",
+      "path": "engine/src/flutter/third_party/vulkan-deps/lunarg-vulkantools/src",
+      "revision": "b9afdd8c070500c375e95acf33c79f0420d59b17",
+      "source": "https://chromium.googlesource.com/external/github.com/LunarG/VulkanTools",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "true",
+      "kind": "git",
+      "origin": "engine/src/flutter/third_party/vulkan-deps/DEPS",
+      "path": "engine/src/flutter/third_party/vulkan-deps/spirv-cross/src",
+      "revision": "b8fcf307f1f347089e3c46eb4451d27f32ebc8d3",
+      "source": "https://chromium.googlesource.com/external/github.com/KhronosGroup/SPIRV-Cross",
+      "task": "spirv-cross",
+      "status": "recipe-implemented"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "true",
+      "kind": "git",
+      "origin": "engine/src/flutter/third_party/vulkan-deps/DEPS",
+      "path": "engine/src/flutter/third_party/vulkan-deps/spirv-headers/src",
+      "revision": "01e0577914a75a2569c846778c2f93aa8e6feddd",
+      "source": "https://chromium.googlesource.com/external/github.com/KhronosGroup/SPIRV-Headers",
+      "task": "spirv-headers",
+      "status": "recipe-implemented"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "true",
+      "kind": "git",
+      "origin": "engine/src/flutter/third_party/vulkan-deps/DEPS",
+      "path": "engine/src/flutter/third_party/vulkan-deps/spirv-tools/src",
+      "revision": "19042c8921f35f7bec56b9e5c96c5f5691588ca8",
+      "source": "https://chromium.googlesource.com/external/github.com/KhronosGroup/SPIRV-Tools",
+      "task": "spirv-tools",
+      "status": "recipe-implemented"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "true",
+      "kind": "git",
+      "origin": "engine/src/flutter/third_party/vulkan-deps/DEPS",
+      "path": "engine/src/flutter/third_party/vulkan-deps/vulkan-headers/src",
+      "revision": "a4f8ada9f4f97c45b8c89c57997be9cebaae65d2",
+      "source": "https://chromium.googlesource.com/external/github.com/KhronosGroup/Vulkan-Headers",
+      "task": "vulkan-headers",
+      "status": "recipe-implemented"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "true",
+      "kind": "git",
+      "origin": "engine/src/flutter/third_party/vulkan-deps/DEPS",
+      "path": "engine/src/flutter/third_party/vulkan-deps/vulkan-loader/src",
+      "revision": "f703f919c30c5b67958d35d40a4297cb3823ed78",
+      "source": "https://chromium.googlesource.com/external/github.com/KhronosGroup/Vulkan-Loader",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "true",
+      "kind": "git",
+      "origin": "engine/src/flutter/third_party/vulkan-deps/DEPS",
+      "path": "engine/src/flutter/third_party/vulkan-deps/vulkan-tools/src",
+      "revision": "d643b80d6ba8c191bc289fdda52867c3bb3c190b",
+      "source": "https://chromium.googlesource.com/external/github.com/KhronosGroup/Vulkan-Tools",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "true",
+      "kind": "git",
+      "origin": "engine/src/flutter/third_party/vulkan-deps/DEPS",
+      "path": "engine/src/flutter/third_party/vulkan-deps/vulkan-utility-libraries/src",
+      "revision": "4322db5906e67b57ec9c327e6afe3d98ed893df7",
+      "source": "https://chromium.googlesource.com/external/github.com/KhronosGroup/Vulkan-Utility-Libraries",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "true",
+      "kind": "git",
+      "origin": "engine/src/flutter/third_party/vulkan-deps/DEPS",
+      "path": "engine/src/flutter/third_party/vulkan-deps/vulkan-validation-layers/src",
+      "revision": "951aec1ecf22dc84a99a5c8bec9223c5810cc3e1",
+      "source": "https://chromium.googlesource.com/external/github.com/KhronosGroup/Vulkan-ValidationLayers",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "true",
+      "kind": "git",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/third_party/vulkan_memory_allocator",
+      "revision": "c788c52156f3ef7bc7ab769cb03c110a53ac8fcb",
+      "source": "https://chromium.googlesource.com/external/github.com/GPUOpen-LibrariesAndSDKs/VulkanMemoryAllocator",
+      "task": "vulkan-memory-allocator",
+      "status": "recipe-implemented"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "true",
+      "kind": "git",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/third_party/wuffs",
+      "revision": "600cd96cf47788ee3a74b40a6028b035c9fd6a61",
+      "source": "https://skia.googlesource.com/external/github.com/google/wuffs-mirror-release-c.git",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "true",
+      "kind": "git",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/third_party/yapf",
+      "revision": "212c5b5ad8e172d2d914ae454c121c89cccbcb35",
+      "source": "https://flutter.googlesource.com/third_party/yapf",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "true",
+      "kind": "git",
+      "origin": "DEPS",
+      "path": "engine/src/flutter/third_party/zlib",
+      "revision": "7eda07b1e067ef3fd7eea0419c88b5af45c9a776",
+      "source": "https://chromium.googlesource.com/chromium/src/third_party/zlib.git",
+      "task": "zlib",
+      "status": "recipe-implemented",
+      "recipe_source_differs": true
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "true",
+      "kind": "git",
+      "origin": "DEPS",
+      "path": "engine/src/third_party/abseil-cpp",
+      "revision": "564023aa53767b5f60b3a556f0a025b7b7e8241e",
+      "source": "https://chromium.googlesource.com/chromium/src/third_party/abseil-cpp",
+      "task": "abseil",
+      "status": "recipe-implemented"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Inside Android embedding CIPD bundle",
+      "kind": "maven_bundled",
+      "origin": "engine/src/flutter/tools/androidx/files.json",
+      "path": "androidx_annotation.jar",
+      "revision": "androidx.annotation:annotation:1.8.1",
+      "source": "https://maven.google.com/androidx/annotation/annotation/1.8.1/annotation-1.8.1.jar",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Inside Android embedding CIPD bundle",
+      "kind": "maven_bundled",
+      "origin": "engine/src/flutter/tools/androidx/files.json",
+      "path": "androidx_core.aar",
+      "revision": "androidx.core:core:1.13.1",
+      "source": "https://dl.google.com/android/maven2/androidx/core/core/1.13.1/core-1.13.1.aar",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Inside Android embedding CIPD bundle",
+      "kind": "maven_bundled",
+      "origin": "engine/src/flutter/tools/androidx/files.json",
+      "path": "androidx_fragment.aar",
+      "revision": "androidx.fragment:fragment:1.7.1",
+      "source": "https://maven.google.com/androidx/fragment/fragment/1.7.1/fragment-1.7.1.aar",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Inside Android embedding CIPD bundle",
+      "kind": "maven_bundled",
+      "origin": "engine/src/flutter/tools/androidx/files.json",
+      "path": "androidx_lifecycle_common.jar",
+      "revision": "androidx.lifecycle:lifecycle-common:2.7.0",
+      "source": "https://maven.google.com/androidx/lifecycle/lifecycle-common/2.7.0/lifecycle-common-2.7.0.jar",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Inside Android embedding CIPD bundle",
+      "kind": "maven_bundled",
+      "origin": "engine/src/flutter/tools/androidx/files.json",
+      "path": "androidx_lifecycle_common_java8.jar",
+      "revision": "androidx.lifecycle:lifecycle-common-java8:2.7.0",
+      "source": "https://maven.google.com/androidx/lifecycle/lifecycle-common-java8/2.8.0/lifecycle-common-java8-2.7.0.jar",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Inside Android embedding CIPD bundle",
+      "kind": "maven_bundled",
+      "origin": "engine/src/flutter/tools/androidx/files.json",
+      "path": "androidx_lifecycle_process.aar",
+      "revision": "androidx.lifecycle:lifecycle-process:2.7.0",
+      "source": "https://maven.google.com/androidx/lifecycle/lifecycle-process/2.7.0/lifecycle-process-2.7.0.aar",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Inside Android embedding CIPD bundle",
+      "kind": "maven_bundled",
+      "origin": "engine/src/flutter/tools/androidx/files.json",
+      "path": "androidx_lifecycle_runtime.aar",
+      "revision": "androidx.lifecycle:lifecycle-runtime:2.7.0",
+      "source": "https://maven.google.com/androidx/lifecycle/lifecycle-runtime/2.8.0/lifecycle-runtime-2.7.0.aar",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Inside Android embedding CIPD bundle",
+      "kind": "maven_bundled",
+      "origin": "engine/src/flutter/tools/androidx/files.json",
+      "path": "androidx_tracing.aar",
+      "revision": "androidx.tracing:tracing:1.2.0",
+      "source": "https://maven.google.com/androidx/tracing/tracing/1.2.0/tracing-1.2.0.aar",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Inside Android embedding CIPD bundle",
+      "kind": "maven_bundled",
+      "origin": "engine/src/flutter/tools/androidx/files.json",
+      "path": "androidx_window_java.aar",
+      "revision": "androidx.window:window-java:1.2.0",
+      "source": "https://maven.google.com/androidx/window/window-java/1.2.0/window-java-1.2.0.aar",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Inside Android embedding CIPD bundle",
+      "kind": "maven_bundled",
+      "origin": "engine/src/flutter/tools/androidx/files.json",
+      "path": "core-1.10.3.aar",
+      "revision": "com.google.android.play:core:1.10.3",
+      "source": "https://dl.google.com/android/maven2/com/google/android/play/core/1.10.3/core-1.10.3.aar",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Inside Android embedding CIPD bundle",
+      "kind": "maven_bundled",
+      "origin": "engine/src/flutter/tools/androidx/files.json",
+      "path": "exifinterface.aar",
+      "revision": "androidx.exifinterface:exifinterface:1.4.1",
+      "source": "https://dl.google.com/android/maven2/androidx/exifinterface/exifinterface/1.4.1/exifinterface-1.4.1.aar",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Inside Android embedding CIPD bundle",
+      "kind": "maven_bundled",
+      "origin": "engine/src/flutter/tools/androidx/files.json",
+      "path": "relinker-1.4.5.aar",
+      "revision": "com.getkeepsafe.relinker:relinker:1.4.5",
+      "source": "https://repo1.maven.org/maven2/com/getkeepsafe/relinker/relinker/1.4.5/relinker-1.4.5.aar",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "transitive",
+      "description": {
+        "path": "dev/integration_tests/assets_for_android_views",
+        "ref": "64d0f6051b9b7b9933d3d16194170a38f544634a",
+        "resolved-ref": "64d0f6051b9b7b9933d3d16194170a38f544634a",
+        "url": "https://github.com/flutter/goldens.git"
+      },
+      "kind": "pub_git",
+      "origin": "pubspec.lock",
+      "path": "assets_for_android_views",
+      "revision": "0.2.0",
+      "source": "https://github.com/flutter/goldens.git",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "transitive",
+      "description": {
+        "path": "tool/dart_skills_lint",
+        "ref": "e4497873950727ee781fa411c1a2f624b1ec50c6",
+        "resolved-ref": "e4497873950727ee781fa411c1a2f624b1ec50c6",
+        "url": "https://github.com/flutter/skills"
+      },
+      "kind": "pub_git",
+      "origin": "pubspec.lock",
+      "path": "dart_skills_lint",
+      "revision": "0.3.0",
+      "source": "https://github.com/flutter/skills",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "_discoveryapis_commons",
+        "sha256": "113c4100b90a5b70a983541782431b82168b3cae166ab130649c36eb3559d498",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "_discoveryapis_commons",
+      "revision": "1.0.7",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "_fe_analyzer_shared",
+        "sha256": "0e4db51a88671b676adc09e923ffebd765a1f0c2b04dc19b08b35a335de2972c",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "_fe_analyzer_shared",
+      "revision": "95.0.0",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "adaptive_breakpoints",
+        "sha256": "56dd5f1016f4d5732b80628d1b63a29d8c9cabe4d66a8a5fe63fdbec7b3af5cd",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "adaptive_breakpoints",
+      "revision": "0.1.7",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "analyzer",
+        "sha256": "3d577a36cde804a46bd1d89e673c3d87c3538c49a39c35d4d336f7760b48c319",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "analyzer",
+      "revision": "10.1.0",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "animations",
+        "sha256": "9cb469212ea51be27097f23b519d594c01171721347b55df9334fff653659e7f",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "animations",
+      "revision": "2.2.0",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "archive",
+        "sha256": "cb6a278ef2dbb298455e1a713bda08524a175630ec643a242c399c932a0a1f7d",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "archive",
+      "revision": "3.6.1",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "args",
+        "sha256": "d0481093c50b1da8910eb0bb301626d4d8eb7284aa739614d2b394ee09e3ea04",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "args",
+      "revision": "2.7.0",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "async",
+        "sha256": "e2eb0491ba5ddb6177742d2da23904574082139b07c1e33b8503b9f46f3e1a37",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "async",
+      "revision": "2.13.1",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "boolean_selector",
+        "sha256": "8aab1771e1243a5063b8b0ff68042d67334e3feab9e95b9490f9a6ebf73b42ea",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "boolean_selector",
+      "revision": "2.1.2",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "transitive",
+      "description": {
+        "name": "browser_launcher",
+        "sha256": "ca2557663d3033845f2ef2b60f94fc249528324fd1affddccb7c63ac0ccd6c67",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "browser_launcher",
+      "revision": "1.1.3",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "transitive",
+      "description": {
+        "name": "built_collection",
+        "sha256": "376e3dd27b51ea877c28d525560790aee2e6fbb5f20e2f85d5081027d94e2100",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "built_collection",
+      "revision": "5.1.1",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "transitive",
+      "description": {
+        "name": "built_value",
+        "sha256": "34e4067d30ce212937df995f03b69992eea683539ceeac7f679a1f1eba055b56",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "built_value",
+      "revision": "8.12.6",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "characters",
+        "sha256": "faf38497bda5ead2a8c7615f4f7939df04333478bf32e4173fcb06d428b5716b",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "characters",
+      "revision": "1.4.1",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "checked_yaml",
+        "sha256": "959525d3162f249993882720d52b7e0c833978df229be20702b33d48d91de70f",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "checked_yaml",
+      "revision": "2.0.4",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "cli_config",
+        "sha256": "ac20a183a07002b700f0c25e61b7ee46b23c309d76ab7b7640a028f18e4d99ec",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "cli_config",
+      "revision": "0.2.0",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "cli_util",
+        "sha256": "ff6785f7e9e3c38ac98b2fb035701789de90154024a75b6cb926445e83197d1c",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "cli_util",
+      "revision": "0.4.2",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "clock",
+        "sha256": "fddb70d9b5277016c77a80201021d40a2247104d9f4aa7bab7157b7e3f05b84b",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "clock",
+      "revision": "1.1.2",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "code_assets",
+        "sha256": "bf394f466ba9205f1812a0433b392d6af280f155f56651eda7c18cc32ed493b8",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "code_assets",
+      "revision": "1.2.1",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "transitive",
+      "description": {
+        "name": "code_builder",
+        "sha256": "6a6cab2ba4680d6423f34a9b972a4c9a94ebe1b62ecec4e1a1f2cba91fd1319d",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "code_builder",
+      "revision": "4.11.1",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "collection",
+        "sha256": "2f5709ae4d3d59dd8f7cd309b4e023046b57d8a6c82130785d2b0e5868084e76",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "collection",
+      "revision": "1.19.1",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "transitive",
+      "description": {
+        "name": "completion",
+        "sha256": "82fa09800c0b71a2e8396bf3ca6b36b43cd35fe7ba2aeab53b6349ac671d0f5b",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "completion",
+      "revision": "1.0.2",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "convert",
+        "sha256": "b30acd5944035672bc15c6b7a8b47d773e41e2f17de064350988c5d02adb1c68",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "convert",
+      "revision": "3.1.2",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "coverage",
+        "sha256": "956a3de0725ca232ad353565a8290d3357592bf4250f6f298a185e2d949c5d3d",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "coverage",
+      "revision": "1.15.1",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "crypto",
+        "sha256": "c8ea0233063ba03258fbcf2ca4d6dadfefe14f02fab57702265467a19f27fadf",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "crypto",
+      "revision": "3.0.7",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "csslib",
+        "sha256": "09bad715f418841f976c77db72d5398dc1253c21fb9c0c7f0b0b985860b2d58e",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "csslib",
+      "revision": "1.0.2",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "cupertino_icons",
+        "sha256": "41e005c33bd814be4d3096aff55b1908d419fde52ca656c8c47719ec745873cd",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "cupertino_icons",
+      "revision": "1.0.9",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "transitive",
+      "description": {
+        "name": "dap",
+        "sha256": "42b0b083a09c59a118741769e218fc3738980ab591114f09d1026241d2b9c290",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "dap",
+      "revision": "1.4.0",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "transitive",
+      "description": {
+        "name": "dart_service_protocol_shared",
+        "sha256": "1737875c176d7e3d87bb3a359182828b542fe20a0b34198b8d31a81af5c7a76d",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "dart_service_protocol_shared",
+      "revision": "0.0.3",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "dart_style",
+        "sha256": "29f7ecc274a86d32920b1d9cfc7502fa87220da41ec60b55f329559d5732e2b2",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "dart_style",
+      "revision": "3.1.7",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "data_assets",
+        "sha256": "8bfdbf25ec8a0f4b5a3c993042c4ab9996ba354f0b03d40f4e360f3730d71cae",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "data_assets",
+      "revision": "0.20.0",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "transitive",
+      "description": {
+        "name": "dds",
+        "sha256": "f8e875dcd7b5e5073a7bfe54095144c70487f18e2f8e47fa51c09dd67eccfb0c",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "dds",
+      "revision": "5.4.0",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "transitive",
+      "description": {
+        "name": "dds_service_extensions",
+        "sha256": "afe0fce921953ac0c5bb276bccd7e36fa5035d7769567d122523fdd09beb4d03",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "dds_service_extensions",
+      "revision": "2.1.0",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "transitive",
+      "description": {
+        "name": "devtools_shared",
+        "sha256": "13df2c17d5f21dd7c92d08145386d45e1153364c04e531e994afb0ee7b67554b",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "devtools_shared",
+      "revision": "13.1.0",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "transitive",
+      "description": {
+        "name": "dtd",
+        "sha256": "09ddb228b3d1478a093556357692a4c203ff4f9d5f8cda05dfdca0ff3fb7c5d3",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "dtd",
+      "revision": "4.0.0",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "transitive",
+      "description": {
+        "name": "dwds",
+        "sha256": "280ca49e939f3f8a96f3a77bb17dfc284fd92b5004bd144ccafb2ab3ddb3b7f9",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "dwds",
+      "revision": "27.1.2",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "transitive",
+      "description": {
+        "name": "extension_discovery",
+        "sha256": "de1fce715ab013cdfb00befc3bdf0914bea5e409c3a567b7f8f144bc061611a7",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "extension_discovery",
+      "revision": "2.1.0",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "fake_async",
+        "sha256": "5368f224a74523e8d2e7399ea1638b37aecfca824a3cc4dfdf77bf1fa905ac44",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "fake_async",
+      "revision": "1.3.3",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "ffi",
+        "sha256": "6d7fd89431262d8f3125e81b50d3847a091d846eafcd4fdb88dd06f36d705a45",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "ffi",
+      "revision": "2.2.0",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct dev",
+      "description": {
+        "name": "ffigen",
+        "sha256": "b7803707faeec4ce3c1b0c2274906504b796e3b70ad573577e72333bd1c9b3ba",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "ffigen",
+      "revision": "20.1.1",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "file",
+        "sha256": "a3b4f84adafef897088c160faf7dfffb7696046cb13ae90b508c2cbc95d3b8d4",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "file",
+      "revision": "7.0.1",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "file_testing",
+        "sha256": "eb0c85fd118ddc0d41c295c09f64e0924c256b071087cdc9828d5372c80d554d",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "file_testing",
+      "revision": "3.0.2",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "fixnum",
+        "sha256": "b6dc7065e46c974bc7c5f143080a6764ec7a4be6da1285ececdc37be96de53be",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "fixnum",
+      "revision": "1.1.1",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "flutter_gallery_assets",
+        "sha256": "f8fecfeebcfbe80a2fabc00c0834046890abe681f59d3e2c5b1028faf887d94b",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "flutter_gallery_assets",
+      "revision": "1.0.2",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "flutter_lints",
+        "sha256": "3105dc8492f6183fb076ccf1f351ac3d60564bff92e20bfc4af9cc1651f4e7e1",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "flutter_lints",
+      "revision": "6.0.0",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "flutter_localized_locales",
+        "sha256": "478d10535edf07292e34cb4c757882edeeaf96d5e3dbb04b42733038bd41dd3f",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "flutter_localized_locales",
+      "revision": "2.0.5",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "flutter_staggered_grid_view",
+        "sha256": "19e7abb550c96fbfeb546b23f3ff356ee7c59a019a651f8f102a4ba9b7349395",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "flutter_staggered_grid_view",
+      "revision": "0.7.0",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "transitive",
+      "description": {
+        "name": "flutter_template_images",
+        "sha256": "0120589a786dbae4e86af1f61748baccd8530abd56a60e7a13479647a75222fe",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "flutter_template_images",
+      "revision": "5.0.0",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "frontend_server_client",
+        "sha256": "f64a0333a82f30b0cca061bc3d143813a486dc086b574bfb233b7c1372427694",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "frontend_server_client",
+      "revision": "4.0.0",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "gcloud",
+        "sha256": "caa415a0145ec8afac457322872c3e8b38379a88800d2944c53798ea8fbce386",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "gcloud",
+      "revision": "0.8.19",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "glob",
+        "sha256": "c3f1ee72c96f8f78935e18aa8cecced9ab132419e8625dc187e1c2408efc20de",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "glob",
+      "revision": "2.1.3",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "transitive",
+      "description": {
+        "name": "google_cloud",
+        "sha256": "fbcde933b2d8600c3cdb2328f8f4c47628ec29a39e9cef85dee535c7868993c4",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "google_cloud",
+      "revision": "0.4.1",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "google_fonts",
+        "sha256": "ba03d03bcaa2f6cb7bd920e3b5027181db75ab524f8891c8bc3aa603885b8055",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "google_fonts",
+      "revision": "6.3.3",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "google_identity_services_web",
+        "sha256": "5d187c46dc59e02646e10fe82665fc3884a9b71bc1c90c2b8b749316d33ee454",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "google_identity_services_web",
+      "revision": "0.3.3+1",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "google_mobile_ads",
+        "sha256": "50549f6c945d7a445d53c04f34d025b1a1723fbd02719de9e67de432e2597f40",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "google_mobile_ads",
+      "revision": "8.0.0",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "googleapis",
+        "sha256": "5c9e0f25be1dec13d8d2158263141104c51b5ba83487537c17a2330581e505ee",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "googleapis",
+      "revision": "14.0.0",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "googleapis_auth",
+        "sha256": "1417d8846663df5e7b77ca56591c5edd442c66ffc9c01ab036e138a21a148e86",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "googleapis_auth",
+      "revision": "2.3.2",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "transitive",
+      "description": {
+        "name": "graphs",
+        "sha256": "741bbf84165310a68ff28fe9e727332eef1407342fca52759cb21ad8177bb8d0",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "graphs",
+      "revision": "2.3.2",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "hooks",
+        "sha256": "9a62a50b50b769a737bc0a8ff381f333529df3ab746b2f6b02e83760231455ba",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "hooks",
+      "revision": "2.0.2",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "transitive",
+      "description": {
+        "name": "hooks_runner",
+        "sha256": "a67ab8106545fcffcf5c43edf84b4be222fc95a9fbec8baef1bcaf4534540cfc",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "hooks_runner",
+      "revision": "1.5.0",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "html",
+        "sha256": "6d1264f2dffa1b1101c25a91dff0dc2daee4c18e87cd8538729773c073dbf602",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "html",
+      "revision": "0.15.6",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "http",
+        "sha256": "87721a4a50b19c7f1d49001e51409bddc46303966ce89a65af4f4e6004896412",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "http",
+      "revision": "1.6.0",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "http_multi_server",
+        "sha256": "aa6199f908078bb1c5efb8d8638d4ae191aac11b311132c3ef48ce352fb52ef8",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "http_multi_server",
+      "revision": "3.2.2",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "http_parser",
+        "sha256": "178d74305e7866013777bab2c3d8726205dc5a4dd935297175b19a23a2e66571",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "http_parser",
+      "revision": "4.1.2",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "transitive",
+      "description": {
+        "name": "image",
+        "sha256": "f31d52537dc417fdcde36088fdf11d191026fd5e4fae742491ebd40e5a8bea7d",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "image",
+      "revision": "4.3.0",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "intl",
+        "sha256": "1ca20c894b1717686a2319b8548763d812bc0aabdac580420a44c5178c57a867",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "intl",
+      "revision": "0.20.3",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "io",
+        "sha256": "dfd5a80599cf0165756e3181807ed3e77daf6dd4137caaad72d0b7931597650b",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "io",
+      "revision": "1.0.5",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "isolate",
+        "sha256": "3554ab10fdeec965d27e0074c913ccb2229887633da080d2b35a6322da14938b",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "isolate",
+      "revision": "2.1.1",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "transitive",
+      "description": {
+        "name": "jni",
+        "sha256": "c2230682d5bc2362c1c9e8d3c7f406d9cbba23ab3f2e203a025dd47e0fb2e68f",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "jni",
+      "revision": "1.0.0",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "transitive",
+      "description": {
+        "name": "jni_flutter",
+        "sha256": "8b59e590786050b1cd866677dddaf76b1ade5e7bc751abe04b86e84d379d3ba6",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "jni_flutter",
+      "revision": "1.0.1",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "js",
+        "sha256": "53385261521cc4a0c4658fd0ad07a7d14591cf8fc33abbceae306ddb974888dc",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "js",
+      "revision": "0.7.2",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "json_annotation",
+        "sha256": "2a743920d81b7910627f68ee2c9ac1fc0bfee32b9fc3403587d7c6791ca12f80",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "json_annotation",
+      "revision": "4.12.0",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "transitive",
+      "description": {
+        "name": "json_rpc_2",
+        "sha256": "82dfd37d3b2e5030ae4729e1d7f5538cbc45eb1c73d618b9272931facac3bec1",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "json_rpc_2",
+      "revision": "4.1.0",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "leak_tracker",
+        "sha256": "33e2e26bdd85a0112ec15400c8cbffea70d0f9c3407491f672a2fad47915e2de",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "leak_tracker",
+      "revision": "11.0.2",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "leak_tracker_flutter_testing",
+        "sha256": "1dbc140bb5a23c75ea9c4811222756104fbcd1a27173f0c34ca01e16bea473c1",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "leak_tracker_flutter_testing",
+      "revision": "3.0.10",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "leak_tracker_testing",
+        "sha256": "8d5a2d49f4a66b49744b23b018848400d23e54caf9463f4eb20df3eb8acb2eb1",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "leak_tracker_testing",
+      "revision": "3.0.2",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "lints",
+        "sha256": "12f842a479589fea194fe5c5a3095abc7be0c1f2ddfa9a0e76aed1dbd26a87df",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "lints",
+      "revision": "6.1.0",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "logging",
+        "sha256": "c8245ada5f1717ed44271ed1c26b8ce85ca3228fd2ffdb75468ab01979309d61",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "logging",
+      "revision": "1.3.0",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "matcher",
+        "sha256": "31bd099b47c10cd1aeb55146a2d46ce0277630ecef3f7dae54ad7873f36696cd",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "matcher",
+      "revision": "0.12.20",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "material_color_utilities",
+        "sha256": "9c337007e82b1889149c82ed242ed1cb24a66044e30979c44912381e9be4c48b",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "material_color_utilities",
+      "revision": "0.13.0",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "meta",
+        "sha256": "c82594181e3312f3d0695fc95aaaf7758d75b8d4ae2bbecf223b9fd5109a059d",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "meta",
+      "revision": "1.18.3",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "metrics_center",
+        "sha256": "534f58479561db7cd54a09c135621ee4c1a2feadb62fb57370ee931fcc0d8675",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "metrics_center",
+      "revision": "1.0.15",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "mime",
+        "sha256": "41a20518f0cb1256669420fdba0cd90d21561e560ac240f26ef8322e45bb7ed6",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "mime",
+      "revision": "2.0.0",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "transitive",
+      "description": {
+        "name": "multicast_dns",
+        "sha256": "134668a9605c747322d8c3eb0e89a4c0cbdedb29f8d2d5ae29d14daef724987b",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "multicast_dns",
+      "revision": "0.3.3+1",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "transitive",
+      "description": {
+        "name": "mustache_template",
+        "sha256": "c689b4d59176f8c7a2860aab765d205916aa5b06cfafff7613bfcc42fa996143",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "mustache_template",
+      "revision": "2.0.5",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "transitive",
+      "description": {
+        "name": "native_stack_traces",
+        "sha256": "d34cf916db87b14d39465b3e3b4b4a8ee1f304bde6ed7605571e34802e3d6a11",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "native_stack_traces",
+      "revision": "0.6.1",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "native_toolchain_c",
+        "sha256": "f9c168717100ae6d9fee9ffb0be379bf1f8b26b0f6bcbd4fdddcd931993a6a72",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "native_toolchain_c",
+      "revision": "0.19.2",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "nested",
+        "sha256": "03bac4c528c64c95c722ec99280375a6f2fc708eec17c7b3f07253b626cd2a20",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "nested",
+      "revision": "1.0.0",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "node_preamble",
+        "sha256": "6e7eac89047ab8a8d26cf16127b5ed26de65209847630400f9aefd7cd5c730db",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "node_preamble",
+      "revision": "2.0.2",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "transitive",
+      "description": {
+        "name": "objective_c",
+        "sha256": "6cb691c686fa2838c6deb34980d426145c2a5d537491cb83d463c33cdbc726ed",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "objective_c",
+      "revision": "9.4.1",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "package_config",
+        "sha256": "f096c55ebb7deb7e384101542bfba8c52696c1b56fca2eb62827989ef2353bbc",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "package_config",
+      "revision": "2.2.0",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "path",
+        "sha256": "75cca69d1490965be98c73ceaea117e8a04dd21217b37b292c9ddbec0d955bc5",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "path",
+      "revision": "1.9.1",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "path_provider",
+        "sha256": "a7f4874f987173da295a61c181b8ee71dab59b332a486b391babf26a1b884825",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "path_provider",
+      "revision": "2.1.6",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "path_provider_android",
+        "sha256": "69cbd515a62b94d32a7944f086b2f82b4ac40a1d45bebfc00813a430ab2dabcd",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "path_provider_android",
+      "revision": "2.3.1",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "path_provider_foundation",
+        "sha256": "2a376b7d6392d80cd3705782d2caa734ca4727776db0b6ec36ef3f1855197699",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "path_provider_foundation",
+      "revision": "2.6.0",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "path_provider_linux",
+        "sha256": "58c2005f147315b11e9b4a7bc889cd5203e250cba8e3f012dae259b4972b5c16",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "path_provider_linux",
+      "revision": "2.2.2",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "path_provider_platform_interface",
+        "sha256": "484838772624c3a4b94f1e44a3e19897fee738f2d5c4ce448443b0417f7c9dda",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "path_provider_platform_interface",
+      "revision": "2.1.3",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "path_provider_windows",
+        "sha256": "bd6f00dbd873bfb70d0761682da2b3a2c2fccc2b9e84c495821639601d81afe7",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "path_provider_windows",
+      "revision": "2.3.0",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "petitparser",
+        "sha256": "91bd59303e9f769f108f8df05e371341b15d59e995e6806aefab827b58336675",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "petitparser",
+      "revision": "7.0.2",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "platform",
+        "sha256": "5d6b1b0036a5f331ebc77c850ebc8506cbc1e9416c27e59b439f917a902a4984",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "platform",
+      "revision": "3.1.6",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "plugin_platform_interface",
+        "sha256": "4820fbfdb9478b1ebae27888254d445073732dae3d6ea81f0b7e06d5dedc3f02",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "plugin_platform_interface",
+      "revision": "2.1.8",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "pool",
+        "sha256": "978783255c543aa3586a1b3c21f6e9d720eb315376a915872c61ef8b5c20177d",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "pool",
+      "revision": "1.5.2",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "process",
+        "sha256": "c6248e4526673988586e8c00bb22a49210c258dc91df5227d5da9748ecf79744",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "process",
+      "revision": "5.0.5",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "process_runner",
+        "sha256": "edb4a3764852cce0cdcb4db7a5c3c4adbad36e3cffeec9766edef5aeb9986db6",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "process_runner",
+      "revision": "4.2.4",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "provider",
+        "sha256": "4e82183fa20e5ca25703ead7e05de9e4cceed1fbd1eadc1ac3cb6f565a09f272",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "provider",
+      "revision": "6.1.5+1",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "pub_semver",
+        "sha256": "5bfcf68ca79ef689f8990d1160781b4bad40a3bd5e5218ad4076ddb7f4081585",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "pub_semver",
+      "revision": "2.2.0",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "pubspec_parse",
+        "sha256": "0560ba233314abbed0a48a2956f7f022cce7c3e1e73df540277da7544cad4082",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "pubspec_parse",
+      "revision": "1.5.0",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "quiver",
+        "sha256": "ea0b925899e64ecdfbf9c7becb60d5b50e706ade44a85b2363be2a22d88117d2",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "quiver",
+      "revision": "3.2.2",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "rally_assets",
+        "sha256": "cdd331819d51e58f9d8766c98af99bc0955d1c4b6b306eee4d332d30e9deaa81",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "rally_assets",
+      "revision": "3.0.1",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "record_use",
+        "sha256": "2551bd8eecfe95d14ae75f6021ad0248be5c27f138c2ec12fcb52b500b3ba1ed",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "record_use",
+      "revision": "0.6.0",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "retry",
+        "sha256": "822e118d5b3aafed083109c72d5f484c6dc66707885e07c0fbcb8b986bba7efc",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "retry",
+      "revision": "3.1.2",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "scoped_model",
+        "sha256": "8dacc77cb5de78d5e159d54cab883847491a73dfaa3d28c52f4ec8b0be32645b",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "scoped_model",
+      "revision": "2.0.0",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "shelf",
+        "sha256": "e7dd780a7ffb623c57850b33f43309312fc863fb6aa3d276a754bb299839ef12",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "shelf",
+      "revision": "1.4.2",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "shelf_packages_handler",
+        "sha256": "89f967eca29607c933ba9571d838be31d67f53f6e4ee15147d5dc2934fee1b1e",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "shelf_packages_handler",
+      "revision": "3.0.2",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "transitive",
+      "description": {
+        "name": "shelf_proxy",
+        "sha256": "0c3a7b2b4c111cae8a6d9077701e0622c6013d38a780373ac359d6d45b3aa10b",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "shelf_proxy",
+      "revision": "1.0.5",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "shelf_static",
+        "sha256": "c87c3875f91262785dade62d135760c2c69cb217ac759485334c5857ad89f6e3",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "shelf_static",
+      "revision": "1.1.3",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "shelf_web_socket",
+        "sha256": "3632775c8e90d6c9712f883e633716432a27758216dfb61bd86a8321c0580925",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "shelf_web_socket",
+      "revision": "3.0.0",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "shrine_images",
+        "sha256": "7417da1e83c22f483e222a9d947ffea04b66078c70090072eb0821b89872c26a",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "shrine_images",
+      "revision": "2.0.2",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "source_map_stack_trace",
+        "sha256": "c0713a43e323c3302c2abe2a1cc89aa057a387101ebd280371d6a6c9fa68516b",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "source_map_stack_trace",
+      "revision": "2.1.2",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "source_maps",
+        "sha256": "190222579a448b03896e0ca6eca5998fa810fda630c1d65e2f78b3f638f54812",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "source_maps",
+      "revision": "0.10.13",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "source_span",
+        "sha256": "56a02f1f4cd1a2d96303c0144c93bd6d909eea6bee6bf5a0e0b685edbd4c47ab",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "source_span",
+      "revision": "1.10.2",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "transitive",
+      "description": {
+        "name": "sprintf",
+        "sha256": "1fc9ffe69d4df602376b52949af107d8f5703b77cda567c4d7d86a0693120f23",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "sprintf",
+      "revision": "7.0.0",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "transitive",
+      "description": {
+        "name": "sse",
+        "sha256": "a9a804dbde8bfd369da3b4aa241d44d63a6486a97388c54ec166073d88c52302",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "sse",
+      "revision": "4.2.0",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "stack_trace",
+        "sha256": "8b27215b45d22309b5cddda1aa2b19bdfec9df0e765f2de506401c071d38d1b1",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "stack_trace",
+      "revision": "1.12.1",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "standard_message_codec",
+        "sha256": "f10b3fbdb4d56c6bc4d160ef5b3d6346df7a998a84876d05886a75d17eb290e6",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "standard_message_codec",
+      "revision": "0.0.1+5",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "stream_channel",
+        "sha256": "969e04c80b8bcdf826f8f16579c7b14d780458bd97f56d107d3950fdbeef059d",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "stream_channel",
+      "revision": "2.1.4",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "string_scanner",
+        "sha256": "921cd31725b72fe181906c6a94d987c78e3b98c2e205b397ea399d4054872b43",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "string_scanner",
+      "revision": "1.4.1",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "sync_http",
+        "sha256": "7f0cd72eca000d2e026bcd6f990b81d0ca06022ef4e32fb257b30d3d1014a961",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "sync_http",
+      "revision": "0.3.1",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "term_glyph",
+        "sha256": "7f554798625ea768a7518313e58f83891c7f5024f88e46e7182a4558850a4b8e",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "term_glyph",
+      "revision": "1.2.2",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "test",
+        "sha256": "ca578dc12bb8b2f40b67b7d3bd2fac4f31c01a6ff7130a14e2597b919934507f",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "test",
+      "revision": "1.31.1",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "test_api",
+        "sha256": "2a122cbe059f8b610d3a5415f42e255b6c17b1f21eee1d960f31080237fb4f11",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "test_api",
+      "revision": "0.7.12",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "test_core",
+        "sha256": "d2e98ec12998368dc59ddd47ab709f2cd55acd6b66dc7db764455a44082f4bc5",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "test_core",
+      "revision": "0.6.18",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "typed_data",
+        "sha256": "f9049c039ebfeb4cf7a7104a675823cd72dba8297f264b6637062516699fa006",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "typed_data",
+      "revision": "1.4.0",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "transitive",
+      "description": {
+        "name": "unified_analytics",
+        "sha256": "0988c50d794f3cd96f6df92b4b35b7c333bbf869df304fc6062a45ebc7eb0776",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "unified_analytics",
+      "revision": "8.0.15",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "url_launcher",
+        "sha256": "f6a7e5c4835bb4e3026a04793a4199ca2d14c739ec378fdfe23fc8075d0439f8",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "url_launcher",
+      "revision": "6.3.2",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "url_launcher_android",
+        "sha256": "b413d49b73867ac08dd2f9890efd3cc11f2a0e577618d50843440a1fb3776c32",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "url_launcher_android",
+      "revision": "6.3.32",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "url_launcher_ios",
+        "sha256": "580fe5dfb51671ae38191d316e027f6b76272b026370708c2d898799750a02b0",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "url_launcher_ios",
+      "revision": "6.4.1",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "url_launcher_linux",
+        "sha256": "d5e14138b3bc193a0f63c10a53c94b91d399df0512b1f29b94a043db7482384a",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "url_launcher_linux",
+      "revision": "3.2.2",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "url_launcher_macos",
+        "sha256": "368adf46f71ad3c21b8f06614adb38346f193f3a59ba8fe9a2fd74133070ba18",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "url_launcher_macos",
+      "revision": "3.2.5",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "url_launcher_platform_interface",
+        "sha256": "552f8a1e663569be95a8190206a38187b531910283c3e982193e4f2733f01029",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "url_launcher_platform_interface",
+      "revision": "2.3.2",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "url_launcher_web",
+        "sha256": "85c81589622fbc87c1c683aaea164d3604a7777495a79d91e39ffcdec39ddb34",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "url_launcher_web",
+      "revision": "2.4.3",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "url_launcher_windows",
+        "sha256": "712c70ab1b99744ff066053cbe3e80c73332b38d46e5e945c98689b2e66fc15f",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "url_launcher_windows",
+      "revision": "3.1.5",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "transitive",
+      "description": {
+        "name": "uuid",
+        "sha256": "1fef9e8e11e2991bb773070d4656b7bd5d850967a2456cfc83cf47925ba79489",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "uuid",
+      "revision": "4.5.3",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "vector_math",
+        "sha256": "1d774bbdf6b72a0b12122fc1560c9c2d2a67db5a4a4cc2bd8a5c990ab20e3188",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "vector_math",
+      "revision": "2.4.0",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "video_player",
+        "sha256": "48a7bdaa38a3d50ec10c78627abdbfad863fdf6f0d6e08c7c3c040cfd80ae36f",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "video_player",
+      "revision": "2.11.1",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "video_player_android",
+        "sha256": "15bfd0598f8d8946bf0e2d50e2ca1a0db9491589a8bb7f6f9a388c0b48aef764",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "video_player_android",
+      "revision": "2.10.0",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "video_player_avfoundation",
+        "sha256": "76097729ef0c976937945afa53f1ca3afa9b50c9a95909ba347bcf93270466fd",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "video_player_avfoundation",
+      "revision": "2.10.0",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "video_player_platform_interface",
+        "sha256": "92c0fbabe20c788e71fd10d26cea998d0d253282e65d145aed0818731cf593ce",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "video_player_platform_interface",
+      "revision": "6.9.0",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "video_player_web",
+        "sha256": "9f3c00be2ef9b76a95d94ac5119fb843dca6f2c69e6c9968f6f2b6c9e7afbdeb",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "video_player_web",
+      "revision": "2.4.0",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "vm_service",
+        "sha256": "0016aef94fc66495ac78af5859181e3f3bf2026bd8eecc72b9565601e19ab360",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "vm_service",
+      "revision": "15.2.0",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "transitive",
+      "description": {
+        "name": "vm_service_interface",
+        "sha256": "503c92c26cf9f77d688bf8fca27fa9ec40450adbf02ec1ec5f12828ded508ac0",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "vm_service_interface",
+      "revision": "2.0.1",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "vm_snapshot_analysis",
+        "sha256": "5a79b9fbb6be2555090f55b03b23907e75d44c3fd7bdd88da09848aa5a1914c8",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "vm_snapshot_analysis",
+      "revision": "0.7.6",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "watcher",
+        "sha256": "1398c9f081a753f9226febe8900fce8f7d0a67163334e1c94a2438339d79d635",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "watcher",
+      "revision": "1.2.1",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "web",
+        "sha256": "868d88a33d8a87b18ffc05f9f030ba328ffefba92d6c127917a2ba740f9cfe4a",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "web",
+      "revision": "1.1.1",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "web_socket",
+        "sha256": "34d64019aa8e36bf9842ac014bb5d2f5586ca73df5e4d9bf5c936975cae6982c",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "web_socket",
+      "revision": "1.0.1",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "web_socket_channel",
+        "sha256": "d645757fb0f4773d602444000a8131ff5d48c9e47adfe9772652dd1a4f2d45c8",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "web_socket_channel",
+      "revision": "3.0.3",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "webdriver",
+        "sha256": "2f3a14ca026957870cfd9c635b83507e0e51d8091568e90129fbf805aba7cade",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "webdriver",
+      "revision": "3.1.0",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "webkit_inspection_protocol",
+        "sha256": "87d3f2333bb240704cd3f1c6b5b7acd8a10e7f0bc28c28dcf14e782014f4a572",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "webkit_inspection_protocol",
+      "revision": "1.2.1",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "webview_flutter",
+        "sha256": "d53e1ccf5516f25017e3c9d44c39034db352d20fa34fe200674270242c2c5111",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "webview_flutter",
+      "revision": "4.14.1",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "webview_flutter_android",
+        "sha256": "a97db7a44f8e71af2f3971c45550a08cce1fb60059c1b8e534251e6cfb753490",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "webview_flutter_android",
+      "revision": "4.13.0",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "webview_flutter_platform_interface",
+        "sha256": "1221c1b12f5278791042f2ec2841743784cf25c5a644e23d6680e5d718824f04",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "webview_flutter_platform_interface",
+      "revision": "2.15.1",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "webview_flutter_wkwebview",
+        "sha256": "c879dd64b87c452aa84381b244d5469da57ba7e8cca6884c7b1e0d406372c12d",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "webview_flutter_wkwebview",
+      "revision": "3.26.0",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "xdg_directories",
+        "sha256": "7a3f37b05d989967cdddcbb571f1ea834867ae2faa29725fd085180e0883aa15",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "xdg_directories",
+      "revision": "1.1.0",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "xml",
+        "sha256": "971043b3a0d3da28727e40ed3e0b5d18b742fa5a68665cca88e74b7876d5e025",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "xml",
+      "revision": "6.6.1",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "yaml",
+        "sha256": "b9da305ac7c39faa3f030eccd175340f968459dae4af175130b3fc47e40d76ce",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "yaml",
+      "revision": "3.1.3",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "direct main",
+      "description": {
+        "name": "yaml_edit",
+        "sha256": "07c9e63ba42519745182b88ca12264a7ba2484d8239958778dfe4d44fe760488",
+        "url": "https://pub.dev"
+      },
+      "kind": "pub_hosted",
+      "origin": "pubspec.lock",
+      "path": "yaml_edit",
+      "revision": "2.2.4",
+      "source": "https://pub.dev",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "transitive",
+      "description": {
+        "path": "packages/flutter_tools",
+        "relative": true
+      },
+      "kind": "pub_path",
+      "origin": "pubspec.lock",
+      "path": "flutter_tools",
+      "revision": "0.0.0",
+      "source": "packages/flutter_tools",
+      "task": null,
+      "status": "catalog-only"
+    },
+    {
+      "android_linux_x64": true,
+      "condition": "Flutter Dart workspace",
+      "dependency": "transitive",
+      "description": "flutter",
+      "kind": "pub_sdk",
+      "origin": "pubspec.lock",
+      "path": "sky_engine",
+      "revision": "0.0.0",
+      "source": "sdk",
+      "task": null,
+      "status": "catalog-only"
+    }
+  ]
+}
