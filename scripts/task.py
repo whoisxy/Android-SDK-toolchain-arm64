@@ -16,6 +16,7 @@ def main():
     parser.add_argument("--build-only", action="store_true", help="Skip release publication")
     parser.add_argument("--libc", choices=LIBCS, default="bionic")
     args = parser.parse_args()
+    args.dependency = {"snapshot_gen": "gen-snapshot", "gen_snapshot": "gen-snapshot"}.get(args.dependency, args.dependency)
     available = registry()
     if args.dependency == "list":
         for name, spec in sorted(available.items()):

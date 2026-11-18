@@ -26,6 +26,7 @@ on:
           - flutter-engine-arm64
           - flutter-tools
           - freetype
+          - gen-snapshot
           - glfw
           - glslang
           - gn

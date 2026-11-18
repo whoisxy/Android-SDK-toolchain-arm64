@@ -22,6 +22,7 @@ Every row has a `tasks/NAME.sh [HASH_OR_TAG] --libc bionic|glibc|musl` entry poi
 | `flutter-engine-arm64` | android-engine | android-engine | `c197ca5199e9ee5661e865596c9c07294dfab51c` | bionic | self-hosted, linux, x64, sdk-builder |
 | `flutter-tools` | tool-kernel-with-arm64-sdk | flutter-tools | `c197ca5199e9ee5661e865596c9c07294dfab51c` | bionic, glibc | self-hosted, linux, x64, sdk-builder |
 | `freetype` | native-library | cmake | `be4bcb57914154fc1b9e2900bf8e4b516057e2b8` | bionic, glibc, musl | ubuntu-24.04 |
+| `gen-snapshot` | native-tool | gen-snapshot | `416e33b0ffaef062a60ec966bb8c82ed2b83f128` | bionic, glibc | ubuntu-24.04 |
 | `glfw` | native-library | cmake | `9352d8fe93cd443be18157abe81f16500549aec0` | glibc, musl | ubuntu-24.04 |
 | `glslang` | native-library-and-tools | cmake | `a57276bf558f5cf94d3a9854ebdf5a2236849a5a` | bionic, glibc, musl | ubuntu-24.04 |
 | `gn` | native-tool | gn | `81b24e01531ecf0eff12ec9359a555ec3944ec4e` | bionic, glibc, musl | ubuntu-24.04 |

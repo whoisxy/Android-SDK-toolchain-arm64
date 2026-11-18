@@ -115,7 +115,7 @@ class Builder:
         elif backend == "shaderc":
             self.run(["python3", "utils/git-sync-deps"], cwd=source)
             self.cmake(spec, source, build)
-        elif backend in ("skia", "dart-sdk"):
+        elif backend in ("skia", "dart-sdk", "gen-snapshot"):
             self.large_build(name, spec, source, build)
         elif backend == "aosp":
             self.aosp(spec, source, build)
@@ -395,12 +395,27 @@ class Builder:
                        "custom_vars": {"download_android_deps": self.libc == "bionic"}}]
             (checkout / ".gclient").write_text("solutions = " + repr(config) + "\n")
             self.run([depot / "gclient", "sync", "--no-history", "--revision", "sdk@" + self.record(name)["commit"]], cwd=checkout, env=env)
-            self.run(["python3", "tools/build.py", "--no-rbe", "--mode", "release", "--arch", "arm64",
-                      "--os", "android" if self.libc == "bionic" else "linux", "create_sdk"], cwd=sdk, env=env)
-            candidates = list(sdk.glob("out/Release*ARM64/dart-sdk"))
-            if len(candidates) != 1:
-                raise ValueError("Could not locate the built ARM64 Dart SDK")
-            self.copy(candidates[0], ".")
+            target = "gen_snapshot" if spec["backend"] == "gen-snapshot" else "create_sdk"
+            configuration = ["--no-rbe", "--mode", "release", "--arch", "arm64",
+                             "--os", "android" if self.libc == "bionic" else "linux"]
+            if spec["backend"] == "gen-snapshot":
+                self.run(["python3", "tools/gn.py", *configuration], cwd=sdk, env=env)
+                directories = list(sdk.glob("out/Release*ARM64"))
+                if len(directories) != 1:
+                    raise ValueError("Could not locate generated ARM64 snapshot build configuration")
+                self.run([sdk / "buildtools/ninja/ninja", "-C", directories[0], "-j", self.jobs, target], cwd=sdk, env=env)
+            else:
+                self.run(["python3", "tools/build.py", *configuration, target], cwd=sdk, env=env)
+            if spec["backend"] == "gen-snapshot":
+                candidates = list(sdk.glob("out/Release*ARM64/gen_snapshot"))
+                if len(candidates) != 1:
+                    raise ValueError("Could not locate the target ARM64 gen_snapshot executable")
+                self.copy(candidates[0], "bin/gen_snapshot")
+            else:
+                candidates = list(sdk.glob("out/Release*ARM64/dart-sdk"))
+                if len(candidates) != 1:
+                    raise ValueError("Could not locate the built ARM64 Dart SDK")
+                self.copy(candidates[0], ".")
             metadata = self.prefix / "share/build-metadata"
             metadata.mkdir(parents=True, exist_ok=True)
             self.run([depot / "gclient", "revinfo", "--actual", "--output-json",

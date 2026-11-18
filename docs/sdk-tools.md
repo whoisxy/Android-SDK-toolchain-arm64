@@ -35,6 +35,13 @@ recipes support Bionic; unsupported libc choices fail before the build.
 
 ## Dart and Flutter
 
+- `gen-snapshot` builds only Dart's `gen_snapshot` executable for ARM64 and the
+  selected libc. Bionic is the default. It uses a standard hosted runner, its own
+  pinned upstream compiler dependencies, and releases the executable with source
+  provenance and architecture/libc checks. It does not build the entire SDK or
+  Flutter engine. The aliases `./task gen_snapshot` and `./task snapshot_gen` select
+  the same task.
+
 - `dart-sdk` builds `create_sdk` for ARM64 and the selected operating system, using
   `--os android` for Bionic and `--os linux` for glibc. Resolved gclient dependencies
   are retained. Musl needs a separate upstream SDK port and is rejected explicitly.

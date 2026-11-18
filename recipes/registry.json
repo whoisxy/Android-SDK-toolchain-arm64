@@ -409,6 +409,24 @@
         "musl"
       ]
     },
+    "gen-snapshot": {
+      "url": "https://dart.googlesource.com/sdk.git",
+      "default_ref": "416e33b0ffaef062a60ec966bb8c82ed2b83f128",
+      "backend": "gen-snapshot",
+      "kind": "native-tool",
+      "dependencies": [],
+      "release_repository": null,
+      "target_architecture": "arm64",
+      "supported_libcs": [
+        "bionic",
+        "glibc"
+      ],
+      "runner": [
+        "ubuntu-24.04"
+      ],
+      "min_disk_gib": 25,
+      "manages_toolchain": true
+    },
     "glfw": {
       "url": "https://flutter.googlesource.com/third_party/glfw",
       "default_ref": "9352d8fe93cd443be18157abe81f16500549aec0",
