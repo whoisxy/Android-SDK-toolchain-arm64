@@ -1,0 +1,85 @@
+name: Reusable dependency build and release
+on:
+  workflow_call:
+    inputs:
+      dependency:
+        type: string
+        required: true
+      ref:
+        type: string
+        default: ''
+      runner:
+        type: string
+        default: ''
+      release_repository:
+        type: string
+        default: ''
+    secrets:
+      RELEASE_TOKEN:
+        required: false
+permissions:
+  contents: read
+jobs:
+  plan:
+    runs-on: ubuntu-24.04
+    outputs:
+      runner: ${{ steps.plan.outputs.runner }}
+      repository: ${{ steps.plan.outputs.repository }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - id: plan
+        name: Resolve dependency, runner and release destination
+        env:
+          DEPENDENCY: ${{ inputs.dependency }}
+          REQUESTED_REF: ${{ inputs.ref }}
+          RUNNER_LABELS: ${{ inputs.runner }}
+          RELEASE_REPOSITORY: ${{ inputs.release_repository }}
+        run: python3 scripts/plan.py "$DEPENDENCY" --ref "$REQUESTED_REF" --runner "$RUNNER_LABELS" --repository "$RELEASE_REPOSITORY"
+  build:
+    needs: plan
+    runs-on: ${{ fromJSON(needs.plan.outputs.runner) }}
+    timeout-minutes: 360
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - name: Install build prerequisites
+        run: bash scripts/install-host-deps.sh
+      - name: Build selected dependency and package output
+        env:
+          DEPENDENCY: ${{ inputs.dependency }}
+          REQUESTED_REF: ${{ inputs.ref }}
+          BUILD_ROOT: ${{ runner.temp }}/dependency-build-${{ github.run_id }}-${{ github.run_attempt }}
+          JOBS: '4'
+        run: bash scripts/build.sh "$DEPENDENCY" "$REQUESTED_REF"
+      - name: Pass completed outputs to the publisher
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: build-${{ inputs.dependency }}
+          path: dist/
+          if-no-files-found: error
+          retention-days: 7
+          compression-level: 0
+  release:
+    needs: [plan, build]
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: build-${{ inputs.dependency }}
+          path: release-assets
+      - name: Create release, upload output assets, then publish
+        env:
+          GH_TOKEN: ${{ needs.plan.outputs.repository == github.repository && github.token || secrets.RELEASE_TOKEN }}
+          RELEASE_REPOSITORY: ${{ needs.plan.outputs.repository }}
+          DEPENDENCY: ${{ inputs.dependency }}
+        run: python3 scripts/release.py release-assets --repository "$RELEASE_REPOSITORY" --dependency "$DEPENDENCY"

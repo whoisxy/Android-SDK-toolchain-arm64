@@ -1,7 +1,5 @@
 # Android SDK toolchain dependency tasks
 
-> Setup is awaiting workflow-file write permission. See [SETUP_STATUS.md](SETUP_STATUS.md). Build task sources are available; Actions workflow files are not published yet.
-
 One repository of independent source build and release tasks. The initial build
 host is **Ubuntu 24.04 / Linux x64**. Running the host tools on **Android ARM64** is
 a later extension; Android engine outputs already have separate ARM64/ARMv7 tasks.

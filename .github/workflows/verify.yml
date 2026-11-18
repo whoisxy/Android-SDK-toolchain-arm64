@@ -1,0 +1,26 @@
+name: Verify task framework
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - name: Test revision handling, recipe graph and release asset boundaries
+        run: python3 -m unittest discover -s tests -v
+      - name: Check generated task/workflow consistency
+        run: python3 scripts/generate-tasks.py --check
+      - name: Check Bash syntax
+        run: |
+          bash -n task scripts/*.sh
+          for script in tasks/*.sh; do bash -n "$script"; done
+      - name: Check Actions workflow syntax
+        env:
+          GOBIN: ${{ runner.temp }}/actionlint-bin
+        run: |
+          go install github.com/rhysd/actionlint/cmd/actionlint@v1.7.7
+          "$GOBIN/actionlint" -color
