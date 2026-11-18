@@ -55,8 +55,7 @@ variant uses the JDK's security providers and excludes cloud KMS integration.
   snapshot generator. Desktop gen_snapshot binaries and mixed host zip archives
   are excluded from the release. Bionic is the supported libc for this Android task.
 
-Dart SDK and Flutter tool tasks use a hosted runner with storage cleanup.
-The engine task uses the provisioned `sdk-builder`.
+Dart SDK, Flutter tool and engine tasks use GitHub-hosted runners with storage cleanup.
 
 ## Compiler profiles and verification
 

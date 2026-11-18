@@ -53,7 +53,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Reclaim hosted runner space for the Dart and Flutter source build
-        if: runner.environment == 'github-hosted' && contains(fromJSON('["gen-snapshot","dart-sdk","flutter-tools"]'), inputs.dependency)
+        if: runner.environment == 'github-hosted' && contains(fromJSON('["gen-snapshot","dart-sdk","flutter-tools","flutter-engine-arm64"]'), inputs.dependency)
         run: |
           sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL
           df -h "$RUNNER_TEMP"

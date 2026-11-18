@@ -332,15 +332,12 @@
       "dependencies": [],
       "release_repository": null,
       "runner": [
-        "self-hosted",
-        "linux",
-        "x64",
-        "sdk-builder"
+        "ubuntu-24.04"
       ],
       "backend": "android-engine",
       "kind": "android-engine",
       "android_cpu": "arm64",
-      "min_disk_gib": 100,
+      "min_disk_gib": 25,
       "target_architecture": "arm64",
       "supported_libcs": [
         "bionic"
