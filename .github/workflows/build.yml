@@ -42,7 +42,6 @@ on:
           - nlohmann-json
           - rapidjson
           - re2
-          - repo
           - shaderc
           - skia
           - spirv-cross

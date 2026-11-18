@@ -14,6 +14,8 @@ parser.add_argument("--repository", default="")
 parser.add_argument("--libc", choices=LIBCS, default="bionic")
 args = parser.parse_args()
 spec = registry()[args.dependency]
+if not spec.get("release_task", True):
+    raise SystemExit(args.dependency + " is bootstrap-only; there is no release task")
 revision(args.ref or spec["default_ref"])
 if args.libc not in spec.get("supported_libcs", LIBCS):
     raise SystemExit(f"{args.dependency} does not support libc={args.libc}")

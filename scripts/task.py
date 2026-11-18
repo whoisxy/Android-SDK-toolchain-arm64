@@ -19,10 +19,13 @@ def main():
     available = registry()
     if args.dependency == "list":
         for name, spec in sorted(available.items()):
-            print(f"{name:25} {spec['kind']:22} {spec['default_ref']}")
+            if spec.get("release_task", True):
+                print(f"{name:25} {spec['kind']:22} {spec['default_ref']}")
         return
     if args.dependency not in available:
         raise SystemExit("Unknown dependency; run ./task list")
+    if not available[args.dependency].get("release_task", True):
+        raise SystemExit(args.dependency + " is a bootstrap dependency, not a build/release task")
     selected = ""
     if not args.build_only:
         selected = destination(args.dependency, os.environ.get("RELEASE_REPOSITORY", ""))

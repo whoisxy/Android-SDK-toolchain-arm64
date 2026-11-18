@@ -38,7 +38,6 @@ Every row has a `tasks/NAME.sh [HASH_OR_TAG] --libc bionic|glibc|musl` entry poi
 | `nlohmann-json` | headers | cmake | `17d9eacd248f58b73f4d1be518ef649fe2295642` | bionic, glibc, musl | ubuntu-24.04 |
 | `rapidjson` | headers | cmake | `47253cab97e9cfe99dbd6b90836fc11589d7d802` | bionic, glibc, musl | ubuntu-24.04 |
 | `re2` | native-library | cmake | `c84a140c93352cdabbfb547c531be34515b12228` | bionic, glibc, musl | ubuntu-24.04 |
-| `repo` | script-distribution | repo | `97dc5c1bd9527c2abe2183b16a4b7ef037dc34a7` | bionic, glibc, musl | ubuntu-24.04 |
 | `shaderc` | native-library-and-tools | shaderc | `d15277d6bc180f6a0b8b601f0cab2bbcaac9b4d5` | bionic, glibc, musl | ubuntu-24.04 |
 | `skia` | native-library | skia | `8df24be66531469e576a806749a0202ae26b8d08` | bionic, glibc | self-hosted, linux, x64, sdk-builder |
 | `spirv-cross` | native-library-and-tools | cmake | `b8fcf307f1f347089e3c46eb4451d27f32ebc8d3` | bionic, glibc, musl | ubuntu-24.04 |
@@ -51,4 +50,4 @@ Every row has a `tasks/NAME.sh [HASH_OR_TAG] --libc bionic|glibc|musl` entry poi
 | `zlib` | native-library | cmake | `51b7f2abdade71cd9bb0e7a373ef2610ec6f9daf` | bionic, glibc, musl | ubuntu-24.04 |
 
 These are implemented recipes, not a claim that every recipe has completed a CI build. Consult Actions and Releases for observed results.
-Refs must belong to the recipe's source repository. Different upstream versions may need recipe changes. Source distributions such as depot-tools and repo package interpreted tooling; they do not claim to compile upstream runtime binaries.
+Refs must belong to the recipe's source repository. Different upstream versions may need recipe changes. Bootstrap-only sources such as repo are excluded from release tasks.

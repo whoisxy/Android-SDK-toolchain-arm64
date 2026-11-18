@@ -20,6 +20,8 @@ class Builder:
         self.dependencies = registry()
         if dependency not in self.dependencies:
             raise ValueError(f"Unknown task: {dependency}")
+        if not self.dependencies[dependency].get("release_task", True):
+            raise ValueError(dependency + " is bootstrap-only, not a compiled release task")
         self.dependency = dependency
         self.libc = libc
         self.target = target_name(libc)
@@ -212,18 +214,19 @@ class Builder:
     def aosp(self, spec, source, build):
         checkout = build / "aosp"
         checkout.mkdir()
-        repo = self.prefix / "bin/repo"
+        repo_source = self.fetch("repo")
+        repo = ["python3", repo_source / "repo"]
         repo_ref = self.dependencies["repo"]["default_ref"]
-        self.run([repo, "init", "-u", spec["manifest_url"], "-b", spec["manifest_ref"],
+        self.run([*repo, "init", "-u", spec["manifest_url"], "-b", spec["manifest_ref"],
                   "--depth=1", "--no-clone-bundle", "--repo-rev=" + repo_ref], cwd=checkout)
-        self.run([repo, "sync", "--current-branch", "--no-tags", "--no-clone-bundle", "-j", self.jobs], cwd=checkout)
+        self.run([*repo, "sync", "--current-branch", "--no-tags", "--no-clone-bundle", "-j", self.jobs], cwd=checkout)
         component = checkout / spec["aosp_project_path"]
         # The optional ref selects this component; the remaining platform graph stays manifest-pinned.
         self.run(["git", "fetch", source, "HEAD"], cwd=component)
         self.run(["git", "checkout", "--detach", "FETCH_HEAD"], cwd=component)
         manifest_dir = self.prefix / "share/build-metadata"
         manifest_dir.mkdir(parents=True, exist_ok=True)
-        self.run([repo, "manifest", "-r", "-o", manifest_dir / "aosp-manifest.xml"], cwd=checkout)
+        self.run([*repo, "manifest", "-r", "-o", manifest_dir / "aosp-manifest.xml"], cwd=checkout)
         out = build / "out"
         if spec["kind"] != "jvm-tool":
             # Host-only blueprint module classes otherwise force x86 output even for an ARM64 product.

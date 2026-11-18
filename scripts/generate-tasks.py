@@ -7,7 +7,7 @@ from common import ROOT, registry
 
 
 def generated():
-    dependencies = registry()
+    dependencies = {name: spec for name, spec in registry().items() if spec.get("release_task", True)}
     files = {}
     for name in sorted(dependencies):
         files[f"tasks/{name}.sh"] = '''#!/usr/bin/env bash
@@ -97,7 +97,7 @@ jobs:
     for name, spec in sorted(dependencies.items()):
         rows.append(f"| `{name}` | {spec['kind']} | {spec['backend']} | `{spec['default_ref']}` | {', '.join(spec.get('supported_libcs', ['bionic','glibc','musl']))} | {', '.join(spec.get('runner', ['ubuntu-24.04']))} |")
     rows += ["", "These are implemented recipes, not a claim that every recipe has completed a CI build. Consult Actions and Releases for observed results.",
-             "Refs must belong to the recipe's source repository. Different upstream versions may need recipe changes. Source distributions such as depot-tools and repo package interpreted tooling; they do not claim to compile upstream runtime binaries.", ""]
+             "Refs must belong to the recipe's source repository. Different upstream versions may need recipe changes. Bootstrap-only sources such as repo are excluded from release tasks.", ""]
     files["docs/tasks.md"] = "\n".join(rows)
     return files
 

@@ -7,9 +7,7 @@
       "default_ref": "4e43ad12e1b211f15152e9c5b16b0fe88e6b93f3",
       "backend": "aosp",
       "kind": "native-tool",
-      "dependencies": [
-        "repo"
-      ],
+      "dependencies": [],
       "manifest_url": "https://android.googlesource.com/platform/manifest",
       "manifest_ref": "2f91a1ccd8a14ab34358ef141bfb1fc68d200bb4",
       "aosp_project_path": "frameworks/base",
@@ -59,9 +57,7 @@
       "default_ref": "f8a7480bc3500502d5f12c8fd6d1aecc394a604f",
       "backend": "aosp",
       "kind": "native-tool",
-      "dependencies": [
-        "repo"
-      ],
+      "dependencies": [],
       "manifest_url": "https://android.googlesource.com/platform/manifest",
       "manifest_ref": "2f91a1ccd8a14ab34358ef141bfb1fc68d200bb4",
       "aosp_project_path": "packages/modules/adb",
@@ -92,9 +88,7 @@
       "default_ref": "d1304733b74b69f26dbe2d3c40c797aaac22f163",
       "backend": "aosp",
       "kind": "native-tool",
-      "dependencies": [
-        "repo"
-      ],
+      "dependencies": [],
       "manifest_url": "https://android.googlesource.com/platform/manifest",
       "manifest_ref": "2f91a1ccd8a14ab34358ef141bfb1fc68d200bb4",
       "aosp_project_path": "system/tools/aidl",
@@ -125,9 +119,7 @@
       "default_ref": "5bd2e81b765cd0da6f0b6378d78b19abff04fe26",
       "backend": "aosp",
       "kind": "jvm-tool",
-      "dependencies": [
-        "repo"
-      ],
+      "dependencies": [],
       "manifest_url": "https://android.googlesource.com/platform/manifest",
       "manifest_ref": "2f91a1ccd8a14ab34358ef141bfb1fc68d200bb4",
       "aosp_project_path": "tools/apksig",
@@ -308,9 +300,7 @@
       "default_ref": "fc7bc8c4bfb4c6095e34ea784509dae56f25b486",
       "backend": "aosp",
       "kind": "native-tool",
-      "dependencies": [
-        "repo"
-      ],
+      "dependencies": [],
       "manifest_url": "https://android.googlesource.com/platform/manifest",
       "manifest_ref": "2f91a1ccd8a14ab34358ef141bfb1fc68d200bb4",
       "aosp_project_path": "system/core",
@@ -721,7 +711,9 @@
         "bionic",
         "glibc",
         "musl"
-      ]
+      ],
+      "release_task": false,
+      "role": "build-machine source synchronization via Python; not a binary output"
     },
     "shaderc": {
       "url": "https://chromium.googlesource.com/external/github.com/google/shaderc",
@@ -879,9 +871,7 @@
       "default_ref": "3d9c9aacdb6ca0b745b3048dad88d0db4680d50e",
       "backend": "aosp",
       "kind": "native-tool",
-      "dependencies": [
-        "repo"
-      ],
+      "dependencies": [],
       "manifest_url": "https://android.googlesource.com/platform/manifest",
       "manifest_ref": "2f91a1ccd8a14ab34358ef141bfb1fc68d200bb4",
       "aosp_project_path": "build/make",

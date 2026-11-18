@@ -6,8 +6,8 @@ The build machine is allowed to have a different CPU.
 
 ## Bootstrap tools
 
-- `repo` and `gtest-parallel` package interpreted Python tooling with launchers for
-  the selected target environment. They require an installed Python 3.
+- `repo` is a pinned Python bootstrap source used to synchronize AOSP on the build
+  machine. It has no build/release task. `gtest-parallel` is interpreted Python tooling.
 - `cipd` builds the native client from pinned LUCI source with Go/CGO and the selected
   ARM64 compiler. `depot-tools` includes it as a dependency, together with gclient and
   caller-managed Python/vpython launchers. Desktop Python/CIPD bootstrap executables
