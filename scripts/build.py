@@ -333,7 +333,7 @@ class Builder:
         command = ["java", "-jar", jar]
         self.run([*command, "sign", "--key", fixtures / "rsa-2048.pk8",
                   "--cert", fixtures / "rsa-2048.x509.pem",
-                  "--out", signed, fixtures / "empty-unsigned.apk"])
+                  "--out", signed, fixtures / "pinsapp-unsigned.apk"])
         self.run([*command, "verify", "--verbose", signed])
 
     def record(self, name):
