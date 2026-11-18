@@ -117,35 +117,19 @@
     "apksigner": {
       "url": "https://android.googlesource.com/platform/tools/apksig",
       "default_ref": "5bd2e81b765cd0da6f0b6378d78b19abff04fe26",
-      "backend": "aosp",
+      "backend": "apksigner",
       "kind": "jvm-tool",
       "dependencies": [],
-      "manifest_url": "https://android.googlesource.com/platform/manifest",
-      "manifest_ref": "2f91a1ccd8a14ab34358ef141bfb1fc68d200bb4",
-      "aosp_project_path": "tools/apksig",
-      "aosp_modules": [
-        "apksigner"
-      ],
-      "aosp_outputs": [
-        "bin/apksigner",
-        "framework/apksigner.jar"
-      ],
       "runner": [
-        "self-hosted",
-        "linux",
-        "x64",
-        "aosp-builder"
+        "ubuntu-24.04"
       ],
-      "min_disk_gib": 400,
+      "min_disk_gib": 3,
       "release_repository": null,
       "target_architecture": "arm64",
       "supported_libcs": [
         "bionic",
         "glibc",
         "musl"
-      ],
-      "aosp_port_subdirs": [
-        "."
       ]
     },
     "benchmark": {

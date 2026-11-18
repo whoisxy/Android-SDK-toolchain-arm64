@@ -129,6 +129,8 @@ class Builder:
             self.large_build(name, spec, source, build)
         elif backend == "aosp":
             self.aosp(spec, source, build)
+        elif backend == "apksigner":
+            self.apksigner(source, build)
         elif backend == "flutter-tools":
             self.flutter_tools(source, build)
         elif backend == "android-engine":
@@ -288,6 +290,45 @@ class Builder:
                         if library.name not in {"libc.so", "libdl.so", "libm.so"}:
                             self.copy(library, "lib/" + library.name)
         self.collect_licenses(component, self.prefix / "share/licenses/aosp-component")
+
+    def apksigner(self, source, build):
+        core = source / "src/main/java"
+        cli = source / "src/apksigner/java"
+        classes = build / "classes"
+        shutil.copytree(cli, classes, ignore=shutil.ignore_patterns("*.java"))
+        main = cli / "com/android/apksigner/ApkSignerTool.java"
+        # Standalone OpenJDK provides the cryptography. The AOSP-only provider uses
+        # desktop JNI, which would introduce an incompatible native dependency.
+        original = main.read_text()
+        standalone = re.sub(r"(?ms)^([ \t]*)// BEGIN-AOSP\n.*?^\1// END-AOSP\n", "", original)
+        if "org.conscrypt." in standalone:
+            raise ValueError("Standalone apksigner needs an updated provider adapter for this revision")
+        main.write_text(standalone)
+        java_sources = sorted(
+            path for path in core.rglob("*.java")
+            if not any(part in {"aws", "gcp"} for part in path.relative_to(core).parts)
+        ) + sorted(cli.rglob("*.java"))
+        sources_file = build / "java-sources"
+        sources_file.write_text("".join(json.dumps(str(path)) + "\n" for path in java_sources))
+        self.run(["javac", "--release", "8", "-encoding", "UTF-8", "-d", classes, "@" + str(sources_file)])
+        jar = self.prefix / "framework/apksigner.jar"
+        jar.parent.mkdir()
+        self.run(["jar", "--create", "--file", jar, "--manifest",
+                  source / "src/apksigner/apksigner.mf", "-C", classes, "."])
+        wrapper = self.prefix / "bin/apksigner"
+        wrapper.parent.mkdir(exist_ok=True)
+        wrapper.write_text(("#!/system/bin/sh\n" if self.libc == "bionic" else "#!/bin/sh\n") +
+                           'set -eu\nprefix="$(cd -- "$(dirname -- "$0")/.." && pwd)"\n'
+                           'exec java -jar "$prefix/framework/apksigner.jar" "$@"\n')
+        wrapper.chmod(0o755)
+        # Exercise both operations with upstream's non-production test APK and key.
+        fixtures = source / "src/test/resources/com/android/apksig"
+        signed = build / "signed.apk"
+        command = ["java", "-jar", jar]
+        self.run([*command, "sign", "--key", fixtures / "rsa-2048.pk8",
+                  "--cert", fixtures / "rsa-2048.x509.pem",
+                  "--out", signed, fixtures / "empty-unsigned.apk"])
+        self.run([*command, "verify", "--verbose", signed])
 
     def record(self, name):
         return next(x for x in self.records if x["dependency"] == name)

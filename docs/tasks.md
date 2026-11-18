@@ -8,7 +8,7 @@ Every row has a `tasks/NAME.sh [HASH_OR_TAG] --libc bionic|glibc|musl` entry poi
 | `abseil` | native-library | cmake | `564023aa53767b5f60b3a556f0a025b7b7e8241e` | bionic, glibc, musl | ubuntu-24.04 |
 | `adb` | native-tool | aosp | `f8a7480bc3500502d5f12c8fd6d1aecc394a604f` | bionic | self-hosted, linux, x64, aosp-builder |
 | `aidl` | native-tool | aosp | `d1304733b74b69f26dbe2d3c40c797aaac22f163` | bionic | self-hosted, linux, x64, aosp-builder |
-| `apksigner` | jvm-tool | aosp | `5bd2e81b765cd0da6f0b6378d78b19abff04fe26` | bionic, glibc, musl | self-hosted, linux, x64, aosp-builder |
+| `apksigner` | jvm-tool | apksigner | `5bd2e81b765cd0da6f0b6378d78b19abff04fe26` | bionic, glibc, musl | ubuntu-24.04 |
 | `benchmark` | native-library | cmake | `431abd149fd76a072f821913c0340137cc755f36` | bionic, glibc, musl | ubuntu-24.04 |
 | `boringssl` | native-library | cmake | `c7eb007fd10627f1abb41a3e368b85e24cd20af9` | bionic, glibc, musl | ubuntu-24.04 |
 | `brotli` | native-library | cmake | `350100a5bb9d9671aca85213b2ec7a70a361b0cd` | bionic, glibc, musl | ubuntu-24.04 |

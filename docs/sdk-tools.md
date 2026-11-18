@@ -29,9 +29,10 @@ AOSP binaries target the pinned Android platform release and may use platform AP
 newer than the API level used by the NDK library tasks. Architecture/libc checks do
 not establish compatibility with older Android system releases.
 
-`apksigner` packages a JVM archive and a launcher; it requires a suitable target JDK.
-It does not package the build machine's JDK or native host libraries. AOSP native
-recipes support Bionic; unsupported libc choices fail before the build.
+`apksigner` builds directly from the pinned apksig Java sources on a hosted runner.
+The build signs and verifies an APK using the upstream test fixture. The release
+contains a JVM archive and launcher for use with a target JDK. The standalone
+variant uses the JDK's security providers and excludes cloud KMS integration.
 
 ## Dart and Flutter
 
