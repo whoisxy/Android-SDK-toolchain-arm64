@@ -247,12 +247,9 @@
       "kind": "sdk",
       "dependencies": [],
       "release_repository": null,
-      "min_disk_gib": 100,
+      "min_disk_gib": 25,
       "runner": [
-        "self-hosted",
-        "linux",
-        "x64",
-        "sdk-builder"
+        "ubuntu-24.04"
       ],
       "target_architecture": "arm64",
       "supported_libcs": [
@@ -373,14 +370,11 @@
       ],
       "release_repository": null,
       "runner": [
-        "self-hosted",
-        "linux",
-        "x64",
-        "sdk-builder"
+        "ubuntu-24.04"
       ],
       "backend": "flutter-tools",
       "kind": "tool-kernel-with-arm64-sdk",
-      "min_disk_gib": 30,
+      "min_disk_gib": 25,
       "target_architecture": "arm64",
       "supported_libcs": [
         "bionic",

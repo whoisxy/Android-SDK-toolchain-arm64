@@ -6,6 +6,7 @@ import json
 import os
 from pathlib import Path
 import platform
+import re
 import shutil
 import subprocess
 import tarfile
@@ -80,6 +81,15 @@ class Builder:
             raise ValueError("Recipe dependency cycle: " + name)
         self.visiting.add(name)
         spec = self.dependencies[name]
+        if spec["backend"] == "flutter-tools":
+            flutter = self.fetch(name, self.requested_ref)
+            dart_revision = re.search(
+                r"""['"]dart_revision['"]\s*:\s*['"]([0-9a-f]{40})['"]""",
+                (flutter / "DEPS").read_text(),
+            )
+            if dart_revision is None:
+                raise ValueError("Cannot determine the matching Dart revision from Flutter DEPS")
+            self.fetch("dart-sdk", dart_revision[1])
         for dependency in spec.get("dependencies", []):
             self.install(dependency)
         source = self.fetch(name, self.requested_ref if name == self.dependency else None)
@@ -139,8 +149,7 @@ class Builder:
         # shallow .git metadata; it contains no setup credentials or authenticated remote URL.
         sdk = self.prefix / "sdk/flutter"
         shutil.copytree(source, sdk, ignore=shutil.ignore_patterns('__pycache__'))
-        host_sdk = build / "host-sdk"
-        shutil.copytree(source, host_sdk, ignore=shutil.ignore_patterns('__pycache__'))
+        host_sdk = source
         if self.libc == "bionic":
             for checkout in (sdk, host_sdk):
                 platform_file = checkout / "packages/flutter_tools/lib/src/base/platform.dart"
@@ -160,7 +169,22 @@ class Builder:
                   "--snapshot=" + str(cache / "flutter_tools.snapshot"),
                   "--packages=" + str(host_sdk / "packages/flutter_tools/.dart_tool/package_config.json"),
                   host_sdk / "packages/flutter_tools/bin/flutter_tools.dart"], cwd=host_sdk, env=env)
-        # Keep the actual ARM64 SDK in the root prefix; its runtime libraries remain paired.
+        # Flutter's command code discovers Dart in its own cache, independently of PATH.
+        for stamp in ("engine.stamp", "engine.realm"):
+            path = host_sdk / "bin/cache" / stamp
+            if path.exists():
+                shutil.copy2(path, cache / stamp)
+        (cache / "dart-sdk").symlink_to("../../../dart", target_is_directory=True)
+        self.run([host_sdk / "bin/cache/dart-sdk/bin/dart", "--disable-dart-dev",
+                  cache / "flutter_tools.snapshot", "--help"], cwd=host_sdk,
+                 env=dict(env, FLUTTER_ROOT=str(sdk)))
+        # The portable snapshot above used build-machine Dart. Only target Dart is packaged.
+        (self.prefix / "bin").mkdir(exist_ok=True)
+        dart_wrapper = self.prefix / "bin/dart"
+        dart_wrapper.write_text(('#!/system/bin/sh\n' if self.libc == 'bionic' else '#!/bin/sh\n') + 'set -eu\n'
+            'prefix="$(cd -- "$(dirname -- "$0")/.." && pwd)"\n'
+            'exec "$prefix/sdk/dart/bin/dart" "$@"\n')
+        dart_wrapper.chmod(0o755)
         wrapper = self.prefix / "bin/flutter"
         wrapper.write_text(('#!/system/bin/sh\n' if self.libc == 'bionic' else '#!/bin/sh\n') + 'set -eu\n'
             'prefix="$(cd -- "$(dirname -- "$0")/.." && pwd)"\n'
@@ -398,14 +422,11 @@ class Builder:
             target = "gen_snapshot" if spec["backend"] == "gen-snapshot" else "create_sdk"
             configuration = ["--no-rbe", "--mode", "release", "--arch", "arm64",
                              "--os", "android" if self.libc == "bionic" else "linux"]
-            if spec["backend"] == "gen-snapshot":
-                self.run(["python3", "tools/gn.py", *configuration], cwd=sdk, env=env)
-                directories = list(sdk.glob("out/Release*ARM64"))
-                if len(directories) != 1:
-                    raise ValueError("Could not locate generated ARM64 snapshot build configuration")
-                self.run([sdk / "buildtools/ninja/ninja", "-C", directories[0], "-j", self.jobs, target], cwd=sdk, env=env)
-            else:
-                self.run(["python3", "tools/build.py", *configuration, target], cwd=sdk, env=env)
+            self.run(["python3", "tools/gn.py", *configuration], cwd=sdk, env=env)
+            directories = list(sdk.glob("out/Release*ARM64"))
+            if len(directories) != 1:
+                raise ValueError("Could not locate generated ARM64 Dart build configuration")
+            self.run([sdk / "buildtools/ninja/ninja", "-C", directories[0], "-j", self.jobs, target], cwd=sdk, env=env)
             if spec["backend"] == "gen-snapshot":
                 candidates = list(sdk.glob("out/Release*ARM64/gen_snapshot"))
                 if len(candidates) != 1:
@@ -415,7 +436,7 @@ class Builder:
                 candidates = list(sdk.glob("out/Release*ARM64/dart-sdk"))
                 if len(candidates) != 1:
                     raise ValueError("Could not locate the built ARM64 Dart SDK")
-                self.copy(candidates[0], ".")
+                self.copy(candidates[0], "sdk/dart" if self.dependency == "flutter-tools" else ".")
             metadata = self.prefix / "share/build-metadata"
             metadata.mkdir(parents=True, exist_ok=True)
             self.run([depot / "gclient", "revinfo", "--actual", "--output-json",

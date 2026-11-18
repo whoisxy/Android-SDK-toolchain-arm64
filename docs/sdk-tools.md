@@ -54,8 +54,8 @@ recipes support Bionic; unsupported libc choices fail before the build.
   snapshot generator. Desktop gen_snapshot binaries and mixed host zip archives
   are excluded from the release. Bionic is the supported libc for this Android task.
 
-These large SDK tasks need the provisioned `sdk-builder`. A default source ref and
-recipe do not imply a successful build of every upstream version.
+Dart SDK and Flutter tool tasks use a hosted runner with storage cleanup.
+The engine task uses the provisioned `sdk-builder`.
 
 ## Compiler profiles and verification
 

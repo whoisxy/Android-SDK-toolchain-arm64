@@ -14,13 +14,13 @@ Every row has a `tasks/NAME.sh [HASH_OR_TAG] --libc bionic|glibc|musl` entry poi
 | `brotli` | native-library | cmake | `350100a5bb9d9671aca85213b2ec7a70a361b0cd` | bionic, glibc, musl | ubuntu-24.04 |
 | `cipd` | native-tool | go | `0cfda84e9220a0a161aa4f6b37e3eea5325d81d2` | bionic, glibc, musl | ubuntu-24.04 |
 | `cpu-features` | native-library | cmake | `936b9ab5515dead115606559502e3864958f7f6e` | bionic, glibc, musl | ubuntu-24.04 |
-| `dart-sdk` | sdk | dart-sdk | `416e33b0ffaef062a60ec966bb8c82ed2b83f128` | bionic, glibc | self-hosted, linux, x64, sdk-builder |
+| `dart-sdk` | sdk | dart-sdk | `416e33b0ffaef062a60ec966bb8c82ed2b83f128` | bionic, glibc | ubuntu-24.04 |
 | `depot-tools` | script-and-native-distribution | depot-tools | `580b4ff3f5cd0dcaa2eacda28cefe0f45320e8f7` | bionic, glibc, musl | ubuntu-24.04 |
 | `expat` | native-library | cmake | `8e49998f003d693213b538ef765814c7d21abada` | bionic, glibc, musl | ubuntu-24.04 |
 | `fastboot` | native-tool | aosp | `fc7bc8c4bfb4c6095e34ea784509dae56f25b486` | bionic | self-hosted, linux, x64, aosp-builder |
 | `flatbuffers` | native-library-and-tools | cmake | `067bfdbde9b10c1beb5d6b02d67ae9db8b96f736` | bionic, glibc, musl | ubuntu-24.04 |
 | `flutter-engine-arm64` | android-engine | android-engine | `c197ca5199e9ee5661e865596c9c07294dfab51c` | bionic | self-hosted, linux, x64, sdk-builder |
-| `flutter-tools` | tool-kernel-with-arm64-sdk | flutter-tools | `c197ca5199e9ee5661e865596c9c07294dfab51c` | bionic, glibc | self-hosted, linux, x64, sdk-builder |
+| `flutter-tools` | tool-kernel-with-arm64-sdk | flutter-tools | `c197ca5199e9ee5661e865596c9c07294dfab51c` | bionic, glibc | ubuntu-24.04 |
 | `freetype` | native-library | cmake | `be4bcb57914154fc1b9e2900bf8e4b516057e2b8` | bionic, glibc, musl | ubuntu-24.04 |
 | `gen-snapshot` | native-tool | gen-snapshot | `416e33b0ffaef062a60ec966bb8c82ed2b83f128` | bionic, glibc | ubuntu-24.04 |
 | `glfw` | native-library | cmake | `9352d8fe93cd443be18157abe81f16500549aec0` | glibc, musl | ubuntu-24.04 |

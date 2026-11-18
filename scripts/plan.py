@@ -24,7 +24,7 @@ if not isinstance(runner, list) or not runner or not all(isinstance(x, str) and 
     raise SystemExit("Runner must be a JSON array of labels")
 def needs_compiler(name):
     entry = registry()[name]
-    if entry.get("manages_toolchain"):
+    if entry.get("manages_toolchain") or entry["backend"] in {"dart-sdk", "flutter-tools"}:
         return False
     return entry["kind"] not in {"script-distribution", "jvm-tool"} or any(needs_compiler(dep) for dep in entry.get("dependencies", []))
 

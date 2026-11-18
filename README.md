@@ -74,7 +74,7 @@ Most small tasks use the standard hosted runner. Large tasks need provisioned
 self-hosted machines:
 
 - `sdk-builder`: labels `self-hosted, linux, x64, sdk-builder`; 100–150+ GiB free
-  storage and 32+ GiB RAM for SDK/engine builds.
+  storage and 32+ GiB RAM for engine builds.
 - `aosp-builder`: labels `self-hosted, linux, x64, aosp-builder`; at least 400 GiB
   free storage and 64+ GiB RAM for full platform source builds.
 
