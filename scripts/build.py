@@ -271,6 +271,14 @@ class Builder:
         self.run(["python3", "-c", "import get_source; get_source.patches()"], cwd=adapter)
         self.run(["patch", "--batch", "--forward", "-p1", "-i",
                   adapter / "patches/protobuf_CMakeLists.txt.patch"], cwd=adapter)
+        # The CMake port compiles this API into its static libprocessgroup. It
+        # does not import the Android 36 platform symbol at runtime.
+        cgroup = adapter / "src/core/libprocessgroup/cgrouprc/include/android/cgrouprc.h"
+        original = cgroup.read_text()
+        cgroup.write_text(re.sub(
+            r"(ACgroupController_getMaxActivationDepth\(\s*const ACgroupController\* controller\)) __INTRODUCED_IN\(36\)",
+            r"\1", original,
+        ))
 
         protoc = shutil.which("protoc")
         if protoc is None or self.run([protoc, "--version"], capture=True) != "libprotoc 3.21.12":
@@ -288,7 +296,10 @@ class Builder:
                   "-Dprotobuf_BUILD_TESTS=OFF", "-DABSL_PROPAGATE_CXX_STD=ON",
                   "-DPROTOC_PATH=" + protoc, *self.toolchain.cmake])
         self.run(["cmake", "--build", output, "--parallel", self.jobs, "--target", name])
-        executable = output / "bin" / spec["sdk_output_group"] / name
+        candidates = [output / "bin" / name, output / "bin" / spec["sdk_output_group"] / name]
+        executable = next((path for path in candidates if path.is_file()), None)
+        if executable is None:
+            raise ValueError("Missing Android SDK tool output: " + name)
         self.run([self.toolchain.strip, "--strip-debug", executable])
         self.copy(executable, "bin/" + name)
         metadata = self.prefix / "share/build-metadata"
