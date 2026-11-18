@@ -279,6 +279,17 @@ class Builder:
             r"(ACgroupController_getMaxActivationDepth\(\s*const ACgroupController\* controller\)) __INTRODUCED_IN\(36\)",
             r"\1", original,
         ))
+        if name == "adb":
+            task_runner = adapter / "src/openscreen/platform/api/task_runner.h"
+            task_runner.write_text(task_runner.read_text().replace(
+                "std::packaged_task<void() noexcept>", "std::packaged_task<void()>",
+            ))
+        if name == "aapt2":
+            proto_directory = adapter / "src/base/tools/aapt2"
+            for proto in proto_directory.rglob("*.proto"):
+                proto.write_text(proto.read_text().replace(
+                    'import "frameworks/base/tools/aapt2/', 'import "',
+                ))
 
         protoc = shutil.which("protoc")
         if protoc is None or self.run([protoc, "--version"], capture=True) != "libprotoc 3.21.12":
