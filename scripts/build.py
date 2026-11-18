@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Build one registry dependency and package installed output with source provenance."""
 import argparse
+from concurrent.futures import ThreadPoolExecutor
 import hashlib
 import json
 import os
@@ -30,6 +31,8 @@ class Builder:
             raise ValueError(f"{dependency} does not support libc={libc}; no fallback target is used")
         self.requested_ref = requested_ref
         self.env = build_environment()
+        if self.dependencies[dependency]["backend"] == "android-sdk-tool":
+            self.env["ANDROID_API"] = str(max(30, int(self.env.get("ANDROID_API", "28"))))
         self.jobs = int(self.env.get("JOBS", "4"))
         if not 1 <= self.jobs <= 256:
             raise ValueError("JOBS must be between 1 and 256")
@@ -127,8 +130,8 @@ class Builder:
             self.cmake(spec, source, build)
         elif backend in ("skia", "dart-sdk", "gen-snapshot"):
             self.large_build(name, spec, source, build)
-        elif backend == "aosp":
-            self.aosp(spec, source, build)
+        elif backend == "android-sdk-tool":
+            self.android_sdk_tool(name, spec, source, build)
         elif backend == "apksigner":
             self.apksigner(source, build)
         elif backend == "flutter-tools":
@@ -237,59 +240,55 @@ class Builder:
         self.run([depot / "gclient", "revinfo", "--actual", "--output-json",
                   metadata / "resolved-engine-dependencies.json"], cwd=source, env=env)
 
-    def aosp(self, spec, source, build):
-        checkout = build / "aosp"
-        checkout.mkdir()
-        repo_source = self.fetch("repo")
-        repo = ["python3", repo_source / "repo"]
-        repo_ref = self.dependencies["repo"]["default_ref"]
-        self.run([*repo, "init", "-u", spec["manifest_url"], "-b", spec["manifest_ref"],
-                  "--depth=1", "--no-clone-bundle", "--repo-rev=" + repo_ref], cwd=checkout)
-        self.run([*repo, "sync", "--current-branch", "--no-tags", "--no-clone-bundle", "-j", self.jobs], cwd=checkout)
-        component = checkout / spec["aosp_project_path"]
-        # The optional ref selects this component; the remaining platform graph stays manifest-pinned.
-        self.run(["git", "fetch", source, "HEAD"], cwd=component)
-        self.run(["git", "checkout", "--detach", "FETCH_HEAD"], cwd=component)
-        manifest_dir = self.prefix / "share/build-metadata"
-        manifest_dir.mkdir(parents=True, exist_ok=True)
-        self.run([*repo, "manifest", "-r", "-o", manifest_dir / "aosp-manifest.xml"], cwd=checkout)
-        out = build / "out"
-        if spec["kind"] != "jvm-tool":
-            # Host-only blueprint module classes otherwise force x86 output even for an ARM64 product.
-            blueprints = []
-            for relative in spec.get("aosp_port_subdirs", ["."]):
-                blueprints.extend((component / relative).rglob("Android.bp"))
-            for blueprint in blueprints:
-                text = blueprint.read_text()
-                for host_class, device_class in (("cc_binary_host", "cc_binary"),
-                                                  ("cc_library_host_static", "cc_library_static"),
-                                                  ("cc_library_host_shared", "cc_library_shared")):
-                    text = text.replace(host_class + " {", device_class + " {")
-                blueprint.write_text(text)
-            diff = self.run(["git", "diff", "--", "*.bp"], cwd=component, capture=True)
-            (manifest_dir / "aosp-device-modules.patch").write_text(diff + "\n")
-        env = dict(self.env, OUT_DIR=str(out), TARGET_PRODUCT="aosp_arm64",
-                   TARGET_RELEASE="trunk_staging", TARGET_BUILD_VARIANT="userdebug",
-                   BUILD_NUMBER=self.env.get("GITHUB_RUN_ID", "local"))
-        self.run([checkout / "build/soong/soong_ui.bash", "--make-mode", "-j" + str(self.jobs),
-                  *spec["aosp_modules"]], cwd=checkout, env=env)
-        if spec["kind"] == "jvm-tool":
-            self.copy(out / "host/linux-x86/framework/apksigner.jar", "framework/apksigner.jar")
-            wrapper = self.prefix / "bin/apksigner"
-            wrapper.write_text(('#!/system/bin/sh\n' if self.libc == 'bionic' else '#!/bin/sh\n') + 'set -eu\n'
-                'prefix="$(cd -- "$(dirname -- "$0")/.." && pwd)"\nexec java -jar "$prefix/framework/apksigner.jar" "$@"\n')
-            wrapper.chmod(0o755)
-        else:
-            product = out / "target/product/generic_arm64/system"
-            for relative in spec["aosp_outputs"]:
-                self.copy(product / relative, relative)
-            # Platform libraries stay ARM64/Bionic; system libc/loader remain device-provided.
-            for directory in ("lib64",):
-                if (product / directory).exists():
-                    for library in (product / directory).glob("*.so"):
-                        if library.name not in {"libc.so", "libdl.so", "libm.so"}:
-                            self.copy(library, "lib/" + library.name)
-        self.collect_licenses(component, self.prefix / "share/licenses/aosp-component")
+    def android_sdk_tool(self, name, spec, source, build):
+        lock = json.loads((ROOT / "recipes/android-sdk-sources.json").read_text())
+        adapter = build / "sdk-tools"
+        adapter.mkdir()
+
+        def checkout(remote, commit, path):
+            path.mkdir(parents=True, exist_ok=True)
+            self.run(["git", "init", "--quiet", path])
+            self.run(["git", "-C", path, "fetch", "--quiet", "--depth=1", remote, commit])
+            self.run(["git", "-C", path, "checkout", "--quiet", "--detach", "FETCH_HEAD"])
+
+        checkout(lock["adapter"]["url"], lock["adapter"]["revision"], adapter)
+        self.collect_licenses(adapter, self.prefix / "share/licenses/android-sdk-tools-port")
+
+        def prepare(pin):
+            path = adapter / pin["path"]
+            if pin["path"] == spec["sdk_source_path"]:
+                path.parent.mkdir(exist_ok=True)
+                path.symlink_to(source, target_is_directory=True)
+                return dict(pin, revision=self.record(name)["commit"])
+            checkout(pin["url"], pin["revision"], path)
+            return pin
+
+        with ThreadPoolExecutor(max_workers=min(self.jobs, 6)) as pool:
+            resolved = list(pool.map(prepare, lock["sources"]))
+
+        # Apply the pinned port's source preparation without executing its clone
+        # commands, which would resolve mutable tag or branch names.
+        self.run(["python3", "-c", "import get_source; get_source.patches()"], cwd=adapter)
+        self.run(["patch", "--batch", "--forward", "-p1", "-i",
+                  adapter / "patches/protobuf_CMakeLists.txt.patch"], cwd=adapter)
+
+        protoc = shutil.which("protoc")
+        if protoc is None or self.run([protoc, "--version"], capture=True) != "libprotoc 3.21.12":
+            raise ValueError("The Android SDK port requires host protoc 3.21.12")
+        output = build / "out"
+        self.run(["cmake", "-S", adapter, "-B", output, "-G", "Ninja",
+                  "-DCMAKE_BUILD_TYPE=Release", "-DCMAKE_POLICY_VERSION_MINIMUM=3.5",
+                  "-Dprotobuf_BUILD_TESTS=OFF", "-DABSL_PROPAGATE_CXX_STD=ON",
+                  "-DPROTOC_PATH=" + protoc, *self.toolchain.cmake])
+        self.run(["cmake", "--build", output, "--parallel", self.jobs, "--target", name])
+        executable = output / "bin" / spec["sdk_output_group"] / name
+        self.run([self.toolchain.strip, "--strip-debug", executable])
+        self.copy(executable, "bin/" + name)
+        metadata = self.prefix / "share/build-metadata"
+        metadata.mkdir(parents=True, exist_ok=True)
+        (metadata / "android-sdk-sources.json").write_text(
+            json.dumps({**lock, "sources": resolved}, indent=2) + "\n"
+        )
 
     def apksigner(self, source, build):
         core = source / "src/main/java"

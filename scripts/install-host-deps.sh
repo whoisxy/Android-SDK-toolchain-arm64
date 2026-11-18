@@ -11,5 +11,6 @@ if [[ "$EUID" != 0 ]]; then privilege=(sudo -n); fi
   build-essential clang cmake ninja-build pkg-config python3 python3-dev python3-venv \
   curl git ca-certificates tar unzip zip xz-utils bzip2 autoconf automake libtool \
   meson m4 texinfo nasm yasm bison flex gperf rsync file golang-go \
+  patch protobuf-compiler python3-requests \
   libx11-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev \
   libgl1-mesa-dev libglu1-mesa-dev libfontconfig1-dev

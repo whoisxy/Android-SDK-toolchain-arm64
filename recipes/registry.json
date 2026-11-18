@@ -2,36 +2,41 @@
   "schema_version": 1,
   "default_host": "build-runner CPU is independent of the ARM64 output target",
   "dependencies": {
-    "aapt2": {
+    "aapt": {
       "url": "https://android.googlesource.com/platform/frameworks/base",
-      "default_ref": "4e43ad12e1b211f15152e9c5b16b0fe88e6b93f3",
-      "backend": "aosp",
+      "default_ref": "723419df1a0769b63587722a8a0a0980f454ffd2",
+      "backend": "android-sdk-tool",
       "kind": "native-tool",
       "dependencies": [],
-      "manifest_url": "https://android.googlesource.com/platform/manifest",
-      "manifest_ref": "2f91a1ccd8a14ab34358ef141bfb1fc68d200bb4",
-      "aosp_project_path": "frameworks/base",
-      "aosp_modules": [
-        "aapt2"
-      ],
-      "aosp_outputs": [
-        "bin/aapt2"
-      ],
-      "runner": [
-        "self-hosted",
-        "linux",
-        "x64",
-        "aosp-builder"
-      ],
-      "min_disk_gib": 400,
-      "release_repository": null,
       "target_architecture": "arm64",
       "supported_libcs": [
         "bionic"
       ],
-      "aosp_port_subdirs": [
-        "tools/aapt2"
-      ]
+      "runner": [
+        "ubuntu-24.04"
+      ],
+      "min_disk_gib": 10,
+      "release_repository": null,
+      "sdk_source_path": "src/base",
+      "sdk_output_group": "build-tools"
+    },
+    "aapt2": {
+      "url": "https://android.googlesource.com/platform/frameworks/base",
+      "default_ref": "723419df1a0769b63587722a8a0a0980f454ffd2",
+      "backend": "android-sdk-tool",
+      "kind": "native-tool",
+      "dependencies": [],
+      "target_architecture": "arm64",
+      "supported_libcs": [
+        "bionic"
+      ],
+      "runner": [
+        "ubuntu-24.04"
+      ],
+      "min_disk_gib": 10,
+      "release_repository": null,
+      "sdk_source_path": "src/base",
+      "sdk_output_group": "build-tools"
     },
     "abseil": {
       "url": "https://chromium.googlesource.com/chromium/src/third_party/abseil-cpp",
@@ -54,65 +59,39 @@
     },
     "adb": {
       "url": "https://android.googlesource.com/platform/packages/modules/adb",
-      "default_ref": "f8a7480bc3500502d5f12c8fd6d1aecc394a604f",
-      "backend": "aosp",
+      "default_ref": "ce9ea51f30f69f7560db692f7cb4d5d5502c3653",
+      "backend": "android-sdk-tool",
       "kind": "native-tool",
       "dependencies": [],
-      "manifest_url": "https://android.googlesource.com/platform/manifest",
-      "manifest_ref": "2f91a1ccd8a14ab34358ef141bfb1fc68d200bb4",
-      "aosp_project_path": "packages/modules/adb",
-      "aosp_modules": [
-        "adb"
-      ],
-      "aosp_outputs": [
-        "bin/adb"
-      ],
-      "runner": [
-        "self-hosted",
-        "linux",
-        "x64",
-        "aosp-builder"
-      ],
-      "min_disk_gib": 400,
-      "release_repository": null,
       "target_architecture": "arm64",
       "supported_libcs": [
         "bionic"
       ],
-      "aosp_port_subdirs": [
-        "."
-      ]
+      "runner": [
+        "ubuntu-24.04"
+      ],
+      "min_disk_gib": 10,
+      "release_repository": null,
+      "sdk_source_path": "src/adb",
+      "sdk_output_group": "platform-tools"
     },
     "aidl": {
       "url": "https://android.googlesource.com/platform/system/tools/aidl",
-      "default_ref": "d1304733b74b69f26dbe2d3c40c797aaac22f163",
-      "backend": "aosp",
+      "default_ref": "4e2b7b3dc8c8ac9ae3fabec9460dd6d99f92a6ab",
+      "backend": "android-sdk-tool",
       "kind": "native-tool",
       "dependencies": [],
-      "manifest_url": "https://android.googlesource.com/platform/manifest",
-      "manifest_ref": "2f91a1ccd8a14ab34358ef141bfb1fc68d200bb4",
-      "aosp_project_path": "system/tools/aidl",
-      "aosp_modules": [
-        "aidl"
-      ],
-      "aosp_outputs": [
-        "bin/aidl"
-      ],
-      "runner": [
-        "self-hosted",
-        "linux",
-        "x64",
-        "aosp-builder"
-      ],
-      "min_disk_gib": 400,
-      "release_repository": null,
       "target_architecture": "arm64",
       "supported_libcs": [
         "bionic"
       ],
-      "aosp_port_subdirs": [
-        "."
-      ]
+      "runner": [
+        "ubuntu-24.04"
+      ],
+      "min_disk_gib": 10,
+      "release_repository": null,
+      "sdk_source_path": "src/aidl",
+      "sdk_output_group": "build-tools"
     },
     "apksigner": {
       "url": "https://android.googlesource.com/platform/tools/apksig",
@@ -278,34 +257,21 @@
     },
     "fastboot": {
       "url": "https://android.googlesource.com/platform/system/core",
-      "default_ref": "fc7bc8c4bfb4c6095e34ea784509dae56f25b486",
-      "backend": "aosp",
+      "default_ref": "90e4908e776d2be9b26b87af649e63e4208cf085",
+      "backend": "android-sdk-tool",
       "kind": "native-tool",
       "dependencies": [],
-      "manifest_url": "https://android.googlesource.com/platform/manifest",
-      "manifest_ref": "2f91a1ccd8a14ab34358ef141bfb1fc68d200bb4",
-      "aosp_project_path": "system/core",
-      "aosp_modules": [
-        "fastboot"
-      ],
-      "aosp_outputs": [
-        "bin/fastboot"
-      ],
-      "runner": [
-        "self-hosted",
-        "linux",
-        "x64",
-        "aosp-builder"
-      ],
-      "min_disk_gib": 400,
-      "release_repository": null,
       "target_architecture": "arm64",
       "supported_libcs": [
         "bionic"
       ],
-      "aosp_port_subdirs": [
-        "fastboot"
-      ]
+      "runner": [
+        "ubuntu-24.04"
+      ],
+      "min_disk_gib": 10,
+      "release_repository": null,
+      "sdk_source_path": "src/core",
+      "sdk_output_group": "platform-tools"
     },
     "flatbuffers": {
       "url": "https://chromium.googlesource.com/external/github.com/google/flatbuffers",
@@ -706,7 +672,7 @@
         "musl"
       ],
       "release_task": false,
-      "role": "build-machine source synchronization via Python; not a binary output"
+      "role": "Optional Python bootstrap for repo-managed source trees; not a binary output"
     },
     "shaderc": {
       "url": "https://chromium.googlesource.com/external/github.com/google/shaderc",
@@ -861,34 +827,21 @@
     },
     "zipalign": {
       "url": "https://android.googlesource.com/platform/build",
-      "default_ref": "3d9c9aacdb6ca0b745b3048dad88d0db4680d50e",
-      "backend": "aosp",
+      "default_ref": "46581c7be3390d0ecd0a037e6e6ebc2893d5768a",
+      "backend": "android-sdk-tool",
       "kind": "native-tool",
       "dependencies": [],
-      "manifest_url": "https://android.googlesource.com/platform/manifest",
-      "manifest_ref": "2f91a1ccd8a14ab34358ef141bfb1fc68d200bb4",
-      "aosp_project_path": "build/make",
-      "aosp_modules": [
-        "zipalign"
-      ],
-      "aosp_outputs": [
-        "bin/zipalign"
-      ],
-      "runner": [
-        "self-hosted",
-        "linux",
-        "x64",
-        "aosp-builder"
-      ],
-      "min_disk_gib": 400,
-      "release_repository": null,
       "target_architecture": "arm64",
       "supported_libcs": [
         "bionic"
       ],
-      "aosp_port_subdirs": [
-        "tools/zipalign"
-      ]
+      "runner": [
+        "ubuntu-24.04"
+      ],
+      "min_disk_gib": 10,
+      "release_repository": null,
+      "sdk_source_path": "src/build",
+      "sdk_output_group": "build-tools"
     },
     "zlib": {
       "url": "https://github.com/madler/zlib.git",

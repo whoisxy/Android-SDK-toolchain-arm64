@@ -75,8 +75,8 @@ self-hosted machines:
 
 - `sdk-builder`: labels `self-hosted, linux, x64, sdk-builder` for larger builds
   such as standalone Skia. Dart SDK and Flutter builds use GitHub-hosted runners.
-- `aosp-builder`: labels `self-hosted, linux, x64, aosp-builder`; at least 400 GiB
-  free storage and 64+ GiB RAM for full platform source builds.
+- Android SDK tools build on hosted runners using pinned component sources,
+  CMake and the Android NDK.
 
 Those labels select an existing build machine, not the output architecture. The
 workflow's optional `runner` JSON input can select another compatible runner.

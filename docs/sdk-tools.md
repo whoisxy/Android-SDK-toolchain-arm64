@@ -6,8 +6,9 @@ The build machine is allowed to have a different CPU.
 
 ## Bootstrap tools
 
-- `repo` is a pinned Python bootstrap source used to synchronize AOSP on the build
-  machine. It has no build/release task. `gtest-parallel` is interpreted Python tooling.
+- `repo` is available as a pinned Python bootstrap source for Repo-managed trees.
+  The Android tool tasks fetch their pinned sources directly through Git.
+  `gtest-parallel` is interpreted Python tooling.
 - `cipd` builds the native client from pinned LUCI source with Go/CGO and the selected
   ARM64 compiler. `depot-tools` includes it as a dependency, together with gclient and
   caller-managed Python/vpython launchers. Desktop Python/CIPD bootstrap executables
@@ -18,16 +19,13 @@ The build machine is allowed to have a different CPU.
 
 ## Android SDK components
 
-`aapt2`, `aidl`, `zipalign`, `adb` and `fastboot` use a pinned Android platform graph.
-Their Bionic builds select the ARM64 product and adapt the selected component's
-host-only native module declarations to device modules. The source diff and resolved
-platform manifest are retained. Additional upstream source portability problems can
-require component-specific patches; the AOSP builds need the large self-hosted
-runner and are not claimed verified by a small hosted-library run.
-
-AOSP binaries target the pinned Android platform release and may use platform APIs
-newer than the API level used by the NDK library tasks. Architecture/libc checks do
-not establish compatibility with older Android system releases.
+`aapt`, `aapt2`, `aidl`, `zipalign`, `adb` and `fastboot` use the pinned
+`lzhiyong/android-sdk-tools` CMake port. Each task builds its requested executable
+with the Android NDK for ARM64 Bionic at API 30 or newer. The build checks out
+individual source repositories, without an Android platform or system image build.
+`recipes/android-sdk-sources.json` pins the port and its dependencies at the
+`platform-tools-35.0.2` source tag. An optional hash or tag selects a different
+revision of the tool's own Android source repository while the other pins stay fixed.
 
 `apksigner` builds directly from the pinned apksig Java sources on a hosted runner.
 The build signs and verifies an APK using the upstream test fixture. The release

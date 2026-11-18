@@ -4,10 +4,11 @@ Every row has a `tasks/NAME.sh [HASH_OR_TAG] --libc bionic|glibc|musl` entry poi
 
 | Task | Output kind | Backend | Default source commit | Supported libc | Runner |
 |---|---|---|---|---|---|
-| `aapt2` | native-tool | aosp | `4e43ad12e1b211f15152e9c5b16b0fe88e6b93f3` | bionic | self-hosted, linux, x64, aosp-builder |
+| `aapt` | native-tool | android-sdk-tool | `723419df1a0769b63587722a8a0a0980f454ffd2` | bionic | ubuntu-24.04 |
+| `aapt2` | native-tool | android-sdk-tool | `723419df1a0769b63587722a8a0a0980f454ffd2` | bionic | ubuntu-24.04 |
 | `abseil` | native-library | cmake | `564023aa53767b5f60b3a556f0a025b7b7e8241e` | bionic, glibc, musl | ubuntu-24.04 |
-| `adb` | native-tool | aosp | `f8a7480bc3500502d5f12c8fd6d1aecc394a604f` | bionic | self-hosted, linux, x64, aosp-builder |
-| `aidl` | native-tool | aosp | `d1304733b74b69f26dbe2d3c40c797aaac22f163` | bionic | self-hosted, linux, x64, aosp-builder |
+| `adb` | native-tool | android-sdk-tool | `ce9ea51f30f69f7560db692f7cb4d5d5502c3653` | bionic | ubuntu-24.04 |
+| `aidl` | native-tool | android-sdk-tool | `4e2b7b3dc8c8ac9ae3fabec9460dd6d99f92a6ab` | bionic | ubuntu-24.04 |
 | `apksigner` | jvm-tool | apksigner | `5bd2e81b765cd0da6f0b6378d78b19abff04fe26` | bionic, glibc, musl | ubuntu-24.04 |
 | `benchmark` | native-library | cmake | `431abd149fd76a072f821913c0340137cc755f36` | bionic, glibc, musl | ubuntu-24.04 |
 | `boringssl` | native-library | cmake | `c7eb007fd10627f1abb41a3e368b85e24cd20af9` | bionic, glibc, musl | ubuntu-24.04 |
@@ -17,7 +18,7 @@ Every row has a `tasks/NAME.sh [HASH_OR_TAG] --libc bionic|glibc|musl` entry poi
 | `dart-sdk` | sdk | dart-sdk | `416e33b0ffaef062a60ec966bb8c82ed2b83f128` | bionic, glibc | ubuntu-24.04 |
 | `depot-tools` | script-and-native-distribution | depot-tools | `580b4ff3f5cd0dcaa2eacda28cefe0f45320e8f7` | bionic, glibc, musl | ubuntu-24.04 |
 | `expat` | native-library | cmake | `8e49998f003d693213b538ef765814c7d21abada` | bionic, glibc, musl | ubuntu-24.04 |
-| `fastboot` | native-tool | aosp | `fc7bc8c4bfb4c6095e34ea784509dae56f25b486` | bionic | self-hosted, linux, x64, aosp-builder |
+| `fastboot` | native-tool | android-sdk-tool | `90e4908e776d2be9b26b87af649e63e4208cf085` | bionic | ubuntu-24.04 |
 | `flatbuffers` | native-library-and-tools | cmake | `067bfdbde9b10c1beb5d6b02d67ae9db8b96f736` | bionic, glibc, musl | ubuntu-24.04 |
 | `flutter-engine-arm64` | android-engine | android-engine | `c197ca5199e9ee5661e865596c9c07294dfab51c` | bionic | ubuntu-24.04 |
 | `flutter-tools` | tool-kernel-with-arm64-sdk | flutter-tools | `c197ca5199e9ee5661e865596c9c07294dfab51c` | bionic, glibc | ubuntu-24.04 |
@@ -47,7 +48,7 @@ Every row has a `tasks/NAME.sh [HASH_OR_TAG] --libc bionic|glibc|musl` entry poi
 | `sqlite` | native-library | sqlite | `0f61bd2023ba94423b4e4c8cfb1a23de1fe6a21c` | bionic, glibc, musl | ubuntu-24.04 |
 | `vulkan-headers` | headers | cmake | `a4f8ada9f4f97c45b8c89c57997be9cebaae65d2` | bionic, glibc, musl | ubuntu-24.04 |
 | `vulkan-memory-allocator` | headers | cmake | `c788c52156f3ef7bc7ab769cb03c110a53ac8fcb` | bionic, glibc, musl | ubuntu-24.04 |
-| `zipalign` | native-tool | aosp | `3d9c9aacdb6ca0b745b3048dad88d0db4680d50e` | bionic | self-hosted, linux, x64, aosp-builder |
+| `zipalign` | native-tool | android-sdk-tool | `46581c7be3390d0ecd0a037e6e6ebc2893d5768a` | bionic | ubuntu-24.04 |
 | `zlib` | native-library | cmake | `51b7f2abdade71cd9bb0e7a373ef2610ec6f9daf` | bionic, glibc, musl | ubuntu-24.04 |
 
 These are implemented recipes, not a claim that every recipe has completed a CI build. Consult Actions and Releases for observed results.

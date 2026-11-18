@@ -1,0 +1,204 @@
+{
+  "adapter": {
+    "url": "https://github.com/lzhiyong/android-sdk-tools.git",
+    "revision": "aa13480acd6c32f7e1c384a2db76b9e2ba8eb989"
+  },
+  "source_tag": "platform-tools-35.0.2",
+  "sources": [
+    {
+      "path": "src/core",
+      "url": "https://android.googlesource.com/platform/system/core",
+      "revision": "90e4908e776d2be9b26b87af649e63e4208cf085"
+    },
+    {
+      "path": "src/extras",
+      "url": "https://android.googlesource.com/platform/system/extras",
+      "revision": "d8e488a499f5a96f788eac9d5364f0b839306c57"
+    },
+    {
+      "path": "src/selinux",
+      "url": "https://android.googlesource.com/platform/external/selinux",
+      "revision": "0496d8248e0cb20d6512387f109f41f37f68f6e1"
+    },
+    {
+      "path": "src/f2fs-tools",
+      "url": "https://android.googlesource.com/platform/external/f2fs-tools",
+      "revision": "f49d4274ddd9de595129741fbf0a62c5901c0223"
+    },
+    {
+      "path": "src/e2fsprogs",
+      "url": "https://android.googlesource.com/platform/external/e2fsprogs",
+      "revision": "81357db29373b2bab58af88dc4b747662047b7e7"
+    },
+    {
+      "path": "src/boringssl",
+      "url": "https://android.googlesource.com/platform/external/boringssl",
+      "revision": "2a7146e5d8c55fb53d31f66f8e1351baa3fb0d4e"
+    },
+    {
+      "path": "src/mkbootimg",
+      "url": "https://android.googlesource.com/platform/system/tools/mkbootimg",
+      "revision": "cbf4ce939fb73c0b74127c4cb5e1092b127a4f4f"
+    },
+    {
+      "path": "src/avb",
+      "url": "https://android.googlesource.com/platform/external/avb",
+      "revision": "6eedb12491da292911a1b88911a6682fd2e827bd"
+    },
+    {
+      "path": "src/libbase",
+      "url": "https://android.googlesource.com/platform/system/libbase",
+      "revision": "328768fabb054387ad7f64c984d4afcea70d25c9"
+    },
+    {
+      "path": "src/base",
+      "url": "https://android.googlesource.com/platform/frameworks/base",
+      "revision": "723419df1a0769b63587722a8a0a0980f454ffd2"
+    },
+    {
+      "path": "src/native",
+      "url": "https://android.googlesource.com/platform/frameworks/native",
+      "revision": "55c639d4b83235438ae431c76ffcb6e49be34f75"
+    },
+    {
+      "path": "src/adb",
+      "url": "https://android.googlesource.com/platform/packages/modules/adb",
+      "revision": "ce9ea51f30f69f7560db692f7cb4d5d5502c3653"
+    },
+    {
+      "path": "src/logging",
+      "url": "https://android.googlesource.com/platform/system/logging",
+      "revision": "153a153f1fccc0cc6b96766d1557518303aebd5e"
+    },
+    {
+      "path": "src/incremental_delivery",
+      "url": "https://android.googlesource.com/platform/system/incremental_delivery",
+      "revision": "d5b8d81edc4a1e5a1995e1e4858cb1b340080137"
+    },
+    {
+      "path": "src/fmtlib",
+      "url": "https://android.googlesource.com/platform/external/fmtlib",
+      "revision": "c230d4f0a5a7058a6f0468cd384200ba2ed2d8c6"
+    },
+    {
+      "path": "src/pcre",
+      "url": "https://android.googlesource.com/platform/external/pcre",
+      "revision": "06781197cc1b93713b9c07aebc75d9790d2d4d76"
+    },
+    {
+      "path": "src/libpng",
+      "url": "https://android.googlesource.com/platform/external/libpng",
+      "revision": "3f98a222b00621de0815c70bcbee9f3d19434359"
+    },
+    {
+      "path": "src/expat",
+      "url": "https://android.googlesource.com/platform/external/expat",
+      "revision": "20fd404393d65d2aff6dbc79dcbf4da6e68cabb2"
+    },
+    {
+      "path": "src/protobuf",
+      "url": "https://android.googlesource.com/platform/external/protobuf",
+      "revision": "5b489930dd17777ea9173840faba912c2db1748a"
+    },
+    {
+      "path": "src/aidl",
+      "url": "https://android.googlesource.com/platform/system/tools/aidl",
+      "revision": "4e2b7b3dc8c8ac9ae3fabec9460dd6d99f92a6ab"
+    },
+    {
+      "path": "src/unwinding",
+      "url": "https://android.googlesource.com/platform/system/unwinding",
+      "revision": "540353061e864599723d4a838d503b80ecdf61ed"
+    },
+    {
+      "path": "src/zopfli",
+      "url": "https://android.googlesource.com/platform/external/zopfli",
+      "revision": "502a8f40590050c27a0a6259a0c08ed858f27f8e"
+    },
+    {
+      "path": "src/jsoncpp",
+      "url": "https://android.googlesource.com/platform/external/jsoncpp",
+      "revision": "4d823700a3d9c5727a039d65587ca99519f32de2"
+    },
+    {
+      "path": "src/art",
+      "url": "https://android.googlesource.com/platform/art",
+      "revision": "114291d98c93cc0e030dbb2b870dca47777a9fba"
+    },
+    {
+      "path": "src/dalvik",
+      "url": "https://android.googlesource.com/platform/dalvik",
+      "revision": "c7e490537adfaa04030757014e590c1b442f748a"
+    },
+    {
+      "path": "src/sqlite",
+      "url": "https://android.googlesource.com/platform/external/sqlite",
+      "revision": "f6e15f48aceb7421bbbb515a91076c1a7e12c14f"
+    },
+    {
+      "path": "src/lz4",
+      "url": "https://android.googlesource.com/platform/external/lz4",
+      "revision": "96cc9e92d0bdc4811d15c962ce457128d419cc80"
+    },
+    {
+      "path": "src/zstd",
+      "url": "https://android.googlesource.com/platform/external/zstd",
+      "revision": "667562a5a6e0d0296db762110e437283472cf455"
+    },
+    {
+      "path": "src/libusb",
+      "url": "https://android.googlesource.com/platform/external/libusb",
+      "revision": "ab84e07b9a3575bc6eddb87dba87f85f0ab8490f"
+    },
+    {
+      "path": "src/brotli",
+      "url": "https://android.googlesource.com/platform/external/brotli",
+      "revision": "0d40cc0076003b010b2902894e3eac1d1ccffb8e"
+    },
+    {
+      "path": "src/mdnsresponder",
+      "url": "https://android.googlesource.com/platform/external/mdnsresponder",
+      "revision": "3169df7f1376b098b98c3576f9f45c6d786c462e"
+    },
+    {
+      "path": "src/abseil-cpp",
+      "url": "https://android.googlesource.com/platform/external/abseil-cpp",
+      "revision": "8817f93011f172bbb199dacd6310d5b146e6fde9"
+    },
+    {
+      "path": "src/openscreen",
+      "url": "https://android.googlesource.com/platform/external/openscreen",
+      "revision": "ced29e3d2bc4f1549738c1c2bb702a1c7232a8bb"
+    },
+    {
+      "path": "src/googletest",
+      "url": "https://android.googlesource.com/platform/external/googletest",
+      "revision": "b9640af0b0a5b0e94bbef3f584763be6926b1ce3"
+    },
+    {
+      "path": "src/tinyxml2",
+      "url": "https://android.googlesource.com/platform/external/tinyxml2",
+      "revision": "c1a174ab5c7f50e6877d3f1c8355759890e61300"
+    },
+    {
+      "path": "src/libziparchive",
+      "url": "https://android.googlesource.com/platform/system/libziparchive",
+      "revision": "b1d0c47e59e1a59b79f38ed0cbb94191cbf37416"
+    },
+    {
+      "path": "src/build",
+      "url": "https://android.googlesource.com/platform/build",
+      "revision": "46581c7be3390d0ecd0a037e6e6ebc2893d5768a"
+    },
+    {
+      "path": "src/development",
+      "url": "https://android.googlesource.com/platform/development",
+      "revision": "db0a64ff5d737accf45252d05f97320373edad34"
+    },
+    {
+      "path": "src/soong",
+      "url": "https://android.googlesource.com/platform/build/soong",
+      "revision": "050e044df577a106757e9df904535bde9e6f83ce"
+    }
+  ]
+}

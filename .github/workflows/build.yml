@@ -8,6 +8,7 @@ on:
         type: choice
         required: true
         options:
+          - aapt
           - aapt2
           - abseil
           - adb
