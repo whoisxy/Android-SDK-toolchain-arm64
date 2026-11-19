@@ -89,10 +89,12 @@ def publish(directory, repository="", expected_dependency="", expected_libc="bio
     if build["libc"] != expected_libc:
         raise ValueError("Artifact libc does not match the requested task")
     spec = registry()[build["dependency"]]
+    release_name = build["dependency"]
     if spec.get("source_required"):
         expected_url, expected_ref = source_revision(spec, ref, source_url)
         if (build["source_url"], build["requested_ref"]) != (expected_url, expected_ref):
             raise ValueError("Artifact source does not match the requested URL and ref")
+        release_name = expected_url.removeprefix("https://github.com/").removesuffix(".git")
     repository = destination(build["dependency"], repository)
     github = GitHub()
     repo_info = github.api("/repos/" + repository)
@@ -114,7 +116,7 @@ def publish(directory, repository="", expected_dependency="", expected_libc="bio
     ])
     release = github.api("/repos/" + repository + "/releases", "POST", {
         "tag_name": tag, "target_commitish": target,
-        "name": f"{build['dependency']} · {build['requested_ref']} · {build['target']}",
+        "name": f"{release_name} · {build['requested_ref']} · {build['target']}",
         "body": body, "draft": True, "prerelease": False,
     })
     print("Created draft release " + release["html_url"], flush=True)

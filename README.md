@@ -13,12 +13,12 @@ The `libc` parameter defaults to **`bionic`**. Select `glibc` or `musl` when nee
 | `musl` | Linux ARM64 | AArch64 musl compiler or checksum-pinned Zig |
 
 Each dependency is available in the same Actions dropdown and through `./task`.
-Leave the Git hash or tag empty to build the pinned commit.
+Leave the Git hash or tag empty to use a named recipe's pinned commit.
 
 ## Run a task
 
 In Actions, open **Build and release dependency**, click **Run workflow**, and
-choose a dependency from the dropdown. The `ref` and `libc` fields are optional.
+choose a dependency from the dropdown. `libc` defaults to Bionic.
 Using GitHub CLI on your own machine:
 
 ```bash
@@ -48,7 +48,7 @@ there is no fallback to the build machine's CPU or a different libc.
 Choose `generic-cmake` and provide `source_url` and `ref`. Use a public GitHub
 repository with a top-level `CMakeLists.txt` and install rules for a native
 executable or library. Choose a source you trust to execute on the build runner.
-GitHub Actions uses its hosted Ubuntu runner for this task.
+GitHub Actions uses its hosted Ubuntu runner and names the release for the source repository.
 
 ```bash
 gh workflow run build.yml --repo whoisxy/Android-SDK-toolchain-arm64 \
