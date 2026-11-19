@@ -43,6 +43,20 @@ through your own environment or secret manager.
 runners and supported libc combinations. Unsupported combinations fail explicitly;
 there is no fallback to the build machine's CPU or a different libc.
 
+### Build a CMake project from source
+
+Choose `generic-cmake` and provide `source_url` and `ref`. Use a public GitHub
+repository with a top-level `CMakeLists.txt` and install rules for a native
+executable or library. Choose a source you trust to execute on the build runner.
+GitHub Actions uses its hosted Ubuntu runner for this task.
+
+```bash
+gh workflow run build.yml --repo whoisxy/Android-SDK-toolchain-arm64 \
+  -f dependency=generic-cmake -f source_url=https://github.com/madler/zlib -f ref=v1.3.1
+
+./task generic-cmake v1.3.1 --source-url https://github.com/madler/zlib --build-only
+```
+
 ## Build and release behavior
 
 Recipes are defined in `recipes/registry.json`. The default ref is an immutable

@@ -12,7 +12,7 @@ import unittest
 from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
-from common import build_environment, destination, registry, revision
+from common import build_environment, destination, registry, revision, source_revision
 from release import completed_build
 from targets import elf_details, inspect_binary, target_name
 from build import Builder
@@ -31,9 +31,12 @@ class RevisionTests(unittest.TestCase):
     def test_build_child_has_no_github_credentials(self):
         with patch.dict(os.environ, {"GH_TOKEN": "test-only", "GITHUB_TOKEN": "test-only",
                          "RELEASE_TOKEN": "test-only", "GIT_CONFIG_COUNT": "1",
-                         "GIT_CONFIG_KEY_0": "http.extraheader", "GIT_CONFIG_VALUE_0": "test-only"}):
+                         "GIT_CONFIG_KEY_0": "http.extraheader", "GIT_CONFIG_VALUE_0": "test-only",
+                         "GITHUB_ENV": "/runner/env", "GITHUB_OUTPUT": "/runner/output"}):
             env = build_environment()
-            self.assertFalse(any(key in env for key in ("GH_TOKEN", "GITHUB_TOKEN", "RELEASE_TOKEN", "GIT_CONFIG_COUNT", "GIT_CONFIG_VALUE_0")))
+            self.assertFalse(any(key in env for key in ("GH_TOKEN", "GITHUB_TOKEN", "RELEASE_TOKEN",
+                                                        "GIT_CONFIG_COUNT", "GIT_CONFIG_VALUE_0",
+                                                        "GITHUB_ENV", "GITHUB_OUTPUT")))
 
 
 class RegistryTests(unittest.TestCase):
@@ -49,9 +52,14 @@ class RegistryTests(unittest.TestCase):
             self.assertNotIn(name, active)
             active.add(name)
             spec = entries[name]
-            self.assertTrue(spec["url"].startswith("https://"))
-            self.assertNotIn("@", spec["url"].split("//", 1)[1].split("/", 1)[0])
-            self.assertEqual("commit", revision(spec["default_ref"])[1])
+            if name == "generic-cmake":
+                self.assertTrue(spec["source_required"])
+                self.assertIsNone(spec["url"])
+                self.assertIsNone(spec["default_ref"])
+            else:
+                self.assertTrue(spec["url"].startswith("https://"))
+                self.assertNotIn("@", spec["url"].split("//", 1)[1].split("/", 1)[0])
+                self.assertEqual("commit", revision(spec["default_ref"])[1])
             for dependency in spec.get("dependencies", []):
                 walk(dependency)
             for placement in spec.get("source_dependencies", []):
@@ -70,6 +78,22 @@ class RegistryTests(unittest.TestCase):
         for value in ("https://github.com/owner/repo", "owner/repo\nX=1", "../repo", "owner/../repo"):
             with self.assertRaises(ValueError):
                 destination("zlib", override=value)
+
+    def test_generic_cmake_source_is_explicit(self):
+        entries = registry()
+        spec = entries["generic-cmake"]
+        source = "https://github.com/madler/zlib.git"
+        self.assertEqual((source, "v1.3.1"), source_revision(spec, "v1.3.1", source))
+        self.assertEqual((source, "a" * 40), source_revision(spec, "A" * 40, source))
+        for url in ("", "file:///tmp/build", "https://git.example.com/user/source",
+                    "https://github.com@evil.example/user/source", source + "?token=test",
+                    source + "\nGITHUB_OUTPUT=override"):
+            with self.subTest(url=url), self.assertRaises(ValueError):
+                source_revision(spec, "v1.3.1", url)
+        with self.assertRaises(ValueError):
+            source_revision(spec, source_url=source)
+        with self.assertRaises(ValueError):
+            source_revision(entries["zlib"], "v1.3.1", source)
 
 
 class ReleaseAssetTests(unittest.TestCase):

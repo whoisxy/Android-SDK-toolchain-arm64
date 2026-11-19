@@ -47,8 +47,13 @@ on:
           - sqlite
           - zipalign
           - zlib
+          - generic-cmake
       ref:
-        description: Optional full Git commit hash or tag; empty uses the recipe pin
+        description: Full Git commit hash or tag (required for generic-cmake, otherwise defaults to the recipe pin)
+        type: string
+        default: ''
+      source_url:
+        description: Public GitHub repository URL for generic-cmake
         type: string
         default: ''
       libc:
@@ -72,6 +77,7 @@ jobs:
     with:
       dependency: ${{ inputs.dependency }}
       ref: ${{ inputs.ref }}
+      source_url: ${{ inputs.source_url }}
       libc: ${{ inputs.libc }}
       runner: ${{ inputs.runner }}
       release_repository: ${{ inputs.release_repository }}

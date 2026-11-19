@@ -13,12 +13,12 @@ import subprocess
 import tarfile
 import tempfile
 
-from common import ROOT, build_environment, registry, revision
+from common import ROOT, build_environment, registry, revision, source_revision
 from targets import Arm64Toolchain, LIBCS, target_name, validate_tree
 
 
 class Builder:
-    def __init__(self, dependency, requested_ref, root=None, libc="bionic"):
+    def __init__(self, dependency, requested_ref, root=None, libc="bionic", source_url=""):
         self.dependencies = registry()
         if dependency not in self.dependencies:
             raise ValueError(f"Unknown task: {dependency}")
@@ -29,7 +29,9 @@ class Builder:
         self.target = target_name(libc)
         if libc not in self.dependencies[dependency].get("supported_libcs", LIBCS):
             raise ValueError(f"{dependency} does not support libc={libc}; no fallback target is used")
-        self.requested_ref = requested_ref
+        spec = self.dependencies[dependency]
+        source_url, self.requested_ref = source_revision(spec, requested_ref, source_url)
+        self.dependencies[dependency] = {**spec, "url": source_url}
         self.env = build_environment()
         if self.dependencies[dependency]["backend"] == "android-sdk-tool":
             self.env["ANDROID_API"] = str(max(30, int(self.env.get("ANDROID_API", "28"))))
@@ -535,7 +537,7 @@ class Builder:
         metadata_dir.mkdir(parents=True, exist_ok=True)
         selected = self.record(self.dependency)
         receipt = {"schema_version": 1, "dependency": self.dependency, "kind": spec["kind"],
-                   "requested_ref": self.requested_ref or spec["default_ref"],
+                   "requested_ref": self.requested_ref,
                    "source_commit": selected["commit"], "source_url": spec["url"],
                    "host": "linux-" + platform.machine(), "sources": self.records,
                    "target": self.target, "architecture": "arm64", "libc": self.libc,
@@ -545,7 +547,7 @@ class Builder:
                    "recipe": spec, "commands": self.commands,
                    "pipeline_commit": self.env.get("GITHUB_SHA", "local"),
                    "workflow_run_id": self.env.get("GITHUB_RUN_ID", "local"),
-                   "notes": "Source-built outputs or assembled script/header distributions as indicated by kind. System build packages and some upstream runtime/dependency downloads remain external inputs."}
+                   "notes": "System build packages and some upstream runtime and dependency downloads remain external inputs."}
         if shutil.which("dpkg-query"):
             packages = subprocess.run(["dpkg-query", "-W"], text=True, capture_output=True, check=True)
             (metadata_dir / "host-packages.txt").write_text(packages.stdout)
@@ -577,9 +579,10 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("dependency")
     parser.add_argument("ref", nargs="?", default="")
+    parser.add_argument("--source-url", default="")
     parser.add_argument("--libc", choices=LIBCS, default="bionic")
     args = parser.parse_args()
-    Builder(args.dependency, args.ref, libc=args.libc).package()
+    Builder(args.dependency, args.ref, libc=args.libc, source_url=args.source_url).package()
 
 
 if __name__ == "__main__":

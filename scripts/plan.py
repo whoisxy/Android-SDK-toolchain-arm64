@@ -3,12 +3,13 @@
 import argparse
 import json
 import os
-from common import destination, registry, revision
+from common import destination, registry, source_revision
 from targets import LIBCS
 
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument("dependency")
 parser.add_argument("--ref", default="")
+parser.add_argument("--source-url", default="")
 parser.add_argument("--runner", default="")
 parser.add_argument("--repository", default="")
 parser.add_argument("--libc", choices=LIBCS, default="bionic")
@@ -16,9 +17,14 @@ args = parser.parse_args()
 spec = registry()[args.dependency]
 if not spec.get("release_task", True):
     raise SystemExit(args.dependency + " is bootstrap-only; there is no release task")
-revision(args.ref or spec["default_ref"])
+try:
+    source_revision(spec, args.ref, args.source_url)
+except ValueError as error:
+    raise SystemExit(str(error)) from None
 if args.libc not in spec.get("supported_libcs", LIBCS):
     raise SystemExit(f"{args.dependency} does not support libc={args.libc}")
+if spec.get("source_required") and args.runner:
+    raise SystemExit("Generic CMake builds use the default GitHub-hosted runner")
 runner = json.loads(args.runner) if args.runner else spec.get("runner", ["ubuntu-24.04"])
 if not isinstance(runner, list) or not runner or not all(isinstance(x, str) and x for x in runner):
     raise SystemExit("Runner must be a JSON array of labels")

@@ -24,10 +24,25 @@ def revision(value):
     return value, "tag"
 
 
+def source_revision(spec, ref="", source_url=""):
+    if spec.get("source_required"):
+        prefix = "https://github.com/"
+        if not source_url.startswith(prefix) or not REPOSITORY_PATTERN.fullmatch(source_url[len(prefix):]):
+            raise ValueError("Supply a public GitHub source URL such as https://github.com/OWNER/REPOSITORY")
+        if not ref:
+            raise ValueError("Generic CMake builds require a full Git commit hash or tag")
+    else:
+        if source_url:
+            raise ValueError("source_url is only available for generic-cmake")
+        source_url = spec["url"]
+    return source_url, revision(ref or spec["default_ref"])[0]
+
+
 def build_environment():
     env = dict(os.environ)
     for key in list(env):
-        if (key in {"GH_TOKEN", "GITHUB_TOKEN", "RELEASE_TOKEN", "GIT_CONFIG_COUNT", "GIT_CURL_VERBOSE"}
+        if (key in {"GH_TOKEN", "GITHUB_TOKEN", "RELEASE_TOKEN", "GIT_CONFIG_COUNT", "GIT_CURL_VERBOSE",
+                    "GITHUB_ENV", "GITHUB_OUTPUT", "GITHUB_PATH", "GITHUB_STATE", "GITHUB_STEP_SUMMARY"}
                 or key.startswith(("GIT_CONFIG_KEY_", "GIT_CONFIG_VALUE_", "GIT_TRACE"))):
             env.pop(key, None)
     env.update(GIT_TERMINAL_PROMPT="0", GIT_CONFIG_GLOBAL="/dev/null", DEPOT_TOOLS_UPDATE="0")

@@ -15,7 +15,7 @@ case "${1:-all}" in
   apksigner)
     require_tool javac openjdk-21-jdk-headless
     ;;
-  dart-sdk|gen-snapshot|flutter-tools|flutter-engine-arm64|zlib|aapt|aapt2|aidl|zipalign|adb|fastboot)
+  dart-sdk|gen-snapshot|flutter-tools|flutter-engine-arm64|zlib|generic-cmake|aapt|aapt2|aidl|zipalign|adb|fastboot)
     for tool in curl git unzip zip tar python3 file cmake; do
       require_tool "$tool" "$tool"
     done

@@ -8,6 +8,9 @@ on:
       ref:
         type: string
         default: ''
+      source_url:
+        type: string
+        default: ''
       libc:
         type: string
         default: bionic
@@ -38,10 +41,11 @@ jobs:
         env:
           DEPENDENCY: ${{ inputs.dependency }}
           REQUESTED_REF: ${{ inputs.ref }}
+          SOURCE_URL: ${{ inputs.source_url }}
           RUNNER_LABELS: ${{ inputs.runner }}
           RELEASE_REPOSITORY: ${{ inputs.release_repository }}
           TARGET_LIBC: ${{ inputs.libc }}
-        run: python3 scripts/plan.py "$DEPENDENCY" --ref "$REQUESTED_REF" --runner "$RUNNER_LABELS" --repository "$RELEASE_REPOSITORY" --libc "$TARGET_LIBC"
+        run: python3 scripts/plan.py "$DEPENDENCY" --ref "$REQUESTED_REF" --source-url "$SOURCE_URL" --runner "$RUNNER_LABELS" --repository "$RELEASE_REPOSITORY" --libc "$TARGET_LIBC"
   build:
     needs: plan
     runs-on: ${{ fromJSON(needs.plan.outputs.runner) }}
@@ -70,13 +74,19 @@ jobs:
         env:
           DEPENDENCY: ${{ inputs.dependency }}
           REQUESTED_REF: ${{ inputs.ref }}
+          SOURCE_URL: ${{ inputs.source_url }}
           BUILD_ROOT: ${{ runner.temp }}/dependency-build-${{ github.run_id }}-${{ github.run_attempt }}
           JOBS: '4'
           TARGET_LIBC: ${{ inputs.libc }}
         run: |
           set -o pipefail
           log="$(mktemp)"
-          if bash scripts/build.sh "$DEPENDENCY" "$REQUESTED_REF" --libc "$TARGET_LIBC" 2>&1 | tee "$log"; then
+          marker="$(openssl rand -hex 24)"
+          printf '::stop-commands::%s\n' "$marker"
+          result=0
+          bash scripts/build.sh "$DEPENDENCY" "$REQUESTED_REF" --source-url "$SOURCE_URL" --libc "$TARGET_LIBC" 2>&1 | tee "$log" || result=$?
+          printf '::%s::\n' "$marker"
+          if (( result == 0 )); then
             exit 0
           fi
           failure="$(tail -n 25 "$log")"
@@ -111,5 +121,7 @@ jobs:
           GH_TOKEN: ${{ needs.plan.outputs.repository == github.repository && github.token || secrets.RELEASE_TOKEN }}
           RELEASE_REPOSITORY: ${{ needs.plan.outputs.repository }}
           DEPENDENCY: ${{ inputs.dependency }}
+          REQUESTED_REF: ${{ inputs.ref }}
+          SOURCE_URL: ${{ inputs.source_url }}
           TARGET_LIBC: ${{ inputs.libc }}
-        run: python3 scripts/release.py release-assets --repository "$RELEASE_REPOSITORY" --dependency "$DEPENDENCY" --libc "$TARGET_LIBC"
+        run: python3 scripts/release.py release-assets --repository "$RELEASE_REPOSITORY" --dependency "$DEPENDENCY" --libc "$TARGET_LIBC" --source-url "$SOURCE_URL" --ref "$REQUESTED_REF"

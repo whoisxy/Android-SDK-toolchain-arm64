@@ -11,7 +11,7 @@ import time
 import urllib.error
 import urllib.request
 
-from common import ROOT, destination, registry
+from common import ROOT, destination, registry, source_revision
 from targets import LIBCS, target_name, validate_archive
 
 
@@ -81,12 +81,18 @@ class GitHub:
             raise RuntimeError(f"GitHub {method} {path}: HTTP {error.code}: {message}") from None
 
 
-def publish(directory, repository="", expected_dependency="", expected_libc="bionic"):
+def publish(directory, repository="", expected_dependency="", expected_libc="bionic",
+            source_url="", ref=""):
     build, assets = completed_build(directory)
     if expected_dependency and build["dependency"] != expected_dependency:
         raise ValueError("Artifact dependency does not match the requested task")
     if build["libc"] != expected_libc:
         raise ValueError("Artifact libc does not match the requested task")
+    spec = registry()[build["dependency"]]
+    if spec.get("source_required"):
+        expected_url, expected_ref = source_revision(spec, ref, source_url)
+        if (build["source_url"], build["requested_ref"]) != (expected_url, expected_ref):
+            raise ValueError("Artifact source does not match the requested URL and ref")
     repository = destination(build["dependency"], repository)
     github = GitHub()
     repo_info = github.api("/repos/" + repository)
@@ -136,5 +142,7 @@ if __name__ == "__main__":
     parser.add_argument("--repository", default="")
     parser.add_argument("--dependency", default="")
     parser.add_argument("--libc", choices=LIBCS, default="bionic")
+    parser.add_argument("--source-url", default="")
+    parser.add_argument("--ref", default="")
     args = parser.parse_args()
-    publish(args.directory, args.repository, args.dependency, args.libc)
+    publish(args.directory, args.repository, args.dependency, args.libc, args.source_url, args.ref)

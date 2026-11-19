@@ -2,6 +2,19 @@
   "schema_version": 1,
   "default_host": "build-runner CPU is independent of the ARM64 output target",
   "dependencies": {
+    "generic-cmake": {
+      "url": null,
+      "default_ref": null,
+      "source_required": true,
+      "backend": "cmake",
+      "kind": "native-library-and-tools",
+      "dependencies": [],
+      "release_repository": null,
+      "cmake_options": ["-DBUILD_TESTING=OFF"],
+      "target_architecture": "arm64",
+      "supported_libcs": ["bionic", "glibc", "musl"],
+      "runner": ["ubuntu-24.04"]
+    },
     "aapt": {
       "url": "https://android.googlesource.com/platform/frameworks/base",
       "default_ref": "723419df1a0769b63587722a8a0a0980f454ffd2",

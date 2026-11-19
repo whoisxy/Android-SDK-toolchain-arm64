@@ -43,6 +43,7 @@ Pick a dependency in **Build and release dependency** or use `./task NAME [HASH_
 | `sqlite` | native-library | sqlite | `0f61bd2023ba94423b4e4c8cfb1a23de1fe6a21c` | bionic, glibc, musl | ubuntu-24.04 |
 | `zipalign` | native-tool | android-sdk-tool | `46581c7be3390d0ecd0a037e6e6ebc2893d5768a` | bionic | ubuntu-24.04 |
 | `zlib` | native-library | cmake | `51b7f2abdade71cd9bb0e7a373ef2610ec6f9daf` | bionic, glibc, musl | ubuntu-24.04 |
+| `generic-cmake` | native-library-and-tools | cmake | Source URL and ref required | bionic, glibc, musl | ubuntu-24.04 |
 
 These are implemented recipes, not a claim that every recipe has completed a CI build. Consult Actions and Releases for observed results.
 Refs must belong to the recipe's source repository. Different upstream versions may need recipe changes.
