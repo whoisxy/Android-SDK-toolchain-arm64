@@ -26,7 +26,7 @@ def needs_compiler(name):
     entry = registry()[name]
     if entry.get("manages_toolchain") or entry["backend"] in {"dart-sdk", "flutter-tools", "android-engine"}:
         return False
-    return entry["kind"] not in {"script-distribution", "jvm-tool"} or any(needs_compiler(dep) for dep in entry.get("dependencies", []))
+    return entry["kind"] != "jvm-tool" or any(needs_compiler(dep) for dep in entry.get("dependencies", []))
 
 output = {"runner": json.dumps(runner), "repository": destination(args.dependency, args.repository),
           "compiler_required": str(needs_compiler(args.dependency)).lower()}

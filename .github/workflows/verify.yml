@@ -18,8 +18,7 @@ jobs:
         run: python3 scripts/generate-tasks.py --check
       - name: Check Bash syntax
         run: |
-          bash -n task scripts/*.sh
-          for script in tasks/*.sh; do bash -n "$script"; done
+          for script in task scripts/*.sh; do bash -n "$script"; done
       - name: Check Actions workflow syntax
         env:
           GOBIN: ${{ runner.temp }}/actionlint-bin

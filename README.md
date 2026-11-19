@@ -1,6 +1,6 @@
 # Android SDK toolchain dependency tasks
 
-One repository of independent build and release tasks. **Release output is ARM64.**
+One build workflow for Android SDK and Flutter dependencies. **Release output is ARM64.**
 The build machine's CPU is independent of the output CPU; the default Actions
 runner is Ubuntu 24.04 x64 and uses cross compilers.
 
@@ -12,18 +12,18 @@ The `libc` parameter defaults to **`bionic`**. Select `glibc` or `musl` when nee
 | `glibc` | Linux ARM64 | AArch64 GNU cross compiler |
 | `musl` | Linux ARM64 | AArch64 musl compiler or checksum-pinned Zig |
 
-Every implemented dependency has a `tasks/NAME.sh` command and an individual
-**Build and release NAME** Actions workflow. The optional positional argument is
-a full source Git hash or tag; leaving it empty uses the recipe's pinned commit.
+Each dependency is available in the same Actions dropdown and through `./task`.
+Leave the Git hash or tag empty to build the pinned commit.
 
 ## Run a task
 
-In Actions, select the dependency, optionally enter `ref`, and choose `libc`.
+In Actions, open **Build and release dependency**, click **Run workflow**, and
+choose a dependency from the dropdown. The `ref` and `libc` fields are optional.
 Using GitHub CLI on your own machine:
 
 ```bash
-gh workflow run build-zlib.yml --repo whoisxy/Android-SDK-toolchain-arm64 \
-  -f ref=v1.3.1 -f libc=bionic
+gh workflow run build.yml --repo whoisxy/Android-SDK-toolchain-arm64 \
+  -f dependency=zlib -f ref=v1.3.1 -f libc=bionic
 ```
 
 Locally, provision a compiler for the selected libc, then run:
@@ -37,8 +37,7 @@ export ANDROID_NDK_HOME=/path/to/android-ndk
 
 Omit `--build-only` to create a release too; local publishing needs
 `GITHUB_REPOSITORY=whoisxy/Android-SDK-toolchain-arm64` and a `GH_TOKEN` supplied
-through your own environment/secret manager. Task scripts accept the same arguments:
-`tasks/zlib.sh v1.3.1 --libc bionic`.
+through your own environment or secret manager.
 
 `./task list` lists available tasks. [docs/tasks.md](docs/tasks.md) lists source pins,
 runners and supported libc combinations. Unsupported combinations fail explicitly;
@@ -54,10 +53,9 @@ require recipe changes.
 The shared pipeline builds without release write credentials, then passes output
 to a separate publisher job. Before publishing, it checks archive integrity,
 ARM64 ELF headers, object files inside static libraries, embedded native JAR files,
-libc interpreters and incompatible dynamic libc dependencies. Headers, Python
-scripts and Java archives are architecture-independent; they still carry the
-selected ARM64/libc target metadata. These checks do not replace execution on a
-device with the selected runtime.
+libc interpreters and incompatible dynamic libc dependencies. Releases contain
+compiled output, including JVM bytecode for `apksigner`. These checks complement
+execution on a device with the selected runtime.
 
 A successful task creates a release **in this repository**, attaching an output
 archive and SHA-256 sidecar. Names and tags contain the output target and libc,
@@ -66,7 +64,7 @@ incomplete release. See [docs/releases.md](docs/releases.md).
 
 ## Tools and runners
 
-Tasks include native libraries, Android SDK tools, `repo`, `depot-tools`, CIPD,
+Tasks include native libraries, Android SDK tools, `depot-tools`, CIPD,
 GN/Ninja, Dart SDK, the Flutter tool snapshot and the ARM64 Android engine.
 See [docs/sdk-tools.md](docs/sdk-tools.md) for tool-specific details and limits.
 
@@ -91,8 +89,8 @@ directories on self-hosted runners according to their retention policy.
 
 ## Extending the registry
 
-Add a recipe, then run `python3 scripts/generate-tasks.py` to generate its task,
-workflow and task-list documentation. Set a recipe's `release_repository` to publish
+Add a recipe, then run `python3 scripts/generate-tasks.py` to update the workflow
+dropdown and dependency list. Set a recipe's `release_repository` to publish
 to a separate initialized repository later. Such a destination uses the optional
 `RELEASE_TOKEN` secret; same-repository releases use the automatic `GITHUB_TOKEN`.
 

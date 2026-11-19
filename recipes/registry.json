@@ -442,20 +442,6 @@
         "musl"
       ]
     },
-    "gtest-parallel": {
-      "url": "https://chromium.googlesource.com/external/github.com/google/gtest-parallel",
-      "default_ref": "38191e2733d7cbaeaef6a3f1a942ddeb38a2ad14",
-      "backend": "gtest-parallel",
-      "kind": "script-distribution",
-      "dependencies": [],
-      "release_repository": null,
-      "target_architecture": "arm64",
-      "supported_libcs": [
-        "bionic",
-        "glibc",
-        "musl"
-      ]
-    },
     "harfbuzz": {
       "url": "https://flutter.googlesource.com/third_party/harfbuzz",
       "default_ref": "49844c32a7a3f6be371355a1213c952a3f4a44e7",
@@ -483,28 +469,6 @@
       "dependencies": [],
       "release_repository": null,
       "min_disk_gib": 8,
-      "target_architecture": "arm64",
-      "supported_libcs": [
-        "bionic",
-        "glibc",
-        "musl"
-      ]
-    },
-    "inja": {
-      "url": "https://flutter.googlesource.com/third_party/inja",
-      "default_ref": "88bd6112575a80d004e551c98cf956f88ff4d445",
-      "backend": "cmake",
-      "kind": "headers",
-      "dependencies": [
-        "nlohmann-json"
-      ],
-      "release_repository": null,
-      "cmake_options": [
-        "-DINJA_USE_EMBEDDED_JSON=OFF",
-        "-DINJA_BUILD_TESTS=OFF",
-        "-DINJA_BUILD_BENCHMARK=OFF",
-        "-DINJA_INSTALL=ON"
-      ],
       "target_architecture": "arm64",
       "supported_libcs": [
         "bionic",
@@ -602,43 +566,6 @@
         "musl"
       ]
     },
-    "nlohmann-json": {
-      "url": "https://flutter.googlesource.com/third_party/json.git",
-      "default_ref": "17d9eacd248f58b73f4d1be518ef649fe2295642",
-      "backend": "cmake",
-      "kind": "headers",
-      "dependencies": [],
-      "release_repository": null,
-      "cmake_options": [
-        "-DJSON_BuildTests=OFF",
-        "-DJSON_Install=ON"
-      ],
-      "target_architecture": "arm64",
-      "supported_libcs": [
-        "bionic",
-        "glibc",
-        "musl"
-      ]
-    },
-    "rapidjson": {
-      "url": "https://flutter.googlesource.com/third_party/rapidjson",
-      "default_ref": "47253cab97e9cfe99dbd6b90836fc11589d7d802",
-      "backend": "cmake",
-      "kind": "headers",
-      "dependencies": [],
-      "release_repository": null,
-      "cmake_options": [
-        "-DRAPIDJSON_BUILD_DOC=OFF",
-        "-DRAPIDJSON_BUILD_EXAMPLES=OFF",
-        "-DRAPIDJSON_BUILD_TESTS=OFF"
-      ],
-      "target_architecture": "arm64",
-      "supported_libcs": [
-        "bionic",
-        "glibc",
-        "musl"
-      ]
-    },
     "re2": {
       "url": "https://chromium.googlesource.com/external/github.com/google/re2",
       "default_ref": "c84a140c93352cdabbfb547c531be34515b12228",
@@ -657,22 +584,6 @@
         "glibc",
         "musl"
       ]
-    },
-    "repo": {
-      "url": "https://gerrit.googlesource.com/git-repo",
-      "default_ref": "97dc5c1bd9527c2abe2183b16a4b7ef037dc34a7",
-      "backend": "repo",
-      "kind": "script-distribution",
-      "dependencies": [],
-      "release_repository": null,
-      "target_architecture": "arm64",
-      "supported_libcs": [
-        "bionic",
-        "glibc",
-        "musl"
-      ],
-      "release_task": false,
-      "role": "Optional Python bootstrap for repo-managed source trees; not a binary output"
     },
     "shaderc": {
       "url": "https://chromium.googlesource.com/external/github.com/google/shaderc",
@@ -747,7 +658,8 @@
         "bionic",
         "glibc",
         "musl"
-      ]
+      ],
+      "release_task": false
     },
     "spirv-tools": {
       "url": "https://chromium.googlesource.com/external/github.com/KhronosGroup/SPIRV-Tools",
@@ -782,42 +694,6 @@
       "kind": "native-library",
       "dependencies": [],
       "release_repository": null,
-      "target_architecture": "arm64",
-      "supported_libcs": [
-        "bionic",
-        "glibc",
-        "musl"
-      ]
-    },
-    "vulkan-headers": {
-      "url": "https://chromium.googlesource.com/external/github.com/KhronosGroup/Vulkan-Headers",
-      "default_ref": "a4f8ada9f4f97c45b8c89c57997be9cebaae65d2",
-      "backend": "cmake",
-      "kind": "headers",
-      "dependencies": [],
-      "release_repository": null,
-      "cmake_options": [],
-      "target_architecture": "arm64",
-      "supported_libcs": [
-        "bionic",
-        "glibc",
-        "musl"
-      ]
-    },
-    "vulkan-memory-allocator": {
-      "url": "https://chromium.googlesource.com/external/github.com/GPUOpen-LibrariesAndSDKs/VulkanMemoryAllocator",
-      "default_ref": "c788c52156f3ef7bc7ab769cb03c110a53ac8fcb",
-      "backend": "cmake",
-      "kind": "headers",
-      "dependencies": [
-        "vulkan-headers"
-      ],
-      "release_repository": null,
-      "cmake_options": [
-        "-DVMA_BUILD_SAMPLES=OFF",
-        "-DVMA_BUILD_DOCUMENTATION=OFF",
-        "-DVMA_BUILD_TESTS=OFF"
-      ],
       "target_architecture": "arm64",
       "supported_libcs": [
         "bionic",

@@ -1,6 +1,6 @@
 # Dependency tasks
 
-Every row has a `tasks/NAME.sh [HASH_OR_TAG] --libc bionic|glibc|musl` entry point and an individual Actions workflow. Output is always ARM64; libc defaults to bionic.
+Pick a dependency in **Build and release dependency** or use `./task NAME [HASH_OR_TAG] --libc bionic|glibc|musl`. Output targets ARM64 and libc defaults to bionic.
 
 | Task | Output kind | Backend | Default source commit | Supported libc | Runner |
 |---|---|---|---|---|---|
@@ -28,28 +28,21 @@ Every row has a `tasks/NAME.sh [HASH_OR_TAG] --libc bionic|glibc|musl` entry poi
 | `glslang` | native-library-and-tools | cmake | `a57276bf558f5cf94d3a9854ebdf5a2236849a5a` | bionic, glibc, musl | ubuntu-24.04 |
 | `gn` | native-tool | gn | `81b24e01531ecf0eff12ec9359a555ec3944ec4e` | bionic, glibc, musl | ubuntu-24.04 |
 | `googletest` | native-library | cmake | `e9907112b47255d50b4d343e7e2160bce8dc85d1` | bionic, glibc, musl | ubuntu-24.04 |
-| `gtest-parallel` | script-distribution | gtest-parallel | `38191e2733d7cbaeaef6a3f1a942ddeb38a2ad14` | bionic, glibc, musl | ubuntu-24.04 |
 | `harfbuzz` | native-library | cmake | `49844c32a7a3f6be371355a1213c952a3f4a44e7` | bionic, glibc, musl | ubuntu-24.04 |
 | `icu` | native-library | icu | `d578f2e8b7bd5938e21cfb6bf15c079e0aa5b738` | bionic, glibc, musl | ubuntu-24.04 |
-| `inja` | headers | cmake | `88bd6112575a80d004e551c98cf956f88ff4d445` | bionic, glibc, musl | ubuntu-24.04 |
 | `libjpeg-turbo` | native-library | cmake | `0fb821f3b2e570b2783a94ccd9a2fb1f4916ae9f` | bionic, glibc, musl | ubuntu-24.04 |
 | `libpng` | native-library | cmake | `ced6b6c0c1e24716423a417b399d3c7d4623890d` | bionic, glibc, musl | ubuntu-24.04 |
 | `libtess2` | native-library | libtess2 | `725e5e08ec8751477565f1d603fd7eb9058c277c` | bionic, glibc, musl | ubuntu-24.04 |
 | `libwebp` | native-library | cmake | `ca332209cb5567c9b249c86788cb2dbf8847e760` | bionic, glibc, musl | ubuntu-24.04 |
 | `ninja` | native-tool | cmake | `a524bf3f6bacd1b4ad85d719eed2737d8562f27a` | bionic, glibc, musl | ubuntu-24.04 |
-| `nlohmann-json` | headers | cmake | `17d9eacd248f58b73f4d1be518ef649fe2295642` | bionic, glibc, musl | ubuntu-24.04 |
-| `rapidjson` | headers | cmake | `47253cab97e9cfe99dbd6b90836fc11589d7d802` | bionic, glibc, musl | ubuntu-24.04 |
 | `re2` | native-library | cmake | `c84a140c93352cdabbfb547c531be34515b12228` | bionic, glibc, musl | ubuntu-24.04 |
 | `shaderc` | native-library-and-tools | shaderc | `d15277d6bc180f6a0b8b601f0cab2bbcaac9b4d5` | bionic, glibc, musl | ubuntu-24.04 |
 | `skia` | native-library | skia | `8df24be66531469e576a806749a0202ae26b8d08` | bionic, glibc | self-hosted, linux, x64, sdk-builder |
 | `spirv-cross` | native-library-and-tools | cmake | `b8fcf307f1f347089e3c46eb4451d27f32ebc8d3` | bionic, glibc, musl | ubuntu-24.04 |
-| `spirv-headers` | headers | cmake | `01e0577914a75a2569c846778c2f93aa8e6feddd` | bionic, glibc, musl | ubuntu-24.04 |
 | `spirv-tools` | native-library-and-tools | cmake | `19042c8921f35f7bec56b9e5c96c5f5691588ca8` | bionic, glibc, musl | ubuntu-24.04 |
 | `sqlite` | native-library | sqlite | `0f61bd2023ba94423b4e4c8cfb1a23de1fe6a21c` | bionic, glibc, musl | ubuntu-24.04 |
-| `vulkan-headers` | headers | cmake | `a4f8ada9f4f97c45b8c89c57997be9cebaae65d2` | bionic, glibc, musl | ubuntu-24.04 |
-| `vulkan-memory-allocator` | headers | cmake | `c788c52156f3ef7bc7ab769cb03c110a53ac8fcb` | bionic, glibc, musl | ubuntu-24.04 |
 | `zipalign` | native-tool | android-sdk-tool | `46581c7be3390d0ecd0a037e6e6ebc2893d5768a` | bionic | ubuntu-24.04 |
 | `zlib` | native-library | cmake | `51b7f2abdade71cd9bb0e7a373ef2610ec6f9daf` | bionic, glibc, musl | ubuntu-24.04 |
 
 These are implemented recipes, not a claim that every recipe has completed a CI build. Consult Actions and Releases for observed results.
-Refs must belong to the recipe's source repository. Different upstream versions may need recipe changes. Bootstrap-only sources such as repo are excluded from release tasks.
+Refs must belong to the recipe's source repository. Different upstream versions may need recipe changes.

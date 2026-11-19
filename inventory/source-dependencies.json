@@ -804,8 +804,8 @@
       "path": "engine/src/flutter/third_party/gtest-parallel",
       "revision": "38191e2733d7cbaeaef6a3f1a942ddeb38a2ad14",
       "source": "https://chromium.googlesource.com/external/github.com/google/gtest-parallel",
-      "task": "gtest-parallel",
-      "status": "recipe-implemented"
+      "task": null,
+      "status": "catalog-only"
     },
     {
       "android_linux_x64": true,
@@ -848,8 +848,8 @@
       "path": "engine/src/flutter/third_party/inja",
       "revision": "88bd6112575a80d004e551c98cf956f88ff4d445",
       "source": "https://flutter.googlesource.com/third_party/inja",
-      "task": "inja",
-      "status": "recipe-implemented"
+      "task": null,
+      "status": "catalog-only"
     },
     {
       "android_linux_x64": true,
@@ -859,8 +859,8 @@
       "path": "engine/src/flutter/third_party/json",
       "revision": "17d9eacd248f58b73f4d1be518ef649fe2295642",
       "source": "https://flutter.googlesource.com/third_party/json.git",
-      "task": "nlohmann-json",
-      "status": "recipe-implemented"
+      "task": null,
+      "status": "catalog-only"
     },
     {
       "android_linux_x64": true,
@@ -1079,8 +1079,8 @@
       "path": "engine/src/flutter/third_party/rapidjson",
       "revision": "47253cab97e9cfe99dbd6b90836fc11589d7d802",
       "source": "https://flutter.googlesource.com/third_party/rapidjson",
-      "task": "rapidjson",
-      "status": "recipe-implemented"
+      "task": null,
+      "status": "catalog-only"
     },
     {
       "android_linux_x64": true,
@@ -1189,8 +1189,8 @@
       "path": "engine/src/flutter/third_party/vulkan-deps/spirv-headers/src",
       "revision": "01e0577914a75a2569c846778c2f93aa8e6feddd",
       "source": "https://chromium.googlesource.com/external/github.com/KhronosGroup/SPIRV-Headers",
-      "task": "spirv-headers",
-      "status": "recipe-implemented"
+      "task": null,
+      "status": "catalog-only"
     },
     {
       "android_linux_x64": true,
@@ -1211,8 +1211,8 @@
       "path": "engine/src/flutter/third_party/vulkan-deps/vulkan-headers/src",
       "revision": "a4f8ada9f4f97c45b8c89c57997be9cebaae65d2",
       "source": "https://chromium.googlesource.com/external/github.com/KhronosGroup/Vulkan-Headers",
-      "task": "vulkan-headers",
-      "status": "recipe-implemented"
+      "task": null,
+      "status": "catalog-only"
     },
     {
       "android_linux_x64": true,
@@ -1266,8 +1266,8 @@
       "path": "engine/src/flutter/third_party/vulkan_memory_allocator",
       "revision": "c788c52156f3ef7bc7ab769cb03c110a53ac8fcb",
       "source": "https://chromium.googlesource.com/external/github.com/GPUOpen-LibrariesAndSDKs/VulkanMemoryAllocator",
-      "task": "vulkan-memory-allocator",
-      "status": "recipe-implemented"
+      "task": null,
+      "status": "catalog-only"
     },
     {
       "android_linux_x64": true,

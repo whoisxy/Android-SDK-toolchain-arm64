@@ -123,8 +123,8 @@ class Builder:
             self.run(["python3", "build/gen.py", "--no-last-commit-position", "--out-path", build], cwd=source, env=self.toolchain.env)
             self.run(["ninja", "-C", build, "-j", self.jobs], env=self.toolchain.env)
             self.copy(build / "gn", "bin/gn")
-        elif backend in ("depot-tools", "repo", "gtest-parallel"):
-            self.script_distribution(name, source, backend)
+        elif backend == "depot-tools":
+            self.depot_tools(source)
         elif backend == "shaderc":
             self.run(["python3", "utils/git-sync-deps"], cwd=source)
             self.cmake(spec, source, build)
@@ -424,32 +424,31 @@ class Builder:
         self.copy(build / "libtess2.a", "lib/libtess2.a")
         self.copy(source / "Include", "include/libtess2")
 
-    def script_distribution(self, name, source, backend):
-        destination = "libexec/" + name
+    def depot_tools(self, source):
+        destination = "libexec/depot-tools"
         shutil.copytree(source, self.prefix / destination, dirs_exist_ok=True,
                         ignore=shutil.ignore_patterns('.git', '__pycache__', 'tests', 'testing', '.cipd_bin'))
         bins = self.prefix / "bin"
         bins.mkdir(exist_ok=True)
-        launchers = {"repo": ["repo"], "depot-tools": ["gclient", "cipd", "vpython3"],
-                     "gtest-parallel": ["gtest-parallel"]}[backend]
-        for tool in launchers:
+        launchers = {
+            "gclient": 'exec python3 "$prefix/libexec/depot-tools/gclient.py" "$@"\n',
+            "cipd": 'exec "${CIPD_ANDROID_BINARY:-$prefix/bin/cipd-native}" "$@"\n',
+            "vpython3": 'exec python3 "$@"\n',
+        }
+        for tool, command in launchers.items():
             if not (source / tool).exists():
                 raise ValueError("Missing launcher: " + tool)
             launcher = bins / tool
-            command = ('exec python3 "$prefix/libexec/' + name + '/' + tool + '" "$@"\n')
-            if backend == "depot-tools":
-                entry = "gclient.py" if tool == "gclient" else tool
-                command = ('exec python3 "$prefix/libexec/' + name + '/' + entry + '" "$@"\n') if tool == "gclient" else 'exec python3 "$@"\n' if tool == "vpython3" else 'exec "${CIPD_ANDROID_BINARY:-$prefix/bin/cipd-native}" "$@"\n'
             launcher.write_text(('#!/system/bin/sh\n' if self.libc == 'bionic' else '#!/bin/sh\n') + 'set -eu\n'
                 'prefix="$(cd -- "$(dirname -- "$0")/.." && pwd)"\n'
                 'export DEPOT_TOOLS_UPDATE=0\n'
-                + ('export PATH="$prefix/libexec/depot-tools:$PATH"\n' if backend == 'depot-tools' else '')
+                'export PATH="$prefix/libexec/depot-tools:$PATH"\n'
                 + command)
             launcher.chmod(0o755)
-        if backend == "depot-tools":
-            # Bootstrapped Python/CIPD binaries are intentionally not claimed as source-built.
-            (self.prefix / "DEPOT_TOOLS_RUNTIME.md").write_text(
-                "This is the pinned architecture-independent depot_tools script distribution. The Android launchers use an installed Python 3 and require a native ARM64 CIPD client via CIPD_ANDROID_BINARY for CIPD operations. They do not download desktop-Linux Python/CIPD executables. vpython3 uses the caller-managed Python environment. These runtime dependencies are not bundled by the script-distribution task.\n")
+        (self.prefix / "DEPOT_TOOLS_RUNTIME.md").write_text(
+            "This bundle includes the pinned depot_tools scripts and a source-built ARM64 CIPD client. "
+            "Install Python 3 for gclient and vpython3. To use a different native CIPD client, "
+            "set CIPD_ANDROID_BINARY to its path.\n")
 
     def icu(self, source, build):
         host = build / "host"
@@ -527,7 +526,7 @@ class Builder:
             raise ValueError("Insufficient disk space for this recipe")
         self.install(self.dependency)
         architecture_report = validate_tree(self.prefix, self.libc)
-        if spec["kind"] not in {"headers", "script-distribution", "jvm-tool"} and not (architecture_report["elf_files"] or architecture_report["static_members"]):
+        if spec["kind"] != "jvm-tool" and not (architecture_report["elf_files"] or architecture_report["static_members"]):
             raise ValueError("Native recipe produced no verifiable ARM64 binary output")
         for pc in self.prefix.rglob("*.pc"):
             if pc.is_file() and not pc.is_symlink():

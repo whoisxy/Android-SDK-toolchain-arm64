@@ -21,7 +21,8 @@ def completed_build(directory):
     if metadata.is_symlink() or metadata.stat().st_size > 2 * 1024**2:
         raise ValueError("Invalid build metadata")
     build = json.loads(metadata.read_text())
-    if build["dependency"] not in registry():
+    spec = registry().get(build["dependency"])
+    if spec is None or not spec.get("release_task", True):
         raise ValueError("Unknown dependency in build artifact")
     if not re.fullmatch(r"[0-9a-f]{40}", build["source_commit"]):
         raise ValueError("Missing resolved source commit")
@@ -51,7 +52,7 @@ def completed_build(directory):
     if actual != build["archive_sha256"] or checksum.read_text().strip() != actual + "  " + archive.name:
         raise ValueError("Build archive checksum mismatch")
     observed = validate_archive(archive, build["libc"])
-    if registry()[build["dependency"]]["kind"] not in {"headers", "script-distribution", "jvm-tool"} and not (observed["elf_files"] or observed["static_members"]):
+    if spec["kind"] != "jvm-tool" and not (observed["elf_files"] or observed["static_members"]):
         raise ValueError("Native release contains no verified ARM64 binary")
     return build, paths
 

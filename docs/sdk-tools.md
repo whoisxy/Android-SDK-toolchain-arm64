@@ -6,9 +6,6 @@ The build machine is allowed to have a different CPU.
 
 ## Bootstrap tools
 
-- `repo` is available as a pinned Python bootstrap source for Repo-managed trees.
-  The Android tool tasks fetch their pinned sources directly through Git.
-  `gtest-parallel` is interpreted Python tooling.
 - `cipd` builds the native client from pinned LUCI source with Go/CGO and the selected
   ARM64 compiler. `depot-tools` includes it as a dependency, together with gclient and
   caller-managed Python/vpython launchers. Desktop Python/CIPD bootstrap executables
